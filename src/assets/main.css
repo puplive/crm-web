@@ -1,0 +1,76 @@
+@import './base.css';
+
+#app {
+  /* max-width: 1280px; */
+  margin: 0 auto;
+  /* padding: 2rem; */
+  font-weight: normal;
+}
+
+a{
+  text-decoration: none;
+  /* color: hsla(160, 100%, 37%, 1); */
+  transition: 0.4s;
+}
+
+.s-flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.s-flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.s-flex-grow {
+  flex-grow: 1;
+}
+.s-flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+.s-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.s-flex-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.s-flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.s-table-header{
+  background-color: black;
+}
+.s-table-operations{
+  display: flex;
+  /* justify-content: flex-end; */
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--el-border-color-lighter);
+  border-bottom: none;
+  /* background-color: var(--el-table-tr-bg-color);
+  border-top: var(--el-table-border); */
+}
+.s-table-pagination{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--el-border-color-lighter);
+  border-top: none;
+}
+
+@media (hover: hover) {
+  a:hover {
+    /* background-color: hsla(160, 100%, 37%, 0.2); */
+  }
+}
+
+@media (min-width: 1024px) {
+
+}
