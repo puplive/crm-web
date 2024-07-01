@@ -27,6 +27,16 @@ export const constantRouterMap: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/register',
+    component: () => import('@/views/Login/Register.vue'),
+    name: 'Register',
+    meta: {
+      hidden: true,
+      title: '注册',
+      noTagsView: true
+    }
+  },
+  {
     path: '/404',
     component: () => import('@/views/Error/404.vue'),
     name: 'NoFind',
@@ -62,6 +72,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ExhibitionAdd',
         component: () => import('@/views/Exhibition/Add.vue'),
         meta: {
+          hidden: true,
           title: '新增展会',
           // icon: 'list'
         }

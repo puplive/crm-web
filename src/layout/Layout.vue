@@ -33,10 +33,11 @@
       /* line-height: 60px; */
       background-color: #23262e;
       /* padding: 0 20px; */
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      /* box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); */
     }
    .el-aside {
       background-color: #393d49;
+      height: calc(100vh - 60px);
     }
    /* .el-main {
       background-color: #fff; 

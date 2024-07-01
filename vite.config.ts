@@ -18,10 +18,21 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  server: {
+    cors: true, // 默认启用并允许任何源
+    proxy: {
+      '/api': {  // 这里是你希望代理的请求前缀
+        target: 'https://crm-api.exposaas.cn',  // 目标服务器的地址
+        changeOrigin: true,  // 是否改变请求头中的 Host 字段
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      }
+    },
+  },
 })

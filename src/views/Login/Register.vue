@@ -1,0 +1,184 @@
+<template>
+  <div class="register-main">
+    <vHeader></vHeader>
+    <div class="register-container">
+      <!-- <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick" >
+        <el-tab-pane label="参展企业注册" name="first"> -->
+          <div class="register-title">
+            <div class="label">参展企业注册</div>
+          </div>
+          <el-form
+            style="width: 900px; margin: 0 auto;"
+            ref="ruleFormRef"
+            :model="ruleForm"
+            :rules="rules"
+            label-width="auto"
+            class="demo-ruleForm"
+            status-icon
+          > 
+            <el-row  :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="企业名称" prop="companyName">
+                  <el-input v-model="ruleForm.companyName" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="姓名" prop="userName">
+                  <el-input v-model="ruleForm.userName" style="width: calc(100% - 160px);" />
+                  <el-form-item label="" prop="gender">
+                    <el-radio-group v-model="ruleForm.gender" style="margin-left: 10px; width: 150px;">
+                      <el-radio value="1">先生</el-radio>
+                      <el-radio value="2">女士</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form-item>
+                
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="手机号" prop="phone">
+                  <el-input v-model="ruleForm.phone" style="width: calc(100% - 110px);" />
+                  <el-button type="primary" style="margin-left: 10px; width: 100px;" @click="sendSms(ruleFormRef)">发送验证码</el-button>
+                </el-form-item>
+                
+              </el-col>
+            </el-row> 
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="注册人邮箱" prop="email">
+                  <el-input v-model="ruleForm.email" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="验证码" prop="code">
+                  <el-input v-model="ruleForm.code" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-form-item label="" prop="policy">
+                <el-checkbox value="Online activities" name="policy">
+                  Online activities
+                </el-checkbox>
+                
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm(ruleFormRef)">
+                立即提交
+              </el-button>
+            </el-form-item>
+          </el-form>
+        <!-- </el-tab-pane>
+      </el-tabs> -->
+    </div>
+  </div>
+</template>
+<script lang="ts" setup>
+  import vHeader from './components/Header.vue'
+  import { registerApi, sendSmsApi } from "@/api/user";
+  import { reactive, ref } from 'vue'
+  import { useRouter, useRoute } from 'vue-router'
+  import type { FormInstance, FormRules } from 'element-plus'
+
+  // const activeName = ref('first')
+  // const handleClick = (tab: string, event: Event) => {
+  //   console.log(tab, event)
+  // }
+
+  const router = useRouter()
+  const ruleFormRef = ref<FormInstance>()
+  const ruleForm = reactive({ 
+    companyName: '', 
+    userName: '', 
+    gender: '1',
+    email: '',
+    phone: '',
+    code: '',
+    policy: false,
+  })
+
+  const rules = {
+    companyName: [
+      { required: true, message: '请输入企业名称', trigger: 'blur' },
+    ],
+    userName: [
+      { required: true, message: '请输入姓名', trigger: 'blur' },
+    ],
+    email: [
+      { required: true, message: '请输入邮箱', trigger: 'blur' },
+      { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' },
+    ],
+    phone: [
+      { required: true, message: '请输入手机号', trigger: 'blur' },
+      { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号格式', trigger: 'blur' },
+    ],
+    code: [
+      { required: true, message: '请输入验证码', trigger: 'blur' },
+    ],
+    // gender: [
+    //   { required: true, message: '请选择性别', trigger: 'blur' },
+    // ],
+    policy: [
+      {
+        type: 'boolean',
+        required: true,
+        message: '已阅读并同意',
+        trigger: 'change',
+      },
+    ],
+  }
+
+  const submitForm = (formRef: any) => {
+    formRef.validate((valid: any) => {
+      if (valid) {
+        register()
+      } else {
+        console.log('error submit')
+        return false
+      }
+    })
+  }
+
+  // const resetForm = (formRef) => {
+  //   formRef.resetFields()
+  // }
+
+  const register = () => {
+    registerApi(ruleForm).then(res => {
+      console.log(res)
+    })
+  }
+
+  const sendSms = (formRef: any) => {
+    formRef.validateField(['phone'], (valid: any) => {
+      if (valid) {
+        sendSmsApi(ruleForm).then(res => {
+          console.log(res)
+        })
+      } else {
+        console.log('error phone')
+        return false
+      }
+    })
+  }
+</script>
+<style scoped>
+  .register-container{
+    .register-title{
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+      .label{
+        font-size: 16px;
+        /* font-weight: bold; */
+        /* margin: 20px auto; */
+        color: #333;
+        border-bottom: 3px solid var(--el-color-primary);
+        color: var(--el-color-primary);
+        padding-bottom: 10px;
+      }
+    }
+  }
+</style>

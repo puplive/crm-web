@@ -30,7 +30,7 @@
               <span>{{ item.meta.title }}</span>
             </template>
               <el-menu-item 
-                v-for="(child, index) in item.children" 
+                v-for="(child, index) in item.children"
                 :index="child.path" 
                 :route="item.path + '/' + child.path"
                 :key="index">

@@ -14,10 +14,10 @@ import TableForm from '@/components/TableForm/TableForm.vue'
 
   <el-row :gutter="20">
     <el-col :xs="12" :sm="8" :md="6" >
-      <RouterLink class="item add" :to="{path: '/exhibition/add'}">
+      <a class="item add" :to="{path: '/exhibition/add'}">
         <el-icon size="40"><CirclePlus /></el-icon>
         <h3 style="margin-top: 10px;">新建展会</h3>
-      </RouterLink>
+      </a>
     </el-col>
     <el-col :xs="12" :sm="8" :md="6" >
       <div class="item" >
@@ -67,6 +67,7 @@ import TableForm from '@/components/TableForm/TableForm.vue'
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      color: #333;
     }
     .title{
       font-size: 16px;

@@ -190,7 +190,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
+// import type { FormInstance } from 'element-plus'
 import { Plus, Minus } from '@element-plus/icons-vue'
 
 import { ElMessage } from 'element-plus'
@@ -202,7 +202,7 @@ const color2 = ref()
 const select = ref('')
 
 
-const formRef = ref<FormInstance>()
+// const formRef = ref<FormInstance>()
 // do not use same name with ref
 const form = reactive({
   name: '',
