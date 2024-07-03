@@ -1,6 +1,7 @@
 
 <template>
   <el-menu
+    router
     class="el-menu-header"
     mode="horizontal"
     background-color="#23262e"

@@ -4,20 +4,20 @@ import {
   Delete,
   Edit,
 } from '@element-plus/icons-vue'
-import TableForm from '@/components/TableForm/TableForm.vue'
+import TableSearch from '@/components/TableSearch/index.vue'
 
 </script>
 <template>
   <div>
-    <TableForm />
+    <TableSearch />
   </div>
 
   <el-row :gutter="20">
     <el-col :xs="12" :sm="8" :md="6" >
-      <a class="item add" :to="{path: '/exhibition/add'}">
+      <RouterLink  class="item add" :to="{path: '/exhibition/add'}">
         <el-icon size="40"><CirclePlus /></el-icon>
         <h3 style="margin-top: 10px;">新建展会</h3>
-      </a>
+      </RouterLink >
     </el-col>
     <el-col :xs="12" :sm="8" :md="6" >
       <div class="item" >

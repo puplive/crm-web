@@ -6,7 +6,7 @@
         <p class="p1">欢迎登录</p>
         <p class="p2">会展云-招展系统</p>
         <div class="login-form">
-          <el-form :model="form" size="large" style="max-width: 600px">
+          <el-form :model="data" size="large" style="max-width: 600px">
             <el-form-item>
               <el-input v-model="data.account" placeholder="请输入用户名" />
             </el-form-item>
@@ -31,6 +31,8 @@
   import { loginApi } from "@/api/user";
   import { reactive } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
+  import { userStore } from '@/stores/user'
+  const store = userStore()
 
   const router = useRouter()
 
@@ -41,7 +43,12 @@
 
   const login = () => {
     loginApi(data).then(res => {
-      console.log(res)
+      // if (res.code === 200) {
+        router.push('/')
+        store.setLogin(true)
+      // } else {
+
+      // }
     })
   }
 

@@ -123,9 +123,9 @@
     <el-col :md="16" :lg="10" :offset="1">
       <el-form-item label=" ">
         <div class="list" v-for="(item, index) in form.booths">
-          <div><label for="">标题</label><el-input></el-input></div>
-          <div><label for="">单价</label><el-input></el-input></div>
-          <div><label for="">计价基数</label><el-input></el-input></div>
+          <div><label v-if="index === 0" for="">标题</label><el-input></el-input></div>
+          <div><label v-if="index === 0" for="">单价</label><el-input></el-input></div>
+          <div><label v-if="index === 0" for="">计价基数</label><el-input></el-input></div>
           <el-button type="info" plain v-if="index === 0" :icon="Plus" @click="addBooth"/>
           <el-button type="info" plain v-else :icon="Minus" @click.prevent="removeBooth(index)"/>
         </div>
@@ -179,7 +179,18 @@
     </el-col>
     <el-divider content-position="left"><span class="title">付款期限</span></el-divider>
     <el-col :md="16" :lg="10" :offset="1">
-    
+      <el-form-item label="一期款">
+        <el-input v-model="form.name">
+          <template #prepend>合同签订后</template>
+          <template #append>个自然日</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="尾款及全款">
+        <el-input v-model="form.name">
+          <template #prepend>合同签订后</template>
+          <template #append>个自然日</template>
+        </el-input>
+      </el-form-item>
     </el-col>
     <div class="s-flex-center">
       <el-button type="primary" @click="onSubmit">保存</el-button>

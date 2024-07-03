@@ -57,18 +57,24 @@
                 </el-form-item>
               </el-col>
             </el-row>
-
+            
             <el-form-item label="" prop="policy">
-                <el-checkbox value="Online activities" name="policy">
-                  Online activities
-                </el-checkbox>
-                
+                <div style="flex: 1; text-align: center; margin-top: 20px;">
+                  <el-checkbox-group v-model="ruleForm.policy">
+                    <el-checkbox value="1" name="policy">
+                      <el-link href="https://scm.exposaas.com/web/terms/use" type="primary" target="_blank"> 已阅读并同意《注册条款》、《隐私声明》、《安全产品、服务和功能隐私声明》及《Cookie声明》</el-link>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
             </el-form-item>
+            
+            
             <el-form-item>
-              <el-button type="primary" @click="submitForm(ruleFormRef)">
-                立即提交
-              </el-button>
+              <div style="flex: 1; text-align: center; margin-top: 20px;">
+                <el-button type="primary" @click="submitForm(ruleFormRef)">立即提交</el-button>
+              </div>
             </el-form-item>
+            
           </el-form>
         <!-- </el-tab-pane>
       </el-tabs> -->
@@ -96,7 +102,7 @@
     email: '',
     phone: '',
     code: '',
-    policy: false,
+    policy: [],
   })
 
   const rules = {
@@ -122,9 +128,9 @@
     // ],
     policy: [
       {
-        type: 'boolean',
+        type: 'array',
         required: true,
-        message: '已阅读并同意',
+        message: '请阅读并同意',
         trigger: 'change',
       },
     ],
