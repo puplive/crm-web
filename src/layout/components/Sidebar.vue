@@ -1,7 +1,13 @@
 <script lang="ts" setup>
+  import { ref } from 'vue'
+  import { getMenu } from '@/api/user'
   import { asyncRouterMap } from '@/router/index'
-  const routers = asyncRouterMap;
-  // console.log(routers)
+  const routers: any = ref([]);
+  // getMenu().then(res => {
+  //   routers.value = res.data;
+  // })
+  routers.value = asyncRouterMap
+  console.log(routers)
   const handleOpen = (key, keyPath) => {
     console.log(key, keyPath);
   }

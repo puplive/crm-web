@@ -78,6 +78,49 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           // icon: 'list'
         }
       },
+      {
+        path: '/exhibition/edit',
+        name: 'ExhibitionEdit',
+        component: () => import('@/views/Exhibition/Add.vue'),
+        meta: {
+          isMenu: false,
+          title: '编辑展会',
+          // icon: 'list'
+        }
+      },
+      {
+        path: '/exhibition/enroll',
+        name: 'ExhibitionEnroll',
+        component: () => import('@/views/Exhibition/Enroll.vue'),
+        meta: {
+          isMenu: true,
+          title: '展会报名',
+          // icon: 'list'
+        }
+      }
+    ]
+  },
+  {
+    path: '/booth',
+    component: Layout,
+    redirect: '/booth/manage',
+    name: 'Booth',
+    meta: {
+      isMenu: true,
+      title: '展位管理',
+      // icon: 'dashboard'
+    },
+    children: [
+      {
+        path: 'manage',
+        name: 'BoothManage',
+        component: () => import('@/views/Booth/Manage.vue'),
+        meta: {
+          isMenu: true,
+          title: '展位管理',
+          // icon: 'list'
+        }
+      },
     ]
   },
   {
@@ -172,9 +215,9 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/order/material',
-        name: 'OrderMaterial',
-        component: () => import('@/views/Order/Material.vue'),
+        path: '/order/goods',
+        name: 'OrderGoods',
+        component: () => import('@/views/Order/Goods.vue'),
         meta: {
           isMenu: true,
           title: '物料订单',
@@ -240,29 +283,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/exhibition_enroll',
-    component: Layout,
-    redirect: '/exhibition/enroll',
-    name: 'ExhibitionEnroll',
-    meta: {
-      isMenu: true,
-      title: '展会报名',
-      icon: 'dashboard'
-    },
-    children: [
-      {
-        path: '/exhibition/enroll',
-        name: 'ExhibitionEnroll',
-        component: () => import('@/views/Exhibition/Enroll.vue'),
-        meta: {
-          isMenu: true,
-          title: '展会报名',
-          // icon: 'list'
-        }
-      }
-    ]
-  },
-  {
     path: '/baoguan',
     component: Layout,
     redirect: '/baoguan/consult',
@@ -308,6 +328,29 @@ export const asyncRouterMap: RouteRecordRaw[] = [
       }
     ]
   },
+  {
+    path: '/goods',
+    component: Layout,
+    redirect: '/goods/manage',
+    name: 'Goods',
+    meta: {
+      isMenu: true,
+      title: '物料',
+      icon: 'dashboard'
+    },
+    children: [
+      {
+        path: '/goods/manage',
+        name: 'GoodsManage',
+        component: () => import('@/views/Goods/index.vue'),
+        meta: {
+          isMenu: true,
+          title: '物料',
+          // icon: 'list'
+        }
+      }
+    ]
+  },
 ]
 
 const router = createRouter({
@@ -316,9 +359,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  // console.log(useStore().isLogin)
   // 登录判断
-  if (!userStore().isLogin && to.name!== "Login" && to.name!== "Register") {
+  if (!userStore().Authorization && to.name!== "Login" && to.name!== "Register") {
     return { name: 'Login' }
     
   } else {
@@ -339,3 +381,4 @@ router.afterEach((to, from, next) => {
 });
 
 export default router
+  

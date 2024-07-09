@@ -6,7 +6,7 @@
   // const to = () => {
   //   this.&router.push('/market/clues/add')
   // }
-  const search = (d) => {
+  const search = (d: any) => {
     console.log(d)
   }
   const searchData = ref([
@@ -43,10 +43,10 @@
     },
   ]
 
-  const willForm = ref({})
+  const willForm: any = ref({})
   const willShow = ref(false)
 
-  const willSet = (row) => {    
+  const willSet = (row: any) => {    
     console.log(row)
     willForm.value = row
     willShow.value = true
@@ -70,6 +70,7 @@
       <el-button size="small">删除</el-button>
     </div>
     <el-table :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
+      <el-table-column type="selection" width="55" />
       <el-table-column prop="date" label="Date" width="180" />
       <el-table-column prop="name" label="Name" width="180" />
       <el-table-column prop="address" label="Address" />

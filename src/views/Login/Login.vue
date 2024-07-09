@@ -32,6 +32,7 @@
   import { reactive } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { userStore } from '@/stores/user'
+import { ElMessage } from 'element-plus';
   const store = userStore()
 
   const router = useRouter()
@@ -43,12 +44,14 @@
 
   const login = () => {
     loginApi(data).then(res => {
-      // if (res.code === 200) {
+      if (res.code === 0) {
+        ElMessage.success('登录成功')
+        store.setToken(res.data.token)
+        store.setMenu()
         router.push('/')
-        store.setLogin(true)
-      // } else {
-
-      // }
+      } else {
+        ElMessage.error(res.msg)
+      }
     })
   }
 

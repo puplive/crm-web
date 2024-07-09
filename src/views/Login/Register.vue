@@ -58,14 +58,14 @@
               </el-col>
             </el-row>
             
-            <el-form-item label="" prop="policy">
-                <div style="flex: 1; text-align: center; margin-top: 20px;">
+            <el-form-item label="" prop="policy" style="margin-top: 20px;">
+                <!-- <div style="flex: 1; text-align: center; margin-top: 20px;"> -->
                   <el-checkbox-group v-model="ruleForm.policy">
                     <el-checkbox value="1" name="policy">
                       <el-link href="https://scm.exposaas.com/web/terms/use" type="primary" target="_blank"> 已阅读并同意《注册条款》、《隐私声明》、《安全产品、服务和功能隐私声明》及《Cookie声明》</el-link>
                     </el-checkbox>
                   </el-checkbox-group>
-                </div>
+                <!-- </div> -->
             </el-form-item>
             
             
@@ -152,7 +152,9 @@
   // }
 
   const register = () => {
-    registerApi(ruleForm).then(res => {
+    let {policy, ...params} = ruleForm
+
+    registerApi(params).then(res => {
       console.log(res)
     })
   }
