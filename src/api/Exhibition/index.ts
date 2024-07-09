@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 // import type { UserType } from './types'
 
-const prefix = "/api/web/v1";
+const prefix = "/web/v1";
 
 export const exhibitionData = (params:any): Promise<any> => {
   return request({

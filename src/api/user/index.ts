@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 import type { UserLoginType } from './types'
 
-const prefix = "/api/web/v1";
+const prefix = "/web/v1";
 export const loginApi = (data: UserLoginType): Promise<any> => {
   return request({
     url: prefix + "/auth/login", // "/auth/account/login",
