@@ -63,7 +63,7 @@ import { exhibitionList, setStatus, exhibitionDelete } from "@/api/Exhibition";
             <el-icon size="30"><FolderAdd /></el-icon>
             <p>导入展位信息</p>
           </div>
-          <div @click="$router.push({path: `/goods`, query: {id: item.id}})">
+          <div @click="$router.push({path: `/goods`, query: {id: item.id, title: item.exhibitionName}})">
             <el-icon size="30"><ShoppingCartFull /></el-icon>
             <p>设置物料</p>
           </div>

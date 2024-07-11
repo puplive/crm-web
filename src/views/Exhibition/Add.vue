@@ -35,8 +35,8 @@
       >
         <el-input v-model="form.host[index]" >
           <template #append>
-            <el-button v-if="index === 0" :icon="Plus" @click="()=>{form.host.push('')}"/>
-            <el-button v-else :icon="Minus" @click.prevent="()=>{form.host.splice(index, 1)}"/>
+            <el-button v-if="index === 0" icon="Plus" @click="()=>{form.host.push('')}"/>
+            <el-button v-else icon="Minus" @click.prevent="()=>{form.host.splice(index, 1)}"/>
           </template>
         </el-input>
       </el-form-item>
@@ -94,8 +94,8 @@
         <div v-for="(item, index) in form.position" :key="index" style="display: flex; align-items: center; margin-bottom: 10px">
           <el-input v-model="item.code" placeholder="展馆号" style="max-width: 220px" >     
             <template #append>
-              <el-button v-if="index === 0" :icon="Plus" @click="()=>{form.position.push({code:'', img:''})}"/>
-              <el-button v-else :icon="Minus" @click.prevent="()=>{form.position.splice(index, 1)}"/>
+              <el-button v-if="index === 0" icon="Plus" @click="()=>{form.position.push({code:'', img:''})}"/>
+              <el-button v-else icon="Minus" @click.prevent="()=>{form.position.splice(index, 1)}"/>
             </template>
           </el-input>
           <el-upload
@@ -107,10 +107,6 @@
             :http-request="uploadImg"
           >
             <el-button link type="primary">上传图片</el-button>
-            <!-- <span>{{item.img}}</span> -->
-            <!-- <img v-if="item.img" :src="item.img" class="img" /> -->
-            
-            <!-- <el-icon class="img-uploader-icon"><Paperclip /></el-icon> -->
           </el-upload>
           <el-image v-if="item.img" :src="item.img" :preview-src-list="[item.img]" fit="cover" style="width: 32px; height: 32px; margin-left: 10px;">
               <template #error>
@@ -130,8 +126,8 @@
         <!-- <div class="booth-list" > -->
           <el-input v-model="item.name" placeholder="请输入展区分类" style="max-width: 220px" >
             <template #append>
-              <el-button v-if="index === 0" :icon="Plus" @click="()=>{form.cate.push({name:'', rgb:''})}"/>
-              <el-button v-else :icon="Minus" @click.prevent="()=>{form.cate.splice(index, 1)}"/>
+              <el-button v-if="index === 0" icon="Plus" @click="()=>{form.cate.push({name:'', rgb:''})}"/>
+              <el-button v-else icon="Minus" @click.prevent="()=>{form.cate.splice(index, 1)}"/>
             </template>
           </el-input>
           <el-color-picker style="margin-left: 10px;" v-model="item.rgb" />
@@ -147,8 +143,8 @@
           <div><label v-if="index === 0" for="">标题</label><el-input v-model="item.text" placeholder="请输入标题"></el-input></div>
           <div><label v-if="index === 0" for="">单价</label><el-input v-model="item.price" placeholder="请输入单价" type="number"></el-input></div>
           <div><label v-if="index === 0" for="">计价基数</label><el-input v-model="item.num" placeholder="请输入计价基数" type="number"></el-input></div>
-          <el-button type="info" plain v-if="index === 0" :icon="Plus" @click="()=>{form.unitPrice.push({text:'', price:0, num:0})}"/>
-          <el-button type="info" plain v-else :icon="Minus" @click.prevent="()=>{form.unitPrice.splice(index, 1)}"/>
+          <el-button type="info" plain v-if="index === 0" icon="Plus" @click="()=>{form.unitPrice.push({text:'', price:0, num:0})}"/>
+          <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.unitPrice.splice(index, 1)}"/>
         </div>
       </el-form-item>
       
@@ -171,8 +167,8 @@
               </template>
             </el-input>
           </div>
-          <el-button type="info" plain v-if="index === 0" :icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:0, priceType:1, changeType:1})}"/>
-          <el-button type="info" plain v-else :icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
+          <el-button type="info" plain v-if="index === 0" icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:0, priceType:1, changeType:1})}"/>
+          <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
         </div>
       </el-form-item>
     </el-col>
@@ -193,8 +189,8 @@
               </template>
             </el-input>
           </div>
-          <el-button type="info" plain v-if="index === 0" :icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:0, priceType:1, changeType:-1})}"/>
-          <el-button type="info" plain v-else :icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
+          <el-button type="info" plain v-if="index === 0" icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:0, priceType:1, changeType:-1})}"/>
+          <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
         </div>
       </el-form-item>
     </el-col>
@@ -223,7 +219,7 @@
 <script lang="ts" setup>
 import { reactive, ref, watch } from 'vue'
 // import type { FormInstance } from 'element-plus'
-import { Plus, Minus } from '@element-plus/icons-vue'
+// import { Plus, Minus } from '@element-plus/icons-vue'
 import { useRouter, useRoute } from 'vue-router'
 // import { ElMessage } from 'element-plus'
 import type { UploadProps } from 'element-plus'
@@ -232,7 +228,7 @@ import { uploadFile } from '@/api/common'
 
 const router = useRouter()
 const route = useRoute()
-console.log(route, router)
+// console.log(route, router)
 let id = route.query.id
 
 // const formRef = ref<FormInstance>()
@@ -518,24 +514,5 @@ const onSubmit = () => {
     }
 </style>
 <style>
-.img-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-}
 
-.img-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
-}
-
-/* .el-icon.img-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  text-align: center;
-} */
-</style>: any: { url: string }: any: any: { url: string }: any: any
+</style>

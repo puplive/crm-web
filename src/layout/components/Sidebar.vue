@@ -7,7 +7,7 @@
   //   routers.value = res.data;
   // })
   routers.value = asyncRouterMap
-  console.log(routers)
+  // console.log(routers)
   const handleOpen = (key, keyPath) => {
     console.log(key, keyPath);
   }

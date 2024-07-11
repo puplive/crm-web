@@ -1,6 +1,6 @@
 <!-- 销售线索列表 -->
 <script lang="ts" setup>
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, nextTick } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
   import { useRouter, useRoute } from 'vue-router'
   import { boothList, boothAdd, boothEdit , boothDelete, boothImport, boothExport } from '@/api/Booth/index'
@@ -45,18 +45,17 @@
       { required: true, message: '请输入标准展位单价', trigger: 'blur' },
       { validator: (rule: any, value: any, callback: any) => {
         if (value <= 0) {
-          callback(new Error('必须大于0'))
+          callback(new Error('不能小于0'))
         } else {
           callback()
         }
       } }
-
     ],
     specialPrice: [
       { required: true, message: '请输入特装展位单价', trigger: 'blur' },
       { validator: (rule: any, value: any, callback: any) => {
         if (value <= 0) {
-          callback(new Error('必须大于0'))
+          callback(new Error('不能小于0'))
         } else {
           callback()
         }
@@ -120,7 +119,10 @@
   }
   
 
-  const handleEdit = (row: any) => {
+  const handleEdit = async (row: any) => {
+    isEdit.value = true
+    addShow.value = true
+    await nextTick()
     formRef.value.resetFields()
     
     addForm.hallCode = row.hallCode
@@ -134,9 +136,7 @@
     addForm.exhibitor = row.exhibitor
 
     addForm.id = row.id
-
-    isEdit.value = true
-    addShow.value = true
+    
   }
 
   const deleteSelected = ()=> {
@@ -167,10 +167,12 @@
     })
   }
 
-  const handleAdd = () => {
-    formRef.value.resetFields()
+  const handleAdd = async () => {
+    
     isEdit.value = false
     addShow.value = true
+    await nextTick()
+    formRef.value.resetFields()
   }
   const addSub = () => {
     formRef.value.validate((valid: any) => {

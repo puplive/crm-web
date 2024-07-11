@@ -36,7 +36,7 @@ export const delGoods = (data:any): Promise<any> => {
 
 export const getSetting = (params:any): Promise<any> => {
   return request({
-    url: prefix + "exhibition/material/getSetting",
+    url: prefix + "/exhibition/material/getSetting",
     method: "get",
     params,
   });
