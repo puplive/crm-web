@@ -1,11 +1,17 @@
 <!-- 销售线索列表 -->
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
+  import api from '@/api/Clues'
 
-  // const to = () => {
-  //   this.&router.push('/market/clues/add')
-  // }
+  const page = reactive({
+    page: 1,
+    perPage: 10,
+  })
+  const total = ref(0)
+  const searchForm = reactive({})
+  const tableData = ref([])
+
   const search = (d: any) => {
     console.log(d)
   }
@@ -15,33 +21,15 @@
     { label: '3', key: '3', type: 'date', value: '' },
   ])
 
-  const tableData = [
-    {
-      date: '2016-05-03',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '2016-05-02',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '2016-05-04',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '2016-05-01',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '2016-05-03',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-  ]
+
+  const getList = async () => {
+    api.getList({...page, ...searchForm}).then((res) => {
+      if (res.code !== 200) {
+        tableData.value = res.data.data
+        total.value = res.data.total
+      }
+    })
+  }
 
   const willForm: any = ref({})
   const willShow = ref(false)
@@ -55,6 +43,12 @@
     console.log(willForm.value)
     willShow.value = false
   }
+
+  getList()
+  // watch(() => page.perPage, (newVal, oldVal) => {
+  //   console.log(newVal, oldVal)
+  //   getList()
+  // })
   
 </script>
 <template>
@@ -70,10 +64,14 @@
       <el-button size="small">删除</el-button>
     </div>
     <el-table :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
-      <el-table-column type="selection" width="55" />
-      <el-table-column prop="date" label="Date" width="180" />
-      <el-table-column prop="name" label="Name" width="180" />
-      <el-table-column prop="address" label="Address" />
+      <el-table-column type="selection" width="50" />
+      <el-table-column prop="companyName" label="公司名称" width="180" />
+      <el-table-column prop="exhibitionContact" label="Name" width="180" />
+      <el-table-column prop="duties" label="Address" />
+      <el-table-column prop="phone" label="Address" />
+      <el-table-column prop="recordTime" label="Address" />
+      <el-table-column prop="recordText" label="Address" />
+      <el-table-column prop="authUser" label="Address" />
       <el-table-column fixed="right" label="Operations" width="120">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="willSet(scope.row)">
@@ -83,7 +81,12 @@
       </el-table-column>
     </el-table>
     <div class="s-table-pagination">
-      <el-pagination layout="total, sizes, prev, pager, next" :page-sizes="[10, 20, 50]" :total="1000" />
+      <el-pagination layout="total, sizes, prev, pager, next" 
+        :page-sizes="[10, 20, 50]" 
+        :total="total"
+        v-model:current-page="page.page" 
+        v-model:page-size="page.perPage" 
+        @change="getList" />
     </div>
   </div>
 

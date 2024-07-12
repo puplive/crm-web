@@ -318,11 +318,21 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     children: [
       {
         path: '/settings/custom',
-        name: 'SettingsCustom',
+        name: 'Custom',
         component: () => import('@/views/Settings/Custom.vue'),
         meta: {
           isMenu: true,
           title: '自定义字段',
+          // icon: 'list'
+        }
+      },
+      {
+        path: '/settings/custom/field',
+        name: 'CustomField',
+        component: () => import('@/views/Settings/FieldDetail.vue'),
+        meta: {
+          // isMenu: true,
+          title: '',
           // icon: 'list'
         }
       }
