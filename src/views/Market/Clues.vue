@@ -66,13 +66,13 @@
     <el-table :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
       <el-table-column type="selection" width="50" />
       <el-table-column prop="companyName" label="公司名称" width="180" />
-      <el-table-column prop="exhibitionContact" label="Name" width="180" />
-      <el-table-column prop="duties" label="Address" />
-      <el-table-column prop="phone" label="Address" />
-      <el-table-column prop="recordTime" label="Address" />
-      <el-table-column prop="recordText" label="Address" />
-      <el-table-column prop="authUser" label="Address" />
-      <el-table-column fixed="right" label="Operations" width="120">
+      <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
+      <el-table-column prop="duties" label="职务" />
+      <el-table-column prop="phone" label="电话" />
+      <el-table-column prop="recordTime" label="记录时间" width="180" />
+      <el-table-column prop="recordText" label="记录内容" />
+      <el-table-column prop="authUser" label="授权人" />
+      <el-table-column fixed="right" label="操作" width="120">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="willSet(scope.row)">
             转为意向

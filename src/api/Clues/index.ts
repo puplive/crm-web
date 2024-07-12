@@ -90,11 +90,10 @@ const getCity = (params:any): Promise<any> => {
   });
 }
 
-const getCustomField = (params:any): Promise<any> => {
+const getCustomField = (): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getCustomField",
     method: "get",
-    params,
   });
 }
 
