@@ -7,7 +7,7 @@ import axios, {
 } from "axios";
 import { ElMessage } from "element-plus";
 import { userStore } from "@/stores/user";
-const store = userStore();
+
 //第一步:利用axios对象的create方法,去创建axios实例(其他的配置:基础路径、超时的时间)
 const request: AxiosInstance = axios.create({
   //基础路径
@@ -21,13 +21,10 @@ request.interceptors.request.use(
     //返回配置对象
     // console.log(config)
 
-    //判断是否有token,如果有,则给请求头添加token 异步获取token
-    const token = store.Authorization;
-    if (token) {
-      // config.headers["Authorization"] = `Bearer ${token}`;
-      config.headers["Authorization"] = store.Authorization || "";
-    }
-    
+    let _userStore = userStore()
+    let _token = _userStore? _userStore.TOKEN : ''
+    config.headers["Authorization"] = _token;
+
     return config;
   },
   (error: any) => {
@@ -48,8 +45,14 @@ request.interceptors.response.use(
         type: "error",
         message: "登录过期,请重新登录",
       });
-      store.logout();
-      // return Promise.reject(response.data);
+      userStore().LOGOUT();
+      return Promise.reject(response.data);
+    }else if(response.data.code === 100000){
+      ElMessage({
+        type: "error",
+        message: response.data.msg,
+      });
+      return Promise.reject(response.data);
     }
     return response.data;
   },

@@ -79,8 +79,8 @@ ul,li{
 
 }
 
-.el-button+.el-button {
-  margin-left: 10px !important;
+.el-table .cell .el-button+.el-button {
+  margin-left: 5px;
 }
 
 .img-uploader .el-upload {

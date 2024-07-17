@@ -48,3 +48,11 @@ export const getMenu = (): Promise<any> =>{
     method: "get",
   });
 }
+
+
+export const getSponsorUser = (): Promise<any> =>{
+  return request({
+    url: "/auth/user/getSponsorUser",
+    method: "get",
+  });
+}

@@ -46,8 +46,8 @@ import { ElMessage } from 'element-plus';
     loginApi(data).then(res => {
       if (res.code === 0) {
         ElMessage.success('登录成功')
-        store.setToken(res.data.token)
-        store.setMenu()
+        store.SET_TOKEN(res.data.token)
+        // store.SET_MENU()
         router.push('/')
       } else {
         ElMessage.error(res.msg)

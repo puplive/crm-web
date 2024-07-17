@@ -48,13 +48,13 @@ import { exhibitionList, setStatus, exhibitionDelete } from "@/api/Exhibition";
   </div>
 
   <el-row :gutter="20">
-    <el-col :xs="12" :sm="8" :md="6" >
+    <el-col :sm="12" :md="8" :lg="5" :xl="4" >
       <RouterLink  class="item add" :to="{path: '/exhibition/add'}">
         <el-icon size="40"><CirclePlus /></el-icon>
         <h3 style="margin-top: 10px;">新建展会</h3>
       </RouterLink >
     </el-col>
-    <el-col :xs="12" :sm="8" :md="6" 
+    <el-col :sm="12" :md="8" :lg="5" :xl="4" 
       v-for="(item, index) in list" :key="index">
       <div class="item" >
         <div class="title">{{item.exhibitionName}}</div>
@@ -87,6 +87,14 @@ import { exhibitionList, setStatus, exhibitionDelete } from "@/api/Exhibition";
 </template>
 
 <style scoped>
+  /* .el-col-lg-5{
+    width: 20%;
+  } */
+  @media only screen and (min-width: 1200px) {
+    .el-col-lg-5 {
+        max-width: 20%;
+    }
+  }
 
   .item{
     display: flex;

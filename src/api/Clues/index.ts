@@ -97,6 +97,20 @@ const getCustomField = (): Promise<any> => {
   });
 }
 
+const getSearchField = (): Promise<any> => {
+  return request({
+    url: prefix + "/sales/clue/getSearchField",
+    method: "get",
+  });
+}
+
+const getClues = (): Promise<any> => {
+  return request({
+    url: prefix + "",
+    method: "post",
+  });
+}
+
 export default {
   getList,
   getData,
@@ -110,4 +124,6 @@ export default {
   getProvince,
   getCity,
   getCustomField,
+  getSearchField,
+  getClues
 };

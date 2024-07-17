@@ -1,34 +1,31 @@
-import { ref, reactive, computed } from 'vue'
+// import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { useRouter, useRoute } from 'vue-router'
+// import { useRouter, useRoute } from 'vue-router'
 
 export const userStore = defineStore('user',{
   persist: true,
   state: () => ({
-    Authorization: '',
-    menu: [],
-    // userData: {
-    //   name: '',
-    //   email: ''
-    // }
+    TOKEN: '',
+    USER_INFO: {},
+    MENU: [],
   }),
   getters: {
     // double: (state) => state.count * 2,
   },
   actions: {
-    setToken(token: string) {
-      this.Authorization = token
+    SET_TOKEN(token: string) {
+      this.TOKEN = token
     },
-    logout() {
-      this.Authorization = ''
-      console.log(useRouter)
-      useRouter().push('/login')
+    LOGOUT() {
+      this.TOKEN = ''
+      this.MENU = []
+      location.href = '/login'
     },
-    setMenu(data: any) {
-      this.menu = data
+    SET_MENU(data: any) {
+      this.MENU = data
     },
-    setUserData(data: any) {
-      // this.userData = data
+    SET_USER_INFO(data: any) {
+      this.USER_INFO = data
     }
   },
 })

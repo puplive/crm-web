@@ -1,150 +1,255 @@
-<!-- 意向客户 -->
+<!-- 销售线索列表 -->
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
+  import api from '@/api/Clues'
+  import {exhibitionList} from '@/api/Exhibition'
+  import {getSponsorUser} from '@/api/user'
 
-  const tableRef = ref(null)
+  const page = reactive({
+    page: 1,
+    perPage: 10,
+  })
+  const total = ref(0)
+  const searchForm = ref({})
+  const tableData = ref([])
+  const tableRef: any = ref(null)
+  const searchData = ref([])
+  const exhibitionData: any = ref([])
 
-  // const to = () => {
-  //   this.&router.push('/market/clues/add')
-  // }
-  const search = (d) => {
-    console.log(d)
+
+  const search = (d: any) => {
+    searchForm.value = d
+    page.page = 1
+    // console.log({...page, ...searchForm.value})
+    getList()
   }
-  const searchData = ref([
-    { label: '企业名称', key: '1', type: 'input', value: '' },
-    { label: '2', key: '2', type: 'select', value: '', options: [{ label: '选项1', value: '1' }, { label: '选项2', value: '2' }] },
-    { label: '3', key: '3', type: 'date', value: '' },
-  ])
 
-  
-  // 转移
-  const divertForm = ref({})
-  const divertShow = ref(false)
+  const getList = async () => {
+    api.getList({status: 2, ...page, ...searchForm.value}).then((res) => {
+      if (res.code !== 200) {
+        tableData.value = res.data.data
+        total.value = res.data.total
+      }
+    })
+  }
 
-  const divertSet = () => {
-    let ids = tableRef.value.getSelectionRows().map((item) => item.id)
+  const willForm: any = ref({})
+  const willShow = ref(false)
+  const willFormRef: any = ref(null)
+
+  const willSet = (row: any) => {    
+    willForm.value.id = row.id
+    willShow.value = true
+  }
+  const willSub = () => {
+    willFormRef.value.validate((valid: boolean) => {
+      if (!valid) {
+        return
+      }
+      api.changeIntention(willForm.value).then((res) => {
+        if(res.code === 0) {
+          ElMessage.success('转为意向成功')
+          getList()
+          willShow.value = false
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    })
+  }
+
+  const GetClues = () => {
+    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择要转移的客户')
+      ElMessage.warning('请选择需要领取的线索')
       return
     }
-    divertForm.value.ids =  ids 
-    divertShow.value = true
-  }
-  const divertSub = () => {
-    console.log(divertForm.value)
-    
-    divertShow.value = false
+    api.getClues({ id: ids}).then((res: any) => {
+      if(res.code === 0) {
+        ElMessage.success('领取成功')
+        getList()
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
   }
 
-  // 移除意向客户
-  const removeWillShow = ref(false)
-  const removeWillData = ref({})
-  const removeWill = (row) => {    
-    console.log(row)
-    removeWillData.value = row
-    removeWillShow.value = true
+  const Del = () => {
+    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+    if (ids.length === 0) {
+      ElMessage.warning('请选择需要删除的线索')
+      return
+    }
+    ElMessageBox.confirm('确定删除所选线索？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+
+      api.del({ id: ids}).then((res) => {
+        if(res.code === 0) {
+          ElMessage.success('删除成功')
+          getList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }).catch(() => {
+    })
   }
-  const removeWillSub = () => {
-    console.log(removeWillData.value)
-    removeWillShow.value = false
+
+  const moveForm: any = ref({})
+  const moveShow = ref(false)
+  const moveFormRef: any = ref(null)
+  const SponsorUser: any = ref([])
+  const Move = () => {
+    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+    if (ids.length === 0) {
+      ElMessage.warning('请选择需要转移的线索')
+      return
+    }
+    moveForm.value.id = ids
+    moveShow.value = true
+    
   }
+  const MoveSub = () => {
+    moveFormRef.value.validate((valid: boolean) => {
+      if (!valid) {
+        return
+      }
+      
+      api.changeUser(moveForm.value).then((res) => {
+        if(res.code === 0) {
+          ElMessage.success('转移成功')
+          moveShow.value = false
+          getList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    })
+  }
+
+  const MoveShare = () => { 
+    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+    if (ids.length === 0) {
+      ElMessage.warning('请选择需要移至公海的线索')
+      return
+    }
+    api.changePublic({ id: ids}).then((res) => {
+      if(res.code === 0) {
+        ElMessage.success('移至公海成功')
+        getList()
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
+  }
+
+  const Import = () => {
+    console.log('import')
+  }
+
+  const Export = () => {
+    console.log('export')
+  }
+
+  api.getSearchField().then((res) => {
+    if(res.code === 0) {
+      searchData.value = res.data
+    }
+  })
+  exhibitionList().then((res) => {
+    if(res.code === 0) {
+      exhibitionData.value = res.data
+    }
+  })
+  getSponsorUser().then((res) => {
+    if(res.code === 0) {
+      SponsorUser.value = res.data
+    }
+  })
+
+  getList()
   
-  const tableData = [
-    {
-      id: 1,
-      date: '2016-05-03',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      id: 2,
-      date: '2016-05-02',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      id: 3,
-      date: '2016-05-04',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      id: 4,
-      date: '2016-05-01',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      id: 5,
-      date: '2016-05-03',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-  ]
 </script>
 <template>
   <div>
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
-      <el-button size="small" @click="divertSet">转移</el-button>
-      <el-button size="small">导出</el-button>
+      <el-button size="small" @click="Move">转移</el-button>
+      <el-button size="small" @click="MoveShare">移至公海</el-button>
+      <el-button size="small" @click="">合并</el-button>
+      <el-button size="small" @click="Export">导出</el-button>
+      <el-button size="small" @click="Del">删除</el-button>
+      <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
+      <el-button size="small" @click="Import">导入线索</el-button>
     </div>
     <el-table ref="tableRef" :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
-      <el-table-column type="selection" width="55" />
-      <el-table-column prop="date" label="Date" width="180" />
-      <el-table-column prop="name" label="Name" width="180" />
-      <el-table-column prop="address" label="Address" />
-      <el-table-column fixed="right" label="Operations" width="200">
+      <el-table-column type="selection" width="50" />
+      <el-table-column prop="companyName" label="公司名称" width="180" />
+      <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
+      <el-table-column prop="duties" label="职务" />
+      <el-table-column prop="phone" label="电话" />
+      <el-table-column prop="recordTime" label="记录时间" width="180" />
+      <el-table-column prop="recordText" label="记录内容" />
+      <el-table-column prop="authUser" label="授权人" />
+      <el-table-column fixed="right" label="操作" width="180">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="removeWill(scope.row)">
+          <el-button link type="primary" size="small" @click="$router.push({name: 'BoothReserve', query: {id: scope.row.id}})">
+            展位预定
+          </el-button>
+          <el-button link type="primary" size="small" @click="$router.push({name: 'GoodsReserve', query: {id: scope.row.id}})">
+            物料预定
+          </el-button>
+          <el-button link type="primary" size="small" @click="willSet(scope.row)">
             移除意向
           </el-button>
-          <el-button link type="primary" size="small" @click="divertSet(scope.row)">
-            预定展示位
-          </el-button>
+
         </template>
       </el-table-column>
     </el-table>
     <div class="s-table-pagination">
-      <el-pagination layout="total, sizes, prev, pager, next" :page-sizes="[10, 20, 50]" :total="1000" />
+      <el-pagination layout="total, sizes, prev, pager, next" 
+        :page-sizes="[10, 20, 50]" 
+        :total="total"
+        v-model:current-page="page.page" 
+        v-model:page-size="page.perPage" 
+        @change="getList" />
     </div>
   </div>
 
 
-  <el-dialog v-model="divertShow" title="" width="500" draggable>
-    <el-form :model="divertForm" label-width="auto">
-      <el-form-item label="">
-        <span style="font-size: 16px; font-weight: bold;">是否将选中的销售线索转移？</span>
-      </el-form-item>
-      <el-form-item label="销售线索所有人">
-        <el-select v-model="divertForm.region" placeholder="Please select a zone">
-          <el-option label="Zone No.1" value="shanghai" />
-          <el-option label="Zone No.2" value="beijing" />
+  <!-- <el-dialog v-model="willShow" title="转为意向客户" width="500" draggable>
+    <el-form ref="willFormRef" :model="willForm" label-width="auto">
+      <el-form-item label="项目" prop="exhibitionId" :rules="[ { required: true, message: '请选择项目' } ]">
+        <el-select v-model="willForm.exhibitionId" placeholder="">
+          <el-option v-for="item in exhibitionData" :key="item.id" :label="item.exhibitionName" :value="item.id" />
         </el-select>
       </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="divertShow = false">取消</el-button>
-        <el-button type="primary" @click="divertSub">确定</el-button>
+        <el-button @click="willShow = false">取消</el-button>
+        <el-button type="primary" @click="willSub">确定</el-button>
       </div>
     </template>
-  </el-dialog>
+  </el-dialog> -->
 
-  <el-dialog
-    v-model="removeWillShow"
-    title=""
-    width="500"
-    draggable
-  >
-    <span>您选择的内容一旦删除将无法恢复！您确定要删除吗？</span>
+  <el-dialog v-model="moveShow" title="转移销售线索" width="500" draggable>
+    <el-form ref="moveFormRef" :model="moveForm" label-width="auto">
+      <el-form-item label="">是否将选中的销售线索转移？</el-form-item>
+      <el-form-item label="销售线索所有人" prop="userId" :rules="[ { required: true, message: '请选择销售线索所有人' } ]">
+        <el-select v-model="moveForm.userId" placeholder="">
+          <el-option v-for="item in SponsorUser" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="removeWillShow = false">取消</el-button>
-        <el-button type="primary" @click="removeWillSub">
-          确定
-        </el-button>
+        <el-button @click="moveShow = false">取消</el-button>
+        <el-button type="primary" @click="MoveSub">确定</el-button>
       </div>
     </template>
   </el-dialog>

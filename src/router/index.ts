@@ -106,7 +106,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     redirect: '/booth/manage',
     name: 'Booth',
     meta: {
-      isMenu: true,
+      isMenu: false,
       title: '展位管理',
       // icon: 'dashboard'
     },
@@ -116,8 +116,18 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'BoothManage',
         component: () => import('@/views/Booth/Manage.vue'),
         meta: {
-          isMenu: true,
+          isMenu: false,
           title: '展位管理',
+          // icon: 'list'
+        }
+      },
+      {
+        path: 'reserve',
+        name: 'BoothReserve',
+        component: () => import('@/views/Booth/Reserve.vue'),
+        meta: {
+          isMenu: false,
+          title: '展位预定',
           // icon: 'list'
         }
       },
@@ -223,6 +233,26 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           title: '物料订单',
           // icon: 'list'
         }
+      },
+      {
+        path: 'booth/detail',
+        name: 'OrderBoothDetail',
+        component: () => import('@/views/Order/BoothDetail.vue'),
+        meta: {
+          isMenu: true,
+          title: '展位订单详情',
+          // icon: 'list'
+        }
+      },
+      {
+        path: 'goods/detail',
+        name: 'OrderGoodsDetail',
+        component: () => import('@/views/Order/GoodsDetail.vue'),
+        meta: {
+          isMenu: true,
+          title: '物料订单详情',
+          // icon: 'list'
+        }
       }
     ]
   },
@@ -244,6 +274,26 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         meta: {
           isMenu: true,
           title: '合同管理',
+          // icon: 'list'
+        }
+      },
+      {
+        path: 'templates',
+        name: 'ContractTemplates',
+        component: () => import('@/views/Contract/Templates.vue'),
+        meta: {
+          isMenu: true,
+          title: '合同模板',
+          // icon: 'list'
+        }
+      },
+      {
+        path: 'conclude',
+        name: 'ContractConclude',
+        component: () => import('@/views/Contract/Conclude.vue'),
+        meta: {
+          isMenu: true,
+          title: '签订合同',
           // icon: 'list'
         }
       }
@@ -290,7 +340,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     meta: {
       isMenu: true,
       title: '报馆查询',
-      icon: 'dashboard'
+      icon: ''
     },
     children: [
       {
@@ -298,7 +348,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'BaoguanConsult',
         component: () => import('@/views/Baoguan/Consult.vue'),
         meta: {
-          isMenu: true,
+          isMenu: false,
           title: '报馆查询',
           // icon: 'list'
         }
@@ -344,18 +394,61 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     redirect: '/goods/manage',
     name: 'Goods',
     meta: {
-      isMenu: true,
+      isMenu: false,
       title: '物料',
       icon: 'dashboard'
     },
     children: [
       {
-        path: '/goods/manage',
+        path: 'manage',
         name: 'GoodsManage',
         component: () => import('@/views/Goods/index.vue'),
         meta: {
-          isMenu: true,
+          isMenu: false,
           title: '物料',
+          // icon: 'list'
+        }
+      },
+      {
+        path: 'reserve',
+        name: 'GoodsReserve',
+        component: () => import('@/views/Goods/Reserve.vue'),
+        meta: {
+          isMenu: true,
+          title: '物料预定',
+          // icon: 'list'
+        }
+      }
+    ]
+  },
+  {
+    path: '/hall',
+    component: Layout,
+    redirect: '/Hall/layout',
+    name: 'Goods',
+    meta: {
+      isMenu: false,
+      title: '展馆',
+      icon: ''
+    },
+    children: [
+      {
+        path: 'layout',
+        name: 'HallLayout',
+        component: () => import('@/views/Hall/Layout.vue'),
+        meta: {
+          isMenu: false,
+          title: '展馆示意图',
+          // icon: 'list'
+        }
+      },
+      {
+        path: 'reserve',
+        name: 'GoodsReserve',
+        component: () => import('@/views/Goods/Reserve.vue'),
+        meta: {
+          isMenu: true,
+          title: '物料预定',
           // icon: 'list'
         }
       }
@@ -370,17 +463,15 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   // 登录判断
-  if (!userStore().Authorization && to.name!== "Login" && to.name!== "Register") {
-    return { name: 'Login' }
-    
-  } else {
-    // if (to.meta.isAdmin) {
-    //   // 权限判断
-    //   // if (useStore().userData.role === "root") {
-    //   // } else {
-    //   // }      
-    // } else {
-    // }
+  let _userStore = userStore()
+  let token = _userStore? _userStore.TOKEN : ''
+  if (token) {
+
+  }else {
+    // token不存在，跳转到登录页面
+    if (to.name !== "Login" && to.name !== "Register") {
+      return { name: 'Login' }
+    }
   }
   
 });

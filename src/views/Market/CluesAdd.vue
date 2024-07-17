@@ -62,9 +62,18 @@
               {{ option.name }}
             </el-checkbox>
           </el-checkbox-group>
-          <el-cascader v-else-if="item.type === 6" v-model="form.customField[index][item.key]" clearable
-            :options="item.data" :props="{ value: 'id', label: 'name', children: 'child', checkStrictly: true, }" />
-          <el-cascader v-else-if="item.type === 7" v-model="form.customField[index][item.key]" clearable
+          <el-cascader 
+            v-else-if="item.type === 6" 
+            clearable 
+            style="width: 100%;"
+            v-model="form.customField[index][item.key]"
+            :options="item.data" 
+            :props="{ value: 'id', label: 'name', children: 'child', checkStrictly: true, }" />
+          <el-cascader 
+            v-else-if="item.type === 7"  
+            clearable 
+            style="width: 100%;"
+            v-model="form.customField[index][item.key]"
             :options="item.data"
             :props="{ value: 'id', label: 'name', children: 'child', checkStrictly: true, multiple: true, }" />
         </el-form-item>

@@ -79,4 +79,12 @@ export const setStatusGoodsSetting = (data:any): Promise<any> => {
   });
 }
 
+// export const goodsListApi = (params:any): Promise<any> => {
+//   return request({
+//     url: prefix + "/exhibition/materialSetting/getList",
+//     method: "get",
+//     params,
+//   });
+// }
+
 
