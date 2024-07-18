@@ -31,7 +31,7 @@ export const constantRouterMap: RouteRecordRaw[] = [
     component: () => import('@/views/Login/Register.vue'),
     name: 'Register',
     meta: {
-      
+
       title: '注册',
       noTagsView: true
     }
@@ -134,6 +134,39 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     ]
   },
   {
+    path: '/goods',
+    component: Layout,
+    redirect: '/goods/manage',
+    name: 'Goods',
+    meta: {
+      isMenu: false,
+      title: '物料',
+      icon: 'dashboard'
+    },
+    children: [
+      {
+        path: '/goods/manage',
+        name: 'GoodsManage',
+        component: () => import('@/views/Goods/Manage.vue'),
+        meta: {
+          isMenu: false,
+          title: '物料设置',
+          // icon: 'list'
+        }
+      },
+      {
+        path: '/goods/reserve',
+        name: 'GoodsReserve',
+        component: () => import('@/views/Goods/Reserve.vue'),
+        meta: {
+          isMenu: false,
+          title: '物料预定',
+          // icon: 'list'
+        }
+      }
+    ]
+  },
+  {
     path: '/market',
     component: Layout,
     redirect: '/market/clues',
@@ -153,19 +186,19 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           title: '销售线索',
         }
       },
-      { 
+      {
         path: '/market/clues/add',
         name: 'CluesAdd',
-        component: () => import('@/views/Market/CluesAdd.vue'), 
+        component: () => import('@/views/Market/CluesAdd.vue'),
         meta: {
           isMenu: false,
           title: '新增线索',
         }
       },
-      { 
+      {
         path: '/market/clues/info',
         name: 'CluesInfo',
-        component: () => import('@/views/Market/CluesInfo.vue'), 
+        component: () => import('@/views/Market/CluesInfo.vue'),
         meta: {
           isMenu: false,
           title: '公司信息',
@@ -239,7 +272,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'OrderBoothDetail',
         component: () => import('@/views/Order/BoothDetail.vue'),
         meta: {
-          isMenu: true,
+          isMenu: false,
           title: '展位订单详情',
           // icon: 'list'
         }
@@ -249,7 +282,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'OrderGoodsDetail',
         component: () => import('@/views/Order/GoodsDetail.vue'),
         meta: {
-          isMenu: true,
+          isMenu: false,
           title: '物料订单详情',
           // icon: 'list'
         }
@@ -388,44 +421,12 @@ export const asyncRouterMap: RouteRecordRaw[] = [
       }
     ]
   },
-  {
-    path: '/goods',
-    component: Layout,
-    redirect: '/goods/manage',
-    name: 'Goods',
-    meta: {
-      isMenu: false,
-      title: '物料',
-      icon: 'dashboard'
-    },
-    children: [
-      {
-        path: 'manage',
-        name: 'GoodsManage',
-        component: () => import('@/views/Goods/index.vue'),
-        meta: {
-          isMenu: false,
-          title: '物料',
-          // icon: 'list'
-        }
-      },
-      {
-        path: 'reserve',
-        name: 'GoodsReserve',
-        component: () => import('@/views/Goods/Reserve.vue'),
-        meta: {
-          isMenu: true,
-          title: '物料预定',
-          // icon: 'list'
-        }
-      }
-    ]
-  },
+
   {
     path: '/hall',
     component: Layout,
-    redirect: '/Hall/layout',
-    name: 'Goods',
+    redirect: '/hall/layout',
+    name: 'Hall',
     meta: {
       isMenu: false,
       title: '展馆',
@@ -433,7 +434,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: 'layout',
+        path: '/hall/layout',
         name: 'HallLayout',
         component: () => import('@/views/Hall/Layout.vue'),
         meta: {
@@ -443,7 +444,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'reserve',
+        path: '/hall/reserve',
         name: 'GoodsReserve',
         component: () => import('@/views/Goods/Reserve.vue'),
         meta: {
@@ -455,25 +456,28 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     ]
   },
 ]
-
 const router = createRouter({
   history: createWebHistory(), // import.meta.env.BASE_URL
-  routes: [...constantRouterMap,...asyncRouterMap] as RouteRecordRaw[],
+  routes: [...constantRouterMap, ...asyncRouterMap] as RouteRecordRaw[],
 })
 
 router.beforeEach((to, from) => {
+  console.log(to)
+  // 页面标题
+  document.title = to.meta.title || '招展管理系统';
+
   // 登录判断
-  let _userStore = userStore()
-  let token = _userStore? _userStore.TOKEN : ''
+  const _userStore = userStore()
+  const token = _userStore ? _userStore.TOKEN : ''
   if (token) {
 
-  }else {
+  } else {
     // token不存在，跳转到登录页面
     if (to.name !== "Login" && to.name !== "Register") {
       return { name: 'Login' }
     }
   }
-  
+
 });
 
 router.afterEach((to, from, next) => {
@@ -482,4 +486,3 @@ router.afterEach((to, from, next) => {
 });
 
 export default router
-  

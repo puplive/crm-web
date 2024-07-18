@@ -1,157 +1,85 @@
 <!-- 销售线索列表 -->
 <script lang="ts" setup>
   import { ref, reactive, nextTick } from 'vue'
+  // import { genFileId } from 'element-plus'
   import TableSearch from '@/components/TableSearch/index.vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { goods as goodsApi  } from '@/api/Order/index'
+  import { booth as boothApi  } from '@/api/Order/index'
+  import { uploadFile } from '@/api/common'
 
   
   const router = useRouter()
   const route = useRoute()
+
+  const page = reactive({
+    page: 1,
+    perPage: 10,
+  })
+  const total = ref(0)
+  const searchForm = ref({})
   const id: any = route.query.id
   const tableData: any = ref([])
   const tableRef: any = ref(null)
-  const formRef: any = ref(null)
+  const searchData = ref([])
+  // const formRef: any = ref(null)
 
-  const addShow = ref(false)
-  const isEdit = ref(false)
-  const addForm: any = reactive({
-    id: '',
-    exhibitionId: id,
-    hallCode: '',
-    positionCode: '',
-    standardPrice: 0,
-    specialPrice: 0,
-    specialUnit: 1,
-    length: 0,
-    width: 0,
-    remark: '',
-    exhibitor: ''
+  const uploadContract = reactive({
+    show: false,
+    file: '',
+    type: 1,
+    orderId: 0,
   })
-  const rules = {
-    hallCode: [
-      { required: true, message: '请输入大厅号', trigger: 'blur' },
-    ],
-    positionCode: [
-      { required: true, message: '请输入位置号', trigger: 'blur' },
-    ],
-    standardPrice: [
-      { required: true, message: '请输入标准展位单价', trigger: 'blur' },
-      { validator: (rule: any, value: any, callback: any) => {
-        if (value <= 0) {
-          callback(new Error('不能小于0'))
-        } else {
-          callback()
-        }
-      } }
-    ],
-    specialPrice: [
-      { required: true, message: '请输入特装展位单价', trigger: 'blur' },
-      { validator: (rule: any, value: any, callback: any) => {
-        if (value <= 0) {
-          callback(new Error('不能小于0'))
-        } else {
-          callback()
-        }
-      } }
 
-    ],
-    specialUnit: [
-      { required: true, message: '请选择单位', trigger: 'blur' }
-    ],
-    length: [
-      { required: true, message: '请输入长度', trigger: 'blur' },
-      { validator: (rule: any, value: any, callback: any) => {
-        if (value <= 0) {
-          callback(new Error('必须大于0'))
-        } else {
-          callback()
-        }
-      } }
-
-    ],
-    width: [
-      { required: true, message: '请输入宽度', trigger: 'blur' },
-      { validator: (rule: any, value: any, callback: any) => {
-        if (value <= 0) {
-          callback(new Error('必须大于0'))
-        } else {
-          callback()
-        }
-      } }
-
-    ],
-    exhibitor: [
-      { required: true, message: '请选择展商', trigger: 'blur' }
-    ]
+  const search = (d: any) => {
+    searchForm.value = d
+    page.page = 1
+    getList()
   }
 
-  let exhibitorOptions: any = ref([])
-  exhibitorList().then((res: any) => {
-    if (res.code === 0) {
-      exhibitorOptions.value = res.data
-    }
-  })
-  const searchData = ref([
-    { label: '企业名称', key: '1', type: 'input', value: '' },
-    { label: '2', key: '2', type: 'select', value: '', options: [{ label: '选项1', value: '1' }, { label: '选项2', value: '2' }] },
-    { label: '3', key: '3', type: 'date', value: '' },
-  ])
 
-  const getData = () => {
-    // loading.value = true
-    goodsApi.get({ exhibitionId: id }).then((res: any) => {
+  // let exhibitorOptions: any = ref([])
+  // exhibitorList().then((res: any) => {
+  //   if (res.code === 0) {
+  //     exhibitorOptions.value = res.data
+  //   }
+  // })
+
+  const getList = () => {
+    boothApi.getList({...page, ...searchForm.value}).then((res: any) => {
       if (res.code === 0) {
         tableData.value = res.data
+        total.value = res.data.total
       }else {
-        tableData.value = []
+        tableData.value = [{}]
       }
-      
-      // total.value = res.data.total
-      // loading.value = false
     })
   }
   
 
   const handleEdit = async (row: any) => {
-    isEdit.value = true
-    addShow.value = true
-    await nextTick()
-    formRef.value.resetFields()
     
-    addForm.hallCode = row.hallCode
-    addForm.positionCode = row.positionCode
-    addForm.standardPrice = row.standardPrice
-    addForm.specialPrice = row.specialPrice
-    addForm.specialUnit = row.specialUnit.indexOf('个') > -1 ? 2 : 1
-    addForm.length = row.length
-    addForm.width = row.width
-    addForm.remark = row.remark
-    addForm.exhibitor = row.exhibitor
-
-    addForm.id = row.id
     
   }
 
-  const deleteSelected = ()=> {
-    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-    if (ids.length === 0) {
-      ElMessage.warning('请选择需要删除的数据')
-      return
-    }
-    handleDelete(ids)
-  }
-  const handleDelete = (ids: any) => {
-    ElMessageBox.confirm('是否确认要取消订单信息?', '撤销', {
+  // const deleteSelected = ()=> {
+  //   let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+  //   if (ids.length === 0) {
+  //     ElMessage.warning('请选择需要删除的数据')
+  //     return
+  //   }
+  //   handleDelete(ids)
+  // }
+  const revoke = (id: any) => {
+    ElMessageBox.confirm('是否确认要撤销订单?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
 
-      boothDelete({ id: ids}).then((res) => {
+      boothApi.revoke({ id }).then((res) => {
         if(res.code === 0) {
-          ElMessage.success('删除成功')
-          getData()
+          ElMessage.success('撤销成功')
+          getList()
         }else {
           ElMessage.error(res.msg)
         }
@@ -160,89 +88,92 @@
     }).catch(() => {
     })
   }
-
-  const handleAdd = async () => {
     
-    isEdit.value = false
-    addShow.value = true
-    await nextTick()
-    formRef.value.resetFields()
-  }
-  const addSub = () => {
-    formRef.value.validate((valid: any) => {
-      // console.log(valid)
-      if (valid) {
-        if(isEdit.value){
-          let d = addForm
-          boothEdit(d).then((res: any) => {
-            if (res.code === 0) {
-              ElMessage.success('编辑成功')
-              addShow.value = false
-              getData()
-            } else {
-              ElMessage.error(res.msg)
-            }
-          })
-        }else {
-          let {id, ...d} = addForm
-          boothAdd(d).then((res: any) => {
-            if (res.code === 0) {
-              ElMessage.success('新增成功')
-              addShow.value = false
-              getData()
-            } else {
-              ElMessage.error(res.msg)
-            }
-          })
-        }
-        
-      } else {
-        // ElMessage.error('请检查输入项')
-        return false
-      }
-    })
+  const handleImport = () => {
+    // boothImport().then(() => {
+    //   getData()
+    // })
   }
 
   const handleExport = () => {
-    boothExport({ exhibitionId: id }).then((res: any) => {
-      if(res.code === 0) {
-        window.open(res.data.url, '_self')
-        ElMessage.success('导出成功')
-      }else {
-        ElMessage.error(res.msg)
-      }
-    })
+    // boothExport({ exhibitionId: id }).then((res: any) => {
+    //   if(res.code === 0) {
+    //     window.open(res.data.url, '_self')
+    //     ElMessage.success('导出成功')
+    //   }else {
+    //     ElMessage.error(res.msg)
+    //   }
+    // })
+  }
+
+
+  const uploadRef:any = ref(null)
+  let fileList: any = ref([])
+  const handleExceed = (files: any) => {
+    // uploadRef.value!.clearFiles()
+    let fileObj = files[0]
+    fileList.value = [{
+      name: fileObj.name,
+      size: fileObj.size,
+      uid: fileObj.uid,
+      status: 'ready',
+      percentage: 0,
+      raw: fileObj
+    }]
+    // fileObj.uid = genFileId()
+    // uploadRef.value!.handleStart(fileObj)
   }
 
   const beforeUpload = (file: any) => {
-    const isLt2M = file.size / 1024 / 1024 < 2
+    const isLt2M = file.size / 1024 / 1024 < 3
     if (!isLt2M) {
-      ElMessage.error('文件大小不能超过 2MB!')
+      ElMessage.error('文件大小不能超过 3MB!')
     }
     return isLt2M
   }
 
-  const uploadFile = (file: any) => {
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('exhibitionId', id)
-    boothImport(formData).then((res: any) => {
-      if(res.code === 0) {
-        ElMessage.success('导入成功')
-        getData()
-      }else {
+  // const uploadFile = (file: any) => {
+  //   const formData = new FormData()
+  //   formData.append('file', file)
+  //   formData.append('exhibitionId', id)
+  //   // boothImport(formData).then((res: any) => {
+  //   //   if(res.code === 0) {
+  //   //     ElMessage.success('导入成功')
+  //   //     getData()
+  //   //   }else {
+  //   //     ElMessage.error(res.msg)
+  //   //   }
+  //   // })
+  // }
+  const setContract = (id: any) => {
+    uploadContract.show = true
+    uploadContract.type = 1
+    uploadContract.orderId = id
+    uploadContract.file = ''
+    fileList.value = []
+  }
+  const subContract = () => {
+    if (fileList.value.length === 0) {
+      ElMessage.warning('请选择合同文件')
+      return
+    }
+    let formData = new FormData()
+    formData.append('upload', fileList.value[0].raw)
+    uploadFile(formData).then(res => {
+      if (res.code === 0) {
+        uploadContract.show = false
+
+      } else {
         ElMessage.error(res.msg)
       }
     })
   }
-  
-  const search = (d: any) => {
-    console.log(d)
+
+  const Recording = (id: any) => {
+    
   }
 
-  if (id) {
-    getData()
-  }
+  getList()
   
 </script>
 <template>
@@ -251,7 +182,6 @@
     <div class="s-table-operations">
       <el-button size="small" @click="handleExport">批量下载合同</el-button>
       <el-button size="small" @click="handleExport">导出</el-button>
-      <!-- <el-button size="small" @click="deleteSelected">删除</el-button> -->
     </div>
     <el-table ref="tableRef" :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
       <el-table-column type="selection" width="50" />
@@ -266,14 +196,13 @@
       <el-table-column prop="remark" label="备注" />
       <el-table-column prop="exhibitor" label="参展商" />
       <el-table-column prop="createTime" label="创建时间" />
-      <el-table-column fixed="right" label="操作" width="120">
+      <el-table-column fixed="right" label="操作" width="300">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="handleEdit(scope.row)">详情</el-button>
-          <el-button link type="primary" size="small" @click="handleDelete([scope.row.id])">签订合同</el-button>
-          <el-button link type="primary" size="small" @click="handleDelete([scope.row.id])">上传合同</el-button>
-          <el-button link type="primary" size="small" @click="handleDelete([scope.row.id])">录入到款</el-button>
-          <!-- <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button> -->
-          <el-button link type="primary" size="small" @click="handleDelete([scope.row.id])">撤销</el-button>
+          <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
+          <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id } })">签订合同</el-button>
+          <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+          <el-button link type="primary" size="small" @click="Recording(scope.row.id)">录入到款</el-button>
+          <el-button link type="primary" size="small" @click="revoke(scope.row.id)">撤销</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -282,55 +211,24 @@
     </div>
   </div>
 
-  <el-dialog v-model="addShow" title="新增展位信息" width="500" draggable>
-    <el-form ref="formRef" :model="addForm" :rules="rules" label-width="auto">
-      <el-form-item label="展馆号" prop="hallCode">
-        <el-input v-model="addForm.hallCode" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="展位号" prop="positionCode">
-        <el-input v-model="addForm.positionCode" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="标准展位" prop="standardPrice">
-        <el-input v-model="addForm.standardPrice" autocomplete="off" type="number">
-          <template #append>元/个</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="特装展位" prop="specialPrice">
-        <el-input v-model="addForm.specialPrice" autocomplete="off" type="number">
-          <template #append>
-            <el-select v-model="addForm.specialUnit" placeholder="请选择" style="width: 120px;">
-              <el-option label="元/㎡" :value="1" />
-              <el-option label="元/个" :value="2" />
-            </el-select>
-          </template>
-        </el-input>
-      </el-form-item>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="长" prop="length">
-            <el-input v-model="addForm.length" autocomplete="off" type="number"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="宽" prop="width">
-            <el-input v-model="addForm.width" autocomplete="off" type="number"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-form-item label="备注" >
-        <el-input v-model="addForm.remark" autocomplete="off" type="textarea" />
-      </el-form-item>
-      <el-form-item label="参展商" prop="exhibitor">
-        <el-select v-model="addForm.exhibitor" placeholder="请选择">
-          <el-option v-for="item in exhibitorOptions" :key="item.id" :label="item.name" :value="item.name" />
-        </el-select>
-      </el-form-item>
-    </el-form>
+  <el-dialog v-model="uploadContract.show" title="上传合同" width="400">
+    <el-radio-group v-model="uploadContract.type">
+      <el-radio :value="1">电子合同</el-radio>
+      <el-radio :value="2">纸质合同</el-radio>
+    </el-radio-group>
+    <el-upload
+      ref="uploadRef"
+      :auto-upload="false"
+      :limit="1"
+      :before-upload="beforeUpload"
+      :on-exceed="handleExceed"
+      v-model:file-list="fileList"
+      style="margin-top: 10px">
+      <el-button size="small" type="primary">点击上传</el-button>
+    </el-upload>
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="addShow = false">取消</el-button>
-        <el-button type="primary" @click="addSub">确定</el-button>
-      </div>
+      <el-button type="primary" @click="subContract">确定</el-button>
+      <el-button @click="uploadContract.show = false">取消</el-button>
     </template>
   </el-dialog>
 </template>

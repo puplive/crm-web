@@ -132,12 +132,12 @@
   <div>
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
-      <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button>
+      <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button>
       <el-button size="small" @click="Import">导入</el-button>
       <el-button size="small" @click="Export">导出</el-button>
-      <el-button size="small" @click="Move">转移</el-button>
+      <el-button size="small" @click="Move">转移</el-button> -->
       <el-button size="small" @click="GetClues">领取</el-button>
-      <el-button size="small" @click="MoveShare">移至公海</el-button>
+      <!-- <el-button size="small" @click="MoveShare">移至公海</el-button> -->
       <el-button size="small" @click="Del">删除</el-button>
     </div>
     <el-table ref="tableRef" :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
@@ -152,7 +152,7 @@
       <el-table-column fixed="right" label="操作" width="120">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="willSet(scope.row)">
-            转为意向
+            领取
           </el-button>
         </template>
       </el-table-column>

@@ -59,14 +59,16 @@ import { exhibitionList, setStatus, exhibitionDelete } from "@/api/Exhibition";
       <div class="item" >
         <div class="title">{{item.exhibitionName}}</div>
         <div class="content">
-          <div @click="$router.push({path: `/booth/manage`, query: {id: item.id}})">
+          <div @click="$router.push({path: '/booth/manage', query: {id: item.id}})">
             <el-icon size="30"><FolderAdd /></el-icon>
             <p>导入展位信息</p>
           </div>
-          <div @click="$router.push({path: `/goods`, query: {id: item.id, title: item.exhibitionName}})">
+          <!-- <RouterLink :to="{path: '/booth/reserve'}"> -->
+          <div @click="$router.push({path: '/goods/manage', query: {id: item.id, title: item.exhibitionName}})">
             <el-icon size="30"><ShoppingCartFull /></el-icon>
             <p>设置物料</p>
           </div>
+        <!-- </RouterLink> -->
         </div>
         <div class="actions">
           <el-switch v-model="item.status" :active-value="1" :inactive-value="0" active-text="开启" inactive-text="关闭" inline-prompt 

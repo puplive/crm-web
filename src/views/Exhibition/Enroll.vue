@@ -1,2 +1,2 @@
 <!-- 展会报名 -->
-<template></template>
+<template>展会报名</template>

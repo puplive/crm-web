@@ -1,2 +1,2 @@
 <!-- 合同管理 -->
-<template></template>
+<template>合同管理</template>

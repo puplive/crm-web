@@ -21,8 +21,8 @@ request.interceptors.request.use(
     //返回配置对象
     // console.log(config)
 
-    let _userStore = userStore()
-    let _token = _userStore? _userStore.TOKEN : ''
+    const _userStore = userStore()
+    const _token = _userStore? _userStore.TOKEN : ''
     config.headers["Authorization"] = _token;
 
     return config;
