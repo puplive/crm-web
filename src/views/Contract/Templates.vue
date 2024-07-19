@@ -38,10 +38,10 @@ const list: any = ref([
   .content {
     flex: 1;
     display: flex;
-    border: 1px solid #EAEEF0;
+    border: 1px solid var(--el-border-color-lighter);
     .l{
       width: 300px;
-      border-right: 1px solid #EAEEF0;
+      border-right: 1px solid var(--el-border-color-lighter);
       padding: 10px;
       .item{
         width: 257px;

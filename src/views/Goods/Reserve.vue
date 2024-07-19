@@ -139,7 +139,7 @@ const getZg = () => {
     flex: 1;
     display: flex;
     height: 0;
-    border: 1px solid #EAEEF0;
+    border: 1px solid var(--el-border-color-lighter);
 
     .col1 {
       width: 150px;
@@ -151,8 +151,8 @@ const getZg = () => {
       flex: 1;
       overflow: auto;
       padding: 15px;
-      border-right: 1px solid #EAEEF0;
-      border-left: 1px solid #EAEEF0;
+      border-right: 1px solid var(--el-border-color-lighter);
+      border-left: 1px solid var(--el-border-color-lighter);
     }
 
     .col3 {
@@ -168,7 +168,7 @@ const getZg = () => {
       .bottom-bar {
         padding: 15px;
         /* box-shadow: 0px -2px 0px 0px rgba(0, 0, 0, 0.02); */
-        border-top: 1px solid #EAEEF0;
+        border-top: 1px solid var(--el-border-color-lighter);
 
         >span {
           font-size: 14px;

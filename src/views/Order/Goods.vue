@@ -4,7 +4,7 @@
   // import { genFileId } from 'element-plus'
   import TableSearch from '@/components/TableSearch/index.vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { booth as boothApi  } from '@/api/Order/index'
+  import { goods as goodsApi  } from '@/api/Order/index'
   import { uploadFile } from '@/api/common'
 
   
@@ -45,9 +45,9 @@
   // })
 
   const getList = () => {
-    boothApi.getList({...page, ...searchForm.value}).then((res: any) => {
+    goodsApi.getList({...page, ...searchForm.value}).then((res: any) => {
       if (res.code === 0) {
-        tableData.value = res.data
+        tableData.value = res.data.data
         total.value = res.data.total
       }else {
         tableData.value = [{}]
@@ -76,7 +76,7 @@
       type: 'warning'
     }).then(() => {
 
-      boothApi.revoke({ id }).then((res) => {
+      goodsApi.revoke({ id }).then((res) => {
         if(res.code === 0) {
           ElMessage.success('撤销成功')
           getList()

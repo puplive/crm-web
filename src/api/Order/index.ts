@@ -3,115 +3,140 @@ import request from "@/utils/request";
 
 const prefix = "/web/v1";
 
-export const getHallInfo = (params:any): Promise<any> => {
+export const getHallInfo = (params: any): Promise<any> => {
   return request({
-    url: prefix + "/web/v1/order/position/getHallInfo",
+    url: prefix + "/order/position/getHallInfo",
     method: "get",
     params,
   });
 }
-export const getExhibitionInfo = (params:any): Promise<any> => {
+export const getExhibitionInfo = (params: any): Promise<any> => {
   return request({
-    url: prefix + "/web/v1/order/position/getExhibitionInfo",
+    url: prefix + "/order/position/getExhibitionInfo",
     method: "get",
     params,
   });
 }
 
 export const booth = {
-  getList: (params:any): Promise<any> => {
+  getList: (params: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/position/getList",
+      url: prefix + "/order/position/getList",
       method: "get",
       params,
     });
   },
-  getDetail: (params:any): Promise<any> => {
+  getDetail: (params: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/position/getDetail",
+      url: prefix + "/order/position/getDetail",
       method: "get",
       params,
     });
   },
-  get: (params:any): Promise<any> => {
+  get: (params: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/position/get",
+      url: prefix + "/order/position/get",
       method: "get",
       params,
     });
   },
-  create: (data:any): Promise<any> => {
+  create: (data: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/position/create",
-      method: "post", 
+      url: prefix + "/order/position/create",
+      method: "post",
       data,
     });
   },
   // update: (data:any): Promise<any> => {
   //   return request({
-  //     url: prefix + "/web/v1/order/position/update",
+  //     url: prefix + "/order/position/update",
   //     method: "post",
   //     data,
   //   });
   // },
-  del: (data:any): Promise<any> => {
+  del: (data: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/position/delete",
+      url: prefix + "/order/position/delete",
       method: "post",
       data,
     });
   },
-  revoke: (data:any): Promise<any> => {
+  revoke: (data: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/position/revoke",
+      url: prefix + "/order/position/revoke",
       method: "post",
       data,
     });
-  }
+  },
+  getSearchField: (): Promise<any> => {
+    return request({
+      url: prefix + "/order/position/getSearchField",
+      method: "get",
+    });
+  },
 
 }
 
 export const goods = {
-  get: (params:any): Promise<any> => {
+  getList: (params: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/material/getMaterial",
+      url: prefix + "/order/material/getList",
       method: "get",
       params,
     });
   },
-  addCart: (data:any): Promise<any> => {
+  getMaterial: (params: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/material/addCart",
-      method: "post", 
-      data,
+      url: prefix + "/order/material/getMaterial",
+      method: "get",
+      params,
     });
   },
-  getCart: (data:any): Promise<any> => {
+  addCart: (data: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/material/getCart",
+      url: prefix + "/order/material/addCart",
       method: "post",
       data,
     });
   },
-  create: (data:any): Promise<any> => {
+  getCart: (data: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/material/create",
-      method: "post", 
-      data,
-    });
-  },
-  del: (data:any): Promise<any> => {
-    return request({
-      url: prefix + "/web/v1/order/material/delete",
+      url: prefix + "/order/material/getCart",
       method: "post",
       data,
     });
   },
-  revoke: (data:any): Promise<any> => {
+  create: (data: any): Promise<any> => {
     return request({
-      url: prefix + "/web/v1/order/material/revoke",
+      url: prefix + "/order/material/create",
       method: "post",
       data,
     });
-  }
+  },
+  del: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/order/material/delete",
+      method: "post",
+      data,
+    });
+  },
+  revoke: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/order/material/revoke",
+      method: "post",
+      data,
+    });
+  },
+  getSearchField: (): Promise<any> => {
+    return request({
+      url: prefix + "/order/material/getSearchField",
+      method: "get",
+    });
+  },
+  getDetail: (): Promise<any> => {
+    return request({
+      url: prefix + "/order/material/getDetail",
+      method: "get",
+    });
+  },
 }

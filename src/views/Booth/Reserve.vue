@@ -1,11 +1,32 @@
 <script setup lang="ts">
-  import { ref, reactive } from 'vue'
-  import { booth as boothApi  } from '@/api/Order/index'
+  import { ref, reactive, watch, computed } from 'vue'
+  import { booth as boothApi, getExhibitionInfo } from '@/api/Order/index'
+  import { getPosition  } from '@/api/Booth/index'
+  import { useRouter, useRoute } from 'vue-router';
+
+  const router = useRouter();
+  const route = useRoute();
+
+
+  const clueId = route.query.clueId;
+  const exhibitionId = route.query.exhibitionId;
+  const exhibitorId = route.query.exhibitorId;
+  const hallCode = route.query.hallCode;
+  const exhibitionName = route.query.exhibitionName
+
+  const hall_list: any = ref([])
+  const booth_list: any = ref([])
+  const add_list: any = ref([])
+  const discount_list: any = ref([])
+  const pp_list: any = ref([])
+  const gg_list: any = ref([])
+
+  const unit:any = {1:'%', 2:'￥'}
 
   const form:any = reactive({
-    clueId: 1,
-    exhibitionId: 1,
-    exhibitorId: 1,
+    clueId: clueId,
+    exhibitionId: exhibitionId,
+    exhibitorId: exhibitorId,
     add: [
       // {
       //   "text": "1",
@@ -21,43 +42,8 @@
       // },
     ],
     position: [
-      // {
-      //   "hallCode": "1",
-      //   "positionCode": 123,
-      //   "companyBrand": [
-      //     "品牌1",
-      //     "品牌2"
-      //   ],
-      //   "product": 12,
-      //   "unitPrice": 12,
-      //   "type": 1,
-      //   "length": 12,
-      //   "width": 12,
-      //   "costPrice": 12,
-      //   "addPrice": 12,
-      //   "discountPrice": 12,
-      //   "finalPrice": 12,
-      //   "deposit": 0,
-      //   "isOffset": 1,
-      //   "payType": 1,
-      //   "ratio": 20
-      // },
-    ]
-  })
-  const gg = reactive({
-    show: false,
-    index: 0,
-    form: {
-      product: '',
-      unitPrice: '',
-      length: '',
-      width: '',
-    }
-  })
-
-  const Add = () => {
-    form.position.push({
-        hallCode: '',
+      {
+        hallCode: hallCode,
         positionCode: '',
         companyBrand: [],
         product: '',
@@ -72,37 +58,160 @@
         deposit: 0,
         isOffset: 1,
         payType: 1,
-        ratio: 20
+        ratio: 0
+      },
+    ]
+  })
+
+  const gg_select:any = ref({})
+  const gg: any = reactive({
+    show: false,
+    index: 0,
+    form: {
+      product: '',
+      unitPrice: '',
+      num: 1,
+      length: '',
+      width: '',
+    }
+  })
+  const ggChange = (val:any)=>{
+    gg.form.unitPrice = val.price; 
+    gg.form.product = val.text;
+    gg.form.num = val.num;
+  }
+  const gg_price_label = computed(() => {
+    if(gg.form.unitPrice){
+      return gg.form.unitPrice + '元/' + (gg.form.num===1?'':gg.form.num) + '㎡'
+    }else{
+      return ''
+    }
+  })
+
+  
+
+  const Add = () => {
+    form.position.push({
+        hallCode: hallCode,
+        positionCode: '',
+        companyBrand: [],
+        product: '',
+        unitPrice: '',
+        type: 1,
+        length: 0,
+        width: 0,
+        costPrice: 0,
+        addPrice: 0,
+        discountPrice: 0,
+        finalPrice: 0,
+        deposit: 0,
+        isOffset: 1,
+        payType: 1,
+        ratio: 0
       })
   }
 
   const Sub = () => {
-    boothApi.create(form).then(res => {
-      console.log(res)
+    // console.log({...route.query, data: form})
+    router.push({
+      name: 'BoothCreateOrder',
+      query: {...route.query, data: JSON.stringify(form)}
     })
+    // boothApi.create(form).then(res => {
+    //   console.log(res)
+    // })
   }
 
-  const addGg = (i) => {
+  const addGg = (i: number) => {
     gg.show = true
     gg.index = i
     gg.form.product = ''
     gg.form.unitPrice = ''
     gg.form.length = ''
     gg.form.width = ''
+    gg.form.num = 1
   }
 
   const ggSub = () => {
     gg.show = false
+    let _area = gg.form.length * gg.form.width,
+        _costPrice = _area*gg.form.unitPrice/gg.form.num,
+        _addPrice = addPrice(_costPrice),
+        _discountPrice = discountPrice(_costPrice)
+
     form.position[gg.index].product = gg.form.product
     form.position[gg.index].unitPrice = gg.form.unitPrice
     form.position[gg.index].length = gg.form.length
     form.position[gg.index].width = gg.form.width
-    form.position[gg.index].area = gg.form.length * gg.form.width
+    form.position[gg.index].area = _area
+    form.position[gg.index].costPrice = Number(_costPrice.toFixed(2))
+    form.position[gg.index].addPrice = Number(_addPrice.toFixed(2))
+    form.position[gg.index].discountPrice = Number(_discountPrice.toFixed(2))
+    form.position[gg.index].finalPrice = Number((_costPrice+_addPrice-_discountPrice).toFixed(2))
   }
 
+  const addPrice = (price: number) => {
+    let _p = 0
+    form.add.forEach((i:any) => {
+      let item = JSON.parse(i)
+      if(item.unit === 1){
+        _p+= price*item.price/100
+      }else if(item.unit === 2){
+        _p+= item.price
+      }
+    })
+    return _p
+  }
 
+  const discountPrice = (price: number) => {
+    let _p = 0
+    form.discount.forEach((i:any) => {
+      let item = JSON.parse(i)
+      if(item.unit === 1){
+        _p+= price*item.price/100
+      }else if(item.unit === 2){
+        _p+= item.price
+      }
+    })
+    return _p
+  }
 
+  watch(() => form.add, (val) => {
+    form.position.forEach((item:any) => {
+      item.addPrice = Number(addPrice(item.costPrice).toFixed(2))
+      item.finalPrice = Number((item.costPrice+item.addPrice-item.discountPrice).toFixed(2))
+    })
+  })
 
+  watch(() => form.discount, (val) => {
+    form.position.forEach((item:any) => {
+      item.discountPrice = Number(discountPrice(item.costPrice).toFixed(2))
+      item.finalPrice = Number((item.costPrice+item.addPrice-item.discountPrice).toFixed(2))
+    })
+  })
+
+  const setFinalPrice = (i: number) => {
+    let _costPrice = form.position[i].costPrice,
+        _addPrice = form.position[i].addPrice,
+        _discountPrice = form.position[i].discountPrice
+    
+    return Number((_costPrice+_addPrice-_discountPrice).toFixed(2))
+  }
+
+  getPosition({exhibitionId, hallCode}).then(res => {
+    booth_list.value = res.data
+  })
+
+  getExhibitionInfo({clueId, exhibitionId}).then(res => {
+    let data = res.data
+    add_list.value = data.attachPrice.add
+    discount_list.value = data.attachPrice.discount
+    pp_list.value = data.companyBrand
+    gg_list.value = data.unitPrice
+    hall_list.value = data.exhibitionHall
+  })
+
+  
 
 
 </script>
@@ -110,9 +219,9 @@
   <div class="booth-reserve">
     <div class="l">
       <div class="title">
+        <span>{{ exhibitionName }}</span>
         <span>北京展会</span>
-        <span>北京展会</span>
-        <span>展馆号：北京展会</span>
+        <span>展馆号：{{ hallCode }}</span>
       </div>
       <div class="img-box"></div>
     </div>
@@ -133,14 +242,12 @@
             </el-form-item>
             <el-form-item label="加收">
               <el-select v-model="form.add" multiple placeholder="请选择">
-                <el-option label="Zone one" value="shanghai" />
-                <el-option label="Zone two" value="beijing" />
+                <el-option v-for="(item,i) in add_list" :key="i" :label="item.text+ ' ' + item.price + unit[item.unit]" :value="JSON.stringify(item)" />
               </el-select>
             </el-form-item>
             <el-form-item label="折扣">
               <el-select v-model="form.discount" multiple placeholder="请选择">
-                <el-option label="Zone one" value="shanghai" />
-                <el-option label="Zone two" value="beijing" />
+                <el-option v-for="(item,i) in discount_list" :key="i" :label="item.text+ ' ' + item.price + unit[item.unit]" :value="JSON.stringify(item)" />
               </el-select>
             </el-form-item>
             <el-form-item label="">
@@ -148,21 +255,27 @@
             </el-form-item>
             <div class="item" v-for="(item, index) in form.position" :key="index">
               <el-form-item label="展馆号">
-                <el-select v-model="form.position[index].hallCode" placeholder="请选择">
+                <el-input v-model="form.position[index].hallCode" disabled />
+                <!-- <el-select v-model="form.position[index].hallCode" placeholder="请选择">
                   <el-option label="Zone one" value="shanghai" />
                   <el-option label="Zone two" value="beijing" />
-                </el-select>
+                </el-select> -->
               </el-form-item>
               <el-form-item label="展位号">
-                <el-select v-model="form.position[index].hallCode" placeholder="请选择">
-                  <el-option label="Zone one" value="shanghai" />
-                  <el-option label="Zone two" value="beijing" />
+                <el-select 
+                  v-model="form.position[index].positionCode"  
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option 
+                  :reserve-keyword="false"
+                  placeholder="请选择">
+                  <el-option v-for="(item,i) in booth_list" :key="i" :label="item" :value="item" />
                 </el-select>
               </el-form-item>
               <el-form-item label="品牌">
                 <el-select v-model="form.position[index].companyBrand" multiple placeholder="请选择">
-                  <el-option label="Zone one" value="shanghai" />
-                  <el-option label="Zone two" value="beijing" />
+                  <el-option v-for="(item,i) in pp_list" :key="i" :label="item" :value="item" />
                 </el-select>
               </el-form-item>
               <el-form-item label="展位类型">
@@ -174,11 +287,14 @@
               <el-form-item label="展位规格">
                 <el-button size="small" @click="addGg(index)" >添加</el-button>
               </el-form-item>
+              <el-form-item label=" " v-if="form.position[index].product">
+                <div>{{form.position[index].product + ' ' + form.position[index].area + '㎡'}}</div>
+              </el-form-item>
               <el-form-item label="展位原价">
-                <el-input :model-value="item.unitPrice*item.width*item.length" />
+                <el-input v-model="form.position[index].costPrice" disabled/>
               </el-form-item>
               <el-form-item label="折后金额">
-                <el-input v-model="form.position[index].discountPrice" />
+                <el-input :model-value="setFinalPrice(index)" disabled />
               </el-form-item>
               <el-form-item label="最终金额">
                 <el-input v-model="form.position[index].finalPrice" />
@@ -198,15 +314,16 @@
 
   <el-dialog v-model="gg.show" title="添加规格" width="500" draggable>
     <el-form ref="ggFormRef" :model="gg.form" label-width="auto">
-      <el-form-item label="产品名称" prop="product" :rules="[ { required: true, message: '请选择项目' } ]">
-        <el-select v-model="gg.form.product" placeholder="">
-          <el-option v-for="item in exhibitionData" :key="item.id" :label="item.exhibitionName" :value="item.id" />
+      <el-form-item label="产品名称" prop="product">
+        <el-select v-model="gg.form.product" placeholder="" @change="ggChange">
+          <el-option v-for="item in gg_list" :key="item.id" :label="item.text+ ' ' + item.price + '/'+ item.num + '/㎡'" :value="item" />
         </el-select>
       </el-form-item>
-      <el-form-item label="单价" prop="unitPrice" :rules="[ { required: true, message: '请选择项目' } ]">
-        <el-select v-model="gg.form.unitPrice" placeholder="">
-          <el-option v-for="item in exhibitionData" :key="item.id" :label="item.exhibitionName" :value="item.id" />
-        </el-select>
+      <el-form-item label="单价" prop="unitPrice">
+        <el-input :model-value="gg_price_label" disabled></el-input>
+        <!-- <el-select v-model="gg.form.unitPrice" placeholder="">
+          <el-option v-for="(item,i) in gg_list" :key="i" :label="item.text" :value="item.price" />
+        </el-select> -->
       </el-form-item>
       <el-form-item label="尺寸">
         <el-col :span="11">
@@ -220,7 +337,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="面积" >
-        <el-input :model-value="gg.form.length * gg.form.width" autocomplete="off" />
+        <el-input :model-value="Number((gg.form.length * gg.form.width).toFixed(2))" autocomplete="off" disabled/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -269,7 +386,7 @@
       }
 
       .item{
-        background-color: #efefef;
+        background-color: #F4F6F8;
         padding: 10px;
         border-radius: 4px;
       }

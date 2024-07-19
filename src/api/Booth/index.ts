@@ -3,14 +3,14 @@ import request from "@/utils/request";
 
 const prefix = "/web/v1";
 
-export const boothList = (params:any): Promise<any> => {
+export const boothList = (params: any): Promise<any> => {
   return request({
     url: prefix + "/exhibition/position/getList",
     method: "get",
     params,
   });
 }
-export const boothAdd = (data:any): Promise<any> => {
+export const boothAdd = (data: any): Promise<any> => {
   return request({
     url: prefix + "/exhibition/position/add",
     method: "post",
@@ -18,7 +18,7 @@ export const boothAdd = (data:any): Promise<any> => {
   });
 }
 
-export const boothEdit = (data:any): Promise<any> => {
+export const boothEdit = (data: any): Promise<any> => {
   return request({
     url: prefix + "/exhibition/position/edit",
     method: "post",
@@ -26,7 +26,7 @@ export const boothEdit = (data:any): Promise<any> => {
   });
 }
 
-export const boothDelete = (data:any): Promise<any> => {
+export const boothDelete = (data: any): Promise<any> => {
   return request({
     url: prefix + "/exhibition/position/delete",
     method: "post",
@@ -34,7 +34,7 @@ export const boothDelete = (data:any): Promise<any> => {
   });
 }
 
-export const boothImport = (data:any): Promise<any> => {
+export const boothImport = (data: any): Promise<any> => {
   return request({
     url: prefix + "/exhibition/position/import",
     method: "post",
@@ -42,11 +42,19 @@ export const boothImport = (data:any): Promise<any> => {
   });
 }
 
-export const boothExport = (data:any): Promise<any> => {
+export const boothExport = (data: any): Promise<any> => {
   return request({
     url: prefix + "/exhibition/position/export",
     method: "post",
     data,
+  });
+}
+
+export const getPosition = (params: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibition/position/getPosition",
+    method: "get",
+    params,
   });
 }
 

@@ -515,15 +515,15 @@ subGetGoodsListSetting()
   .con {
     flex: 1;
     display: flex;
-    border: 1px solid #EAEEF0;
+    border: 1px solid var(--el-border-color-lighter);
   }
 }
 
 /* 物料设置 */
 .supplies-set .l {
-  /* border-top: 1px solid #EAEEF0; */
-  border-right: 1px solid #EAEEF0;
-  /* border-bottom: 1px solid #EAEEF0; */
+  /* border-top: 1px solid var(--el-border-color-lighter); */
+  border-right: 1px solid var(--el-border-color-lighter);
+  /* border-bottom: 1px solid var(--el-border-color-lighter); */
   display: flex;
   flex-direction: column;
 }
@@ -537,7 +537,7 @@ subGetGoodsListSetting()
   align-items: center;
   justify-content: space-between;
   height: 48px;
-  border-bottom: 1px solid #EAEEF0;
+  border-bottom: 1px solid var(--el-border-color-lighter);
   padding: 0 10px;
 }
 

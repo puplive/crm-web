@@ -131,6 +131,16 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           // icon: 'list'
         }
       },
+      {
+        path: 'create_order',
+        name: 'BoothCreateOrder',
+        component: () => import('@/views/Booth/CreateOrder.vue'),
+        meta: {
+          isMenu: false,
+          title: '展位下单',
+          // icon: 'list'
+        }
+      },
     ]
   },
   {
@@ -421,7 +431,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
       }
     ]
   },
-
   {
     path: '/hall',
     component: Layout,

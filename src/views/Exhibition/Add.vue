@@ -306,7 +306,7 @@ if(id){
       form.payFirst = data.payFirst
       form.payFinal = data.payFinal
       form.position = data.position
-      form.cate = data.cate
+      form.cate = data.cate.length? data.cate : [{name: '', rgb: ''}]
       form.unitPrice = data.unitPrice
 
       let changeType_1 = 0, changeType_2 = 0
@@ -322,6 +322,20 @@ if(id){
           priceType: item.price_type,
           changeType: item.change_type
         }
+      })
+
+      data.discount.forEach((item: any) => {
+        if(item.change_type == 1){
+          changeType_1++
+        }else{
+          changeType_2++
+        }
+        form.attachPrice.push( {
+          text: item.text,
+          price: item.price,
+          priceType: item.price_type,
+          changeType: item.change_type
+        })
       })
 
       if(changeType_1 === 0){

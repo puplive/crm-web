@@ -4,7 +4,7 @@
   // import { genFileId } from 'element-plus'
   import TableSearch from '@/components/TableSearch/index.vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { booth as boothApi  } from '@/api/Order/index'
+  import { booth as boothApi, getExhibitionInfo } from '@/api/Order/index'
   import { uploadFile } from '@/api/common'
 
   
@@ -47,7 +47,7 @@
   const getList = () => {
     boothApi.getList({...page, ...searchForm.value}).then((res: any) => {
       if (res.code === 0) {
-        tableData.value = res.data
+        tableData.value = res.data.data
         total.value = res.data.total
       }else {
         tableData.value = [{}]
@@ -173,6 +173,17 @@
     
   }
 
+  boothApi.getSearchField().then((res: any) => {
+    if (res.code === 0) {
+      searchData.value = res.data
+    }
+  })
+  getExhibitionInfo({clueId: id, exhibitionId: id}).then((res: any) => {
+    if (res.code === 0) {
+      searchData.value = res.data
+    }
+  })
+
   getList()
   
 </script>
@@ -207,7 +218,12 @@
       </el-table-column>
     </el-table>
     <div class="s-table-pagination">
-      <el-pagination layout="total, sizes, prev, pager, next" :page-sizes="[10, 20, 50]" :total="1000" />
+      <el-pagination layout="total, sizes, prev, pager, next" 
+        :page-sizes="[10, 20, 50]" 
+        :total="total"
+        v-model:current-page="page.page" 
+        v-model:page-size="page.perPage" 
+        @change="getList" />
     </div>
   </div>
 

@@ -1,182 +1,207 @@
 <!-- 销售线索列表 -->
 <script lang="ts" setup>
-  import { ref, reactive, watch } from 'vue'
-  import TableSearch from '@/components/TableSearch/index.vue'
-  import api from '@/api/Clues'
-  import {exhibitionList} from '@/api/Exhibition'
-  import {getSponsorUser} from '@/api/user'
+import { ref, reactive, watch } from 'vue'
+import TableSearch from '@/components/TableSearch/index.vue'
+import api from '@/api/Clues'
+import { exhibitionList } from '@/api/Exhibition'
+import { getSponsorUser } from '@/api/user'
 
-  const page = reactive({
-    page: 1,
-    perPage: 10,
-  })
-  const total = ref(0)
-  const searchForm = ref({})
-  const tableData = ref([])
-  const tableRef: any = ref(null)
-  const searchData = ref([])
-  const exhibitionData: any = ref([])
+const zh_name = ref('全部')
+const exhibitionId = ref('')
+
+const page = reactive({
+  page: 1,
+  perPage: 10,
+})
+const total = ref(0)
+const searchForm = ref({})
+const tableData = ref([])
+const tableRef: any = ref(null)
+const searchData = ref([])
+const exhibitionData: any = ref([])
 
 
-  const search = (d: any) => {
-    searchForm.value = d
-    page.page = 1
-    // console.log({...page, ...searchForm.value})
-    getList()
-  }
-
-  const getList = async () => {
-    api.getList({status: 2, ...page, ...searchForm.value}).then((res) => {
-      if (res.code !== 200) {
-        tableData.value = res.data.data
-        total.value = res.data.total
-      }
-    })
-  }
-
-  const willForm: any = ref({})
-  const willShow = ref(false)
-  const willFormRef: any = ref(null)
-
-  const willSet = (row: any) => {    
-    willForm.value.id = row.id
-    willShow.value = true
-  }
-  const willSub = () => {
-    willFormRef.value.validate((valid: boolean) => {
-      if (!valid) {
-        return
-      }
-      api.changeIntention(willForm.value).then((res) => {
-        if(res.code === 0) {
-          ElMessage.success('转为意向成功')
-          getList()
-          willShow.value = false
-        }else {
-          ElMessage.error(res.msg)
-        }
-      })
-    })
-  }
-
-  const GetClues = () => {
-    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-    if (ids.length === 0) {
-      ElMessage.warning('请选择需要领取的线索')
-      return
-    }
-    api.getClues({ id: ids}).then((res: any) => {
-      if(res.code === 0) {
-        ElMessage.success('领取成功')
-        getList()
-      }else {
-        ElMessage.error(res.msg)
-      }
-    })
-  }
-
-  const Del = () => {
-    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-    if (ids.length === 0) {
-      ElMessage.warning('请选择需要删除的线索')
-      return
-    }
-    ElMessageBox.confirm('确定删除所选线索？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
-
-      api.del({ id: ids}).then((res) => {
-        if(res.code === 0) {
-          ElMessage.success('删除成功')
-          getList()
-        }else {
-          ElMessage.error(res.msg)
-        }
-      })
-    }).catch(() => {
-    })
-  }
-
-  const moveForm: any = ref({})
-  const moveShow = ref(false)
-  const moveFormRef: any = ref(null)
-  const SponsorUser: any = ref([])
-  const Move = () => {
-    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-    if (ids.length === 0) {
-      ElMessage.warning('请选择需要转移的线索')
-      return
-    }
-    moveForm.value.id = ids
-    moveShow.value = true
-    
-  }
-  const MoveSub = () => {
-    moveFormRef.value.validate((valid: boolean) => {
-      if (!valid) {
-        return
-      }
-      
-      api.changeUser(moveForm.value).then((res) => {
-        if(res.code === 0) {
-          ElMessage.success('转移成功')
-          moveShow.value = false
-          getList()
-        }else {
-          ElMessage.error(res.msg)
-        }
-      })
-    })
-  }
-
-  const MoveShare = () => { 
-    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-    if (ids.length === 0) {
-      ElMessage.warning('请选择需要移至公海的线索')
-      return
-    }
-    api.changePublic({ id: ids}).then((res) => {
-      if(res.code === 0) {
-        ElMessage.success('移至公海成功')
-        getList()
-      }else {
-        ElMessage.error(res.msg)
-      }
-    })
-  }
-
-  const Import = () => {
-    console.log('import')
-  }
-
-  const Export = () => {
-    console.log('export')
-  }
-
-  api.getSearchField().then((res) => {
-    if(res.code === 0) {
-      searchData.value = res.data
-    }
-  })
-  exhibitionList().then((res) => {
-    if(res.code === 0) {
-      exhibitionData.value = res.data
-    }
-  })
-  getSponsorUser().then((res) => {
-    if(res.code === 0) {
-      SponsorUser.value = res.data
-    }
-  })
-
+const search = (d: any) => {
+  searchForm.value = d
+  page.page = 1
+  // console.log({...page, ...searchForm.value})
   getList()
-  
+}
+
+const getList = async () => {
+  api.getList({ status: 2, exhibitionId: exhibitionId.value, ...page, ...searchForm.value }).then((res) => {
+    if (res.code !== 200) {
+      tableData.value = res.data.data
+      total.value = res.data.total
+    }
+  })
+}
+
+const willForm: any = ref({})
+const willShow = ref(false)
+const willFormRef: any = ref(null)
+
+const willSet = (row: any) => {
+  willForm.value.id = row.id
+  willShow.value = true
+}
+const willSub = () => {
+  willFormRef.value.validate((valid: boolean) => {
+    if (!valid) {
+      return
+    }
+    api.changeIntention(willForm.value).then((res) => {
+      if (res.code === 0) {
+        ElMessage.success('转为意向成功')
+        getList()
+        willShow.value = false
+      } else {
+        ElMessage.error(res.msg)
+      }
+    })
+  })
+}
+
+const GetClues = () => {
+  let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+  if (ids.length === 0) {
+    ElMessage.warning('请选择需要领取的线索')
+    return
+  }
+  api.getClues({ id: ids }).then((res: any) => {
+    if (res.code === 0) {
+      ElMessage.success('领取成功')
+      getList()
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
+const Del = () => {
+  let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+  if (ids.length === 0) {
+    ElMessage.warning('请选择需要删除的线索')
+    return
+  }
+  ElMessageBox.confirm('确定删除所选线索？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+
+    api.del({ id: ids }).then((res) => {
+      if (res.code === 0) {
+        ElMessage.success('删除成功')
+        getList()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    })
+  }).catch(() => {
+  })
+}
+
+const moveForm: any = ref({})
+const moveShow = ref(false)
+const moveFormRef: any = ref(null)
+const SponsorUser: any = ref([])
+const Move = () => {
+  let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+  if (ids.length === 0) {
+    ElMessage.warning('请选择需要转移的线索')
+    return
+  }
+  moveForm.value.id = ids
+  moveShow.value = true
+
+}
+const MoveSub = () => {
+  moveFormRef.value.validate((valid: boolean) => {
+    if (!valid) {
+      return
+    }
+
+    api.changeUser(moveForm.value).then((res) => {
+      if (res.code === 0) {
+        ElMessage.success('转移成功')
+        moveShow.value = false
+        getList()
+      } else {
+        ElMessage.error(res.msg)
+      }
+    })
+  })
+}
+
+const MoveShare = () => {
+  let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+  if (ids.length === 0) {
+    ElMessage.warning('请选择需要移至公海的线索')
+    return
+  }
+  api.changePublic({ id: ids }).then((res) => {
+    if (res.code === 0) {
+      ElMessage.success('移至公海成功')
+      getList()
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
+const Import = () => {
+  console.log('import')
+}
+
+const Export = () => {
+  console.log('export')
+}
+
+api.getSearchField().then((res) => {
+  if (res.code === 0) {
+    searchData.value = res.data
+  }
+})
+exhibitionList().then((res) => {
+  if (res.code === 0) {
+    exhibitionData.value = [{ exhibitionName: '全部', id: '' }, ...res.data]
+  }
+})
+getSponsorUser().then((res) => {
+  if (res.code === 0) {
+    SponsorUser.value = res.data
+  }
+})
+
+const handleCommand = (command: string | number | object) => {
+  console.log(command)
+  zh_name.value = command.exhibitionName
+  exhibitionId.value = command.id
+  getList()
+}
+
+
+getList()
+
+
 </script>
 <template>
   <div>
-    <TableSearch :data="searchData" @search="search"/>
+    <div class="">
+      <el-dropdown @command="handleCommand" style="outline: none;">
+        <span class="el-dropdown-link">
+          {{ zh_name }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item v-for="(item, i) in exhibitionData" :key="i" :command="item">{{ item.exhibitionName
+              }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
+    <TableSearch :data="searchData" @search="search" />
     <div class="s-table-operations">
       <el-button size="small" @click="Move">转移</el-button>
       <el-button size="small" @click="MoveShare">移至公海</el-button>
@@ -186,7 +211,8 @@
       <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
       <el-button size="small" @click="Import">导入线索</el-button>
     </div>
-    <el-table ref="tableRef" :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
+    <el-table ref="tableRef" :data="tableData" border table-layout="fixed" max-height="300"
+      header-row-class-name="s-table-header">
       <el-table-column type="selection" width="50" />
       <el-table-column prop="companyName" label="公司名称" width="180" />
       <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
@@ -197,10 +223,13 @@
       <el-table-column prop="authUser" label="授权人" />
       <el-table-column fixed="right" label="操作" width="180">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="$router.push({name: 'BoothReserve', query: {id: scope.row.id}})">
+          <!-- <el-button link type="primary" size="small" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
+          <el-button link type="primary" size="small"
+            @click="$router.push({ name: 'HallLayout', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId } })">
             展位预定
           </el-button>
-          <el-button link type="primary" size="small" @click="$router.push({name: 'GoodsReserve', query: {id: scope.row.id}})">
+          <el-button link type="primary" size="small"
+            @click="$router.push({ name: 'GoodsReserve', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode, positionCode: scope.row.positionCode } })">
             物料预定
           </el-button>
           <el-button link type="primary" size="small" @click="willSet(scope.row)">
@@ -211,12 +240,8 @@
       </el-table-column>
     </el-table>
     <div class="s-table-pagination">
-      <el-pagination layout="total, sizes, prev, pager, next" 
-        :page-sizes="[10, 20, 50]" 
-        :total="total"
-        v-model:current-page="page.page" 
-        v-model:page-size="page.perPage" 
-        @change="getList" />
+      <el-pagination layout="total, sizes, prev, pager, next" :page-sizes="[10, 20, 50]" :total="total"
+        v-model:current-page="page.page" v-model:page-size="page.perPage" @change="getList" />
     </div>
   </div>
 
@@ -240,7 +265,7 @@
   <el-dialog v-model="moveShow" title="转移销售线索" width="500" draggable>
     <el-form ref="moveFormRef" :model="moveForm" label-width="auto">
       <el-form-item label="">是否将选中的销售线索转移？</el-form-item>
-      <el-form-item label="销售线索所有人" prop="userId" :rules="[ { required: true, message: '请选择销售线索所有人' } ]">
+      <el-form-item label="销售线索所有人" prop="userId" :rules="[{ required: true, message: '请选择销售线索所有人' }]">
         <el-select v-model="moveForm.userId" placeholder="">
           <el-option v-for="item in SponsorUser" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
@@ -254,3 +279,16 @@
     </template>
   </el-dialog>
 </template>
+
+<style scoped>
+.example-showcase .el-dropdown+.el-dropdown {
+  margin-left: 15px;
+}
+
+.example-showcase .el-dropdown-link {
+  cursor: pointer;
+  color: var(--el-color-primary);
+  display: flex;
+  align-items: center;
+}
+</style>
