@@ -258,7 +258,7 @@
   
 </script>
 <template>
-  <div>
+  <div class="s-flex-col" style="height: 100%">
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
       <el-button size="small" @click="handleAdd">新增</el-button>
@@ -272,26 +272,28 @@
       <el-button size="small" @click="handleExport">导出</el-button>
       <el-button size="small" @click="deleteSelected">删除</el-button>
     </div>
-    <el-table ref="tableRef" :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
-      <el-table-column type="selection" width="50" />
-      <el-table-column prop="id" label="ID" width="50" />
-      <el-table-column prop="hallCode" label="展馆号" />
-      <el-table-column prop="positionCode" label="展位号" />
-      <el-table-column prop="standardPrice" label="标摊/元" />
-      <el-table-column prop="specialPrice" label="特装/元" />
-      <el-table-column prop="specialUnit" label="特装/㎡/个" />
-      <el-table-column prop="length" label="长" />
-      <el-table-column prop="width" label="宽" />
-      <el-table-column prop="remark" label="备注" />
-      <el-table-column prop="exhibitor" label="参展商" />
-      <el-table-column prop="createTime" label="创建时间" />
-      <el-table-column fixed="right" label="操作" width="120">
-        <template #default="scope">
-          <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button link type="primary" size="small" @click="handleDelete([scope.row.id])">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="s-flex-auto" style="min-height: 0;">
+      <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%" header-row-class-name="s-table-header">
+        <el-table-column type="selection" width="50" />
+        <el-table-column prop="id" label="ID" width="50" />
+        <el-table-column prop="hallCode" label="展馆号" />
+        <el-table-column prop="positionCode" label="展位号" />
+        <el-table-column prop="standardPrice" label="标摊/元" />
+        <el-table-column prop="specialPrice" label="特装/元" />
+        <el-table-column prop="specialUnit" label="特装/㎡/个" />
+        <el-table-column prop="length" label="长" />
+        <el-table-column prop="width" label="宽" />
+        <el-table-column prop="remark" label="备注" />
+        <el-table-column prop="exhibitor" label="参展商" />
+        <el-table-column prop="createTime" label="创建时间" />
+        <el-table-column fixed="right" label="操作" width="120">
+          <template #default="scope">
+            <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button link type="primary" size="small" @click="handleDelete([scope.row.id])">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <div class="s-table-pagination">
       <el-pagination layout="total, sizes, prev, pager, next" :page-sizes="[10, 20, 50]" :total="1000" />
     </div>

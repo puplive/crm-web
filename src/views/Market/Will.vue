@@ -187,7 +187,7 @@ getList()
 
 </script>
 <template>
-  <div>
+  <div class="s-flex-col" style="height: 100%;">
     <div class="">
       <el-dropdown @command="handleCommand" style="outline: none;">
         <span class="el-dropdown-link">
@@ -211,34 +211,40 @@ getList()
       <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
       <el-button size="small" @click="Import">导入线索</el-button>
     </div>
-    <el-table ref="tableRef" :data="tableData" border table-layout="fixed" max-height="300"
-      header-row-class-name="s-table-header">
-      <el-table-column type="selection" width="50" />
-      <el-table-column prop="companyName" label="公司名称" width="180" />
-      <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
-      <el-table-column prop="duties" label="职务" />
-      <el-table-column prop="phone" label="电话" />
-      <el-table-column prop="recordTime" label="记录时间" width="180" />
-      <el-table-column prop="recordText" label="记录内容" />
-      <el-table-column prop="authUser" label="授权人" />
-      <el-table-column fixed="right" label="操作" width="180">
-        <template #default="scope">
-          <!-- <el-button link type="primary" size="small" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
-          <el-button link type="primary" size="small"
-            @click="$router.push({ name: 'HallLayout', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId } })">
-            展位预定
-          </el-button>
-          <el-button link type="primary" size="small"
-            @click="$router.push({ name: 'GoodsReserve', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode, positionCode: scope.row.positionCode } })">
-            物料预定
-          </el-button>
-          <el-button link type="primary" size="small" @click="willSet(scope.row)">
-            移除意向
-          </el-button>
+    <div class="s-flex-auto" style="min-height: 0;">
+      <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%"
+        header-row-class-name="s-table-header">
+        <el-table-column type="selection" width="50" />
+        <el-table-column prop="companyName" label="公司名称" width="180" />
+        <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
+        <el-table-column prop="duties" label="职务" />
+        <el-table-column prop="phone" label="电话" />
+        <el-table-column prop="recordTime" label="记录时间" width="180" />
+        <el-table-column prop="recordText" label="记录内容" />
+        <el-table-column prop="authUser" label="授权人" />
+        <el-table-column fixed="right" label="操作" width="180">
+          <template #default="scope">
+            <!-- <el-button link type="primary" size="small" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
+            <el-button 
+              v-if="scope.row.orderPositionStatus"
+              link type="primary" size="small"
+              @click="$router.push({ name: 'HallLayout', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId } })">
+              展位预定
+            </el-button>
+            <el-button 
+              v-if="scope.row.orderMaterialStatus"
+              link type="primary" size="small"
+              @click="$router.push({ name: 'GoodsReserve', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode, positionCode: scope.row.positionCode } })">
+              物料预定
+            </el-button>
+            <!-- <el-button link type="primary" size="small" @click="willSet(scope.row)">
+              移除意向
+            </el-button> -->
 
-        </template>
-      </el-table-column>
-    </el-table>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <div class="s-table-pagination">
       <el-pagination layout="total, sizes, prev, pager, next" :page-sizes="[10, 20, 50]" :total="total"
         v-model:current-page="page.page" v-model:page-size="page.perPage" @change="getList" />

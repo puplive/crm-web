@@ -1,10 +1,37 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import { getGoodsList } from '@/api/Goods';
+import { goods as goodsApi, getHallInfo } from '@/api/Order/index'
+import { useRouter, useRoute } from 'vue-router'
+import { exhibitionList } from '@/api/Exhibition'
+import { exhibitorList } from '@/api/Exhibitor'
+import { boothList } from '@/api/Booth'
+import { ElMessage } from 'element-plus';
+import { Watch } from '@element-plus/icons-vue';
 
-const goodsType: any = ref([]);
+
+const router = useRouter()
+const route = useRoute()
+const exhibitionId = ref(route.query.exhibitionId? Number(route.query.exhibitionId): ''),
+      exhibitorId = ref(route.query.exhibitorId? Number(route.query.exhibitorId): ''),
+      hallCode = ref(route.query.hallCode || ''),
+      positionCode:any = ref(route.query.positionCode || '');
+
+const setQuery = (query: any) => {
+  router.push({
+    query: {
+      exhibitionId: exhibitionId.value,
+      exhibitorId: exhibitorId.value,
+      hallCode: hallCode.value,
+      positionCode: positionCode.value //.join(','),
+    }
+  })
+}
+
+// const goodsType: any = ref([]);
 const goodsList: any = ref([]);
-const options: any = ref([]);
+const goodsData: any = ref({});
+const carList: any = ref([]);
 
 const zh: any = ref([])
 const zs: any = ref([])
@@ -14,61 +41,160 @@ const zw: any = ref([])
 const form: any = reactive({})
 
 const addShop = (item: any) => {
-  console.log(item)
-}
-
-const getGoodsTypeList = () => {
-  getGoodsList({}).then((res: any) => {
-    goodsType.value = res.data.category_list
-    goodsList.value = res.data.goods_list
+  goodsApi.addCart({
+    exhibitorId: exhibitorId.value,
+    exhibitionId: exhibitionId.value,
+    hallCode: hallCode.value,
+    positionCode: positionCode.value, //.join(','),
+    id: item.id,
+    num: 1,
+  }).then((res: any) => {
+    if(res.code === 0){
+      ElMessage.success('添加成功')
+      getCart()
+    }else{
+      ElMessage.error(res.msg)
+    }
   })
 }
 
+const changeType = (i: number) => {
+  goodsData.value = goodsList.value[i]
+}
+
 const getZh = () => {
-  options.value = zw.value.map((item: any) => {
-    return {
-      label: item,
-      value: item
+  exhibitionList().then((res: any) => {
+    if(res.code === 0){
+      zh.value = res.data
     }
   })
 }
 
 const getZs = () => {
-  options.value = zw.value.map((item: any) => {
-    return {
-      label: item,
-      value: item
+  exhibitorList().then((res: any) => {
+    if(res.code === 0){
+      zs.value = res.data
     }
   })
 }
 
 const getZg = () => {
-  options.value = zw.value.map((item: any) => {
-    return {
-      label: item,
-      value: item
+  getHallInfo({exhibitionId: exhibitionId.value}).then((res: any) => {
+    if(res.code === 0){
+      zg.value = res.data
     }
   })
 }
+
+const getZw = () => {
+  boothList({exhibitionId: exhibitionId.value}).then((res: any) => {
+    if(res.code === 0){
+      zw.value = res.data
+    }
+  })
+  
+}
+
+const getMaterial = () => {
+  goodsApi.getMaterial({exhibitionId: exhibitionId.value}).then((res: any) => {
+    if(res.code === 0){
+      goodsList.value = res.data
+    }else{
+
+    }
+  })
+}
+
+const getCart = () => {
+  goodsApi.getCart({
+    exhibitorId: exhibitorId.value, 
+    exhibitionId: exhibitionId.value, 
+    hallCode: hallCode.value, 
+    positionCode: positionCode.value //.join(',')
+  }).then((res: any) => {
+    if(res.code === 0){
+      carList.value = res.data
+    }else{
+
+    }
+  })
+}
+
+watch(() => {
+  exhibitionId.value,
+  // exhibitorId.value,
+  // hallCode.value,
+  // positionCode.value,
+  () => {
+    getZg()
+    getZw()
+    getMaterial()
+    getCart()
+  }
+})
+
+watch(() => {
+  // exhibitionId.value,
+  exhibitorId.value,
+  hallCode.value,
+  positionCode.value,
+  () => {
+    // getZg()
+    // getZw()
+    // getMaterial()
+    getCart()
+  }
+})
+
+
+getZh()
+getZs()
+getZg()
+getZw()
+getMaterial()
+// getCart()
+  
 
 </script>
 <template>
   <div class="goods-reserve">
     <div class="s-top_bar">
-      <el-form label-width="auto" :inline="true">
-        <el-form-item label="展会名称">
-          <el-select v-model="form.name" placeholder="请选择展会名称"></el-select>
+      <el-form :inline="true">
+        <el-form-item label="展会名称" style="width: 220px;">
+          <el-select v-model="exhibitionId" placeholder="请选择展会名称">
+            <el-option
+              v-for="item in zh"
+              :key="item.id"
+              :label="item.exhibitionName"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="参展企业">
-          <el-select v-model="form.zs" placeholder="请选择参展企业"></el-select>
+        <el-form-item label="参展企业" style="width: 220px;">
+          <el-select v-model="exhibitorId" placeholder="请选择参展企业">
+            <el-option
+              v-for="item in zs"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="展馆">
-          <el-select v-model="form.zh" placeholder="请选择展馆"></el-select>
+        <el-form-item label="展馆" style="width: 220px;">
+          <el-select v-model="hallCode" placeholder="请选择展馆">
+            <el-option
+              v-for="item in zg"
+              :key="item.code"
+              :label="item.code"
+              :value="item.code"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="展位号">
+        <el-form-item label="展位号" style="width: 220px;">
+          <!-- multiple -->
           <el-select
-            v-model="form.zw"
-            multiple
+            v-model="positionCode"
+            
             filterable
             allow-create
             default-first-option
@@ -78,9 +204,9 @@ const getZg = () => {
           >
             <el-option
               v-for="item in zw"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.positionCode"
+              :label="item.positionCode"
+              :value="item.positionCode"
             />
           </el-select>
         </el-form-item>
@@ -89,27 +215,45 @@ const getZg = () => {
     <div class="row">
       <div class="col col1">
         <ul class="goods-type">
-          <li v-for="(item, index) in goodsType" :key="index" @click="getGoodsList(item.value)" :class="{active: item.active}">{{item.label}}</li>
+          <li v-for="(item, index) in goodsList" :key="index" @click="changeType(index)" :class="{active: item.project === goodsData.project }">{{item.project}}</li>
         </ul>
       </div>
       <div class="col col2">
+        <el-scrollbar >
         <div class="goods-list">
-          <li v-for="(item, i) in goodsList" :key="i">
-              <img :src="item.img" alt="">
+          <li v-for="(item, i) in goodsData.data" :key="i">
+            <el-image 
+                style="width: 100%; height: 200px"
+                :src="item.img"
+                :preview-src-list="[item.img]"
+                fit="contain"
+              />
               <div class="msg">
-                  <p class="title" :title="item.category_name2">{{item.category_name2}}</p>
-                  <p class="p" :title="item.products_name"><label for="">规格(尺寸)：</label>{{item.products_name}}</p>
+                  <p class="title" :title="item.position">{{item.position}}</p>
+                  <p class="p" :title="item.size"><label for="">规格(尺寸)：</label>{{item.size}}</p>
                   <p class="p" :title="item.price+'元/'+item.unit"><label for="">单&emsp;&emsp;价：</label><span>{{item.price+'元/'+item.unit}}</span></p>
-                  <p class="p"><label for="">库&emsp;&emsp;存：</label>{{item.en_stoko}}</p>
+                  <p class="p"><label for="">库&emsp;&emsp;存：</label>{{item.num}}</p>
               </div>
-              <el-button type="primary" @click="addShop(item)" :disabled="item.en_stoko<=0" >加入购物车</el-button>
+              <el-button type="primary" @click="addShop(item)" :disabled="item.num<=0" style="width: 100%;">加入购物车</el-button>
               <!-- <div data-id=${item.id} data-index=${i} class="btn j-add ${item.en_stoko>0?'':'disabled'}">加入购物车</div> -->
           </li>
         </div>
+        </el-scrollbar >
       </div>
       <div class="col col3">
         <div class="table">
-          <el-table></el-table>
+          <el-table :data="carList" border >
+            <el-table-column label="服务项目" prop="project"></el-table-column>
+            <el-table-column label="位置/版面" prop="position"></el-table-column>
+            <el-table-column label="规格" prop="size"></el-table-column>
+            <el-table-column label="单价(RMB)" prop="price"></el-table-column>
+            <el-table-column label="数量" width="200px">
+              <template #default="scope">
+                <el-input-number v-model="scope.row.num" :min="0" size="small" ></el-input-number>
+                <el-button type="danger" link @click="setQuery({positionCode: scope.row.positionCode})" style="margin-left: 10px;" icon="Delete"></el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
         <div class="bottom-bar">
           <div class="p1">已选物料 0 项 物料金额 ¥ 0</div>
@@ -150,7 +294,7 @@ const getZg = () => {
     .col2 {
       flex: 1;
       overflow: auto;
-      padding: 15px;
+      /* padding: 15px; */
       border-right: 1px solid var(--el-border-color-lighter);
       border-left: 1px solid var(--el-border-color-lighter);
     }
@@ -215,7 +359,7 @@ const getZg = () => {
         text-overflow: ellipsis;
         white-space: nowrap;
 
-        .active {
+        &.active {
           background: #F7F4EC;
           color: #BD973D;
         }
@@ -224,19 +368,26 @@ const getZg = () => {
 
     .goods-list {
       margin-left: -15px;
-
+      padding: 15px 15px 0 15px;
+      overflow: hidden;
       &>li {
         width: 273px;
         background: #fff;
         float: left;
         margin-left: 15px;
         margin-bottom: 15px;
+        padding: 10px;
 
-        &>img {
+        border: 1px solid rgba(235, 235, 235, 1);
+        &:hover{
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* .img {
           width: 100%;
           height: 200px;
           object-fit: contain
-        }
+        } */
 
         .msg {
           padding: 10px 15px;

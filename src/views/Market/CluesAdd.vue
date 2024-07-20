@@ -187,7 +187,7 @@ const getCustomField = () => {
           [item.key]: customFieldTypes[item.type].value,
         })
       })
-      form.value.customField[4]['custom11'] = [["1"], ["1", "1-2"], ["1", "1-2", "1-2-1"], ["1", "1-1", "1-1-2"]]
+      // form.value.customField[4]['custom11'] = [["1"], ["1", "1-2"], ["1", "1-2", "1-2-1"], ["1", "1-1", "1-1-2"]]
       // console.log(form.value.customField)
       // form.value.customField = res.data
     }

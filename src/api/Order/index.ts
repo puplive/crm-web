@@ -47,13 +47,7 @@ export const booth = {
       data,
     });
   },
-  // update: (data:any): Promise<any> => {
-  //   return request({
-  //     url: prefix + "/order/position/update",
-  //     method: "post",
-  //     data,
-  //   });
-  // },
+
   del: (data: any): Promise<any> => {
     return request({
       url: prefix + "/order/position/delete",
@@ -72,6 +66,13 @@ export const booth = {
     return request({
       url: prefix + "/order/position/getSearchField",
       method: "get",
+    });
+  },
+  receipt: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/contract/orderPosition/receipt",
+      method: "post",
+      data,
     });
   },
 
@@ -99,11 +100,11 @@ export const goods = {
       data,
     });
   },
-  getCart: (data: any): Promise<any> => {
+  getCart: (params: any): Promise<any> => {
     return request({
       url: prefix + "/order/material/getCart",
-      method: "post",
-      data,
+      method: "get",
+      params,
     });
   },
   create: (data: any): Promise<any> => {

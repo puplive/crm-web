@@ -76,7 +76,7 @@
     }
   })
   const ggChange = (val:any)=>{
-    gg.form.unitPrice = val.price; 
+    gg.form.unitPrice = Number(val.price); 
     gg.form.product = val.text;
     gg.form.num = val.num;
   }
@@ -211,6 +211,17 @@
     hall_list.value = data.exhibitionHall
   })
 
+  const hall_img = computed(() => {
+    let hall =hall_list.value.find((item:any) => {
+      return item.code === hallCode
+    })
+    if(hall){
+      return hall.img
+    }else{
+      return ''
+    }
+    
+  })
   
 
 
@@ -220,10 +231,17 @@
     <div class="l">
       <div class="title">
         <span>{{ exhibitionName }}</span>
-        <span>北京展会</span>
+        <!-- <span>北京展会</span> -->
         <span>展馆号：{{ hallCode }}</span>
       </div>
-      <div class="img-box"></div>
+      <div class="img-box">
+        <el-image 
+          style="width: 100%; height: 100%" 
+          :src="hall_img" 
+          :preview-src-list="[hall_img]" 
+          fit="scale-down" 
+          alt="展馆图片" />
+      </div>
     </div>
     <div class="r">
       <div class="form-box">
@@ -255,16 +273,15 @@
             </el-form-item>
             <div class="item" v-for="(item, index) in form.position" :key="index">
               <el-form-item label="展馆号">
-                <el-input v-model="form.position[index].hallCode" disabled />
-                <!-- <el-select v-model="form.position[index].hallCode" placeholder="请选择">
-                  <el-option label="Zone one" value="shanghai" />
-                  <el-option label="Zone two" value="beijing" />
-                </el-select> -->
+                <!-- <el-input v-model="form.position[index].hallCode" disabled /> -->
+                <el-select v-model="form.position[index].hallCode" placeholder="请选择">
+                  <el-option v-for="(item,i) in hall_list" :key="i" :label="item.code" :value="item.code" />
+                </el-select>
               </el-form-item>
               <el-form-item label="展位号">
                 <el-select 
                   v-model="form.position[index].positionCode"  
-                  multiple
+                  
                   filterable
                   allow-create
                   default-first-option 
@@ -358,12 +375,14 @@
       display: flex;
       flex-direction: column;
       .title{
+        margin-bottom: 20px;
         span{
           margin-right: 20px;
         }
       }
       .img-box{
         flex: 1;
+        min-height: 0;
       }
     }
     .r{

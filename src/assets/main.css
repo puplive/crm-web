@@ -25,6 +25,12 @@ ul,li{
   display: flex;
   flex-direction: column;
 }
+.s-flex-auto {
+  flex: 1 1 auto;
+}
+.s-flex-none {
+  flex: none;
+}
 .s-flex-grow {
   flex-grow: 1;
 }

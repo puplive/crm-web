@@ -181,34 +181,37 @@
   
 </script>
 <template>
-  <div>
+  <div class="s-flex-col" style="height: 100%;">
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
       <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button>
       <el-button size="small" @click="Import">导入</el-button>
       <el-button size="small" @click="Export">导出</el-button>
       <el-button size="small" @click="Move">转移给他人</el-button>
-      <el-button size="small" @click="GetClues">领取</el-button>
+      <!-- <el-button size="small" @click="GetClues">领取</el-button> -->
       <el-button size="small" @click="MoveShare">移至公海</el-button>
       <el-button size="small" @click="Del">删除</el-button>
     </div>
-    <el-table ref="tableRef" :data="tableData" border table-layout="fixed" max-height="300" header-row-class-name="s-table-header">
-      <el-table-column type="selection" width="50" />
-      <el-table-column prop="companyName" label="公司名称" width="180" />
-      <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
-      <el-table-column prop="duties" label="职务" />
-      <el-table-column prop="phone" label="电话" />
-      <el-table-column prop="recordTime" label="记录时间" width="180" />
-      <el-table-column prop="recordText" label="记录内容" />
-      <el-table-column prop="authUser" label="授权人" />
-      <el-table-column fixed="right" label="操作" width="120">
-        <template #default="scope">
-          <el-button link type="primary" size="small" @click="willSet(scope.row)">
-            转为意向客户
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="s-flex-auto" style="min-height: 0;">
+      <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
+        height="100%" header-row-class-name="s-table-header">
+        <el-table-column type="selection" width="50" />
+        <el-table-column prop="companyName" label="公司名称" width="180" />
+        <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
+        <el-table-column prop="duties" label="职务" />
+        <el-table-column prop="phone" label="电话" />
+        <el-table-column prop="recordTime" label="记录时间" width="180" />
+        <el-table-column prop="recordText" label="记录内容" />
+        <el-table-column prop="authUser" label="授权人" />
+        <el-table-column fixed="right" label="操作" width="120">
+          <template #default="scope">
+            <el-button link type="primary" size="small" @click="willSet(scope.row)">
+              转为意向客户
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <div class="s-table-pagination">
       <el-pagination layout="total, sizes, prev, pager, next" 
         :page-sizes="[10, 20, 50]" 
