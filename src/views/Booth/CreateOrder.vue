@@ -5,7 +5,7 @@ import { booth as boothApi } from '@/api/Order';
 import { ElMessage } from 'element-plus';
 
 const router = useRouter();
-const route = useRoute();
+const route: any = useRoute();
 
 const data: any = ref({});
 data.value = JSON.parse(route.query.data);
@@ -50,7 +50,7 @@ const handleSubmit = () => {
   boothApi.create(_d).then((res: any) => {
     if (res.code === 0) {
       ElMessage.success('提交成功');
-      router.push({ name: 'OrderBooth' });
+      router.push({ name: 'Will' });
     } else {
       ElMessage.error(res.msg);
     }

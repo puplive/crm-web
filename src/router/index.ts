@@ -316,7 +316,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         component: () => import('@/views/Contract/Manage.vue'),
         meta: {
           isMenu: true,
-          title: '合同管理',
+          title: '合同模板',
           // icon: 'list'
         }
       },
@@ -325,7 +325,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ContractTemplates',
         component: () => import('@/views/Contract/Templates.vue'),
         meta: {
-          isMenu: true,
+          isMenu: false,
           title: '合同模板',
           // icon: 'list'
         }
@@ -335,7 +335,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ContractConclude',
         component: () => import('@/views/Contract/Conclude.vue'),
         meta: {
-          isMenu: true,
+          isMenu: false,
           title: '签订合同',
           // icon: 'list'
         }
@@ -354,12 +354,22 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/finances/contract',
-        name: 'FinancesContract',
-        component: () => import('@/views/Finances/Contract.vue'),
+        path: '/finances/order',
+        name: 'FinancesOrder',
+        component: () => import('@/views/Finances/Order.vue'),
         meta: {
           isMenu: true,
-          title: '合同录款',
+          title: '订单管理',
+          // icon: 'list'
+        }
+      },
+      {
+        path: '/finances/payment',
+        name: 'FinancesPayment',
+        component: () => import('@/views/Finances/Payment.vue'),
+        meta: {
+          isMenu: true,
+          title: '到款信息',
           // icon: 'list'
         }
       },
@@ -369,7 +379,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         component: () => import('@/views/Finances/Invoices.vue'),
         meta: {
           isMenu: true,
-          title: '收款发票',
+          title: '发票管理',
           // icon: 'list'
         }
       }

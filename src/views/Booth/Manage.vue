@@ -98,11 +98,7 @@
       exhibitorOptions.value = res.data
     }
   })
-  const searchData = ref([
-    { label: '企业名称', key: '1', type: 'input', value: '' },
-    { label: '2', key: '2', type: 'select', value: '', options: [{ label: '选项1', value: '1' }, { label: '选项2', value: '2' }] },
-    { label: '3', key: '3', type: 'date', value: '' },
-  ])
+  const searchData = ref([])
 
   const getData = () => {
     // loading.value = true
@@ -274,7 +270,7 @@
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%" header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="50" />
+        <el-table-column type="selection" width="42" />
         <el-table-column prop="id" label="ID" width="50" />
         <el-table-column prop="hallCode" label="展馆号" />
         <el-table-column prop="positionCode" label="展位号" />

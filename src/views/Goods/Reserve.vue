@@ -1,26 +1,27 @@
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue';
+import { ref, reactive, watch, computed } from 'vue';
 import { getGoodsList } from '@/api/Goods';
 import { goods as goodsApi, getHallInfo } from '@/api/Order/index'
 import { useRouter, useRoute } from 'vue-router'
 import { exhibitionList } from '@/api/Exhibition'
 import { exhibitorList } from '@/api/Exhibitor'
 import { boothList } from '@/api/Booth'
-import { ElMessage } from 'element-plus';
-import { Watch } from '@element-plus/icons-vue';
-
+import { add } from '@/api/Custom';
+import { ro } from 'element-plus/es/locales.mjs';
 
 const router = useRouter()
 const route = useRoute()
 const exhibitionId = ref(route.query.exhibitionId? Number(route.query.exhibitionId): ''),
       exhibitorId = ref(route.query.exhibitorId? Number(route.query.exhibitorId): ''),
       hallCode = ref(route.query.hallCode || ''),
-      positionCode:any = ref(route.query.positionCode || '');
+      positionCode:any = ref(route.query.positionCode || ''),
+      clueId = route.query.clueId,
+      price = ref(0);
 
-const setQuery = (query: any) => {
+const setQuery = () => {
   router.push({
     query: {
-      exhibitionId: exhibitionId.value,
+      // exhibitionId: exhibitionId.value,
       exhibitorId: exhibitorId.value,
       hallCode: hallCode.value,
       positionCode: positionCode.value //.join(','),
@@ -40,14 +41,14 @@ const zw: any = ref([])
 
 const form: any = reactive({})
 
-const addShop = (item: any) => {
+const addShop = (item: any, num: number = 1) => {
   goodsApi.addCart({
     exhibitorId: exhibitorId.value,
     exhibitionId: exhibitionId.value,
     hallCode: hallCode.value,
     positionCode: positionCode.value, //.join(','),
     id: item.id,
-    num: 1,
+    num: num,
   }).then((res: any) => {
     if(res.code === 0){
       ElMessage.success('添加成功')
@@ -56,6 +57,9 @@ const addShop = (item: any) => {
       ElMessage.error(res.msg)
     }
   })
+}
+const setNum = (newVal: number, oldVal: number, item: any) => {
+  console.log(newVal, oldVal, item)
 }
 
 const changeType = (i: number) => {
@@ -99,6 +103,11 @@ const getMaterial = () => {
   goodsApi.getMaterial({exhibitionId: exhibitionId.value}).then((res: any) => {
     if(res.code === 0){
       goodsList.value = res.data
+      if(goodsList.value.length > 0){
+        goodsData.value = goodsList.value[0]
+      }else{
+        goodsData.value = {}
+      }
     }else{
 
     }
@@ -106,6 +115,11 @@ const getMaterial = () => {
 }
 
 const getCart = () => {
+  console.log('getCart')
+  if(!exhibitionId.value || !exhibitorId.value || !hallCode.value || !positionCode.value){
+    carList.value = []
+    return
+  }
   goodsApi.getCart({
     exhibitorId: exhibitorId.value, 
     exhibitionId: exhibitionId.value, 
@@ -120,39 +134,71 @@ const getCart = () => {
   })
 }
 
-watch(() => {
-  exhibitionId.value,
-  // exhibitorId.value,
-  // hallCode.value,
-  // positionCode.value,
-  () => {
+const sub_loading = ref(false)
+const Sub = () => {
+  sub_loading.value = true
+  goodsApi.create({
+    clueId: clueId,
+    exhibitionId: exhibitionId.value,
+    exhibitorId: exhibitorId.value,
+    hallCode: hallCode.value,
+    positionCode: positionCode.value,
+    price: price.value,
+    data: carList.value.map((item: any) => {
+      return {
+        ...item,
+        remark: ''
+      }
+    })
+  }).then((res: any) => {
+    if(res.code === 0){
+      ElMessage.success('提交成功')
+      router.go(-1)
+    }else{
+      ElMessage.error(res.msg)
+    }
+    sub_loading.value = false
+  }).catch((err: any) => {
+    sub_loading.value = false 
+  })
+}
+
+watch(() => exhibitionId.value , (val) => {
+    hallCode.value = ''
+    positionCode.value = ''
     getZg()
     getZw()
     getMaterial()
     getCart()
-  }
+
+    // setQuery()
+})
+watch(() => exhibitorId.value , (val) => {
+  getCart()
+})
+watch(() => hallCode.value , (val) => {
+  getCart()
+})
+watch(() => positionCode.value , (val) => {
+  getCart()
 })
 
-watch(() => {
-  // exhibitionId.value,
-  exhibitorId.value,
-  hallCode.value,
-  positionCode.value,
-  () => {
-    // getZg()
-    // getZw()
-    // getMaterial()
-    getCart()
-  }
-})
 
+const total = computed(() => {
+  let total = 0
+  carList.value.forEach((item: any) => {
+    total += item.price * item.num
+  })
+  price.value = total
+  return total
+})
 
 getZh()
 getZs()
 getZg()
 getZw()
 getMaterial()
-// getCart()
+getCart()
   
 
 </script>
@@ -249,20 +295,20 @@ getMaterial()
             <el-table-column label="单价(RMB)" prop="price"></el-table-column>
             <el-table-column label="数量" width="200px">
               <template #default="scope">
-                <el-input-number v-model="scope.row.num" :min="0" size="small" ></el-input-number>
+                <el-input-number v-model="scope.row.num" :min="1" size="small" @change="(newVal: number, oldVal: number) => {console.log(newVal, oldVal); addShop(scope.row, newVal-oldVal )}" ></el-input-number>
                 <el-button type="danger" link @click="setQuery({positionCode: scope.row.positionCode})" style="margin-left: 10px;" icon="Delete"></el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
         <div class="bottom-bar">
-          <div class="p1">已选物料 0 项 物料金额 ¥ 0</div>
+          <div class="p1"><span>已选物料 <font>{{ carList.length }}</font> 项</span> <span>物料金额 <font>¥{{ total }}</font></span></div>
           <div class="p2">
             <el-form-item label="最终金额" style="width: 100%; margin-bottom: 0;">
-              <el-input></el-input>
+              <el-input v-model="price"></el-input>
             </el-form-item>
           </div>
-          <el-button type="primary" style="width: 100%;">提交</el-button>
+          <el-button type="primary" style="width: 100%;" @click="Sub" :loading="sub_loading" :disabled="total<=0">提交</el-button>
         </div>
       </div>
     </div>
@@ -334,7 +380,12 @@ getMaterial()
           align-items: center;
           /* height: 48px; */
           margin-bottom: 10px;
-
+          span{
+            margin-right: 20px;
+            font{
+              color: red
+            }
+          }
 
         }
 

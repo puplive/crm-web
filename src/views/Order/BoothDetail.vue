@@ -1,17 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { booth as boothApi  } from '@/api/Order/index'
-import { ElMessage } from 'element-plus';
 
 const route = useRoute()
 const id = ref(route.query.id)
 
-const d: any = ref({})
+const d:any = ref({
+  brand: [],
+  payment: [],
+  invoice: [],
+})
 // const list2 = ref([{}])
 // const list3 = ref([{}])
 
-const getBoothDetail = async () => {
+const getBoothDetail = () => {
   boothApi.getDetail({ id: id.value }).then(res => {
     if (res.code === 0) {
       d.value = res.data
@@ -42,7 +45,10 @@ const revoke = (id: any) => {
     }).catch(() => {
     })
   }
-getBoothDetail()
+
+  // onMounted(() => {
+    getBoothDetail()
+  // })
 
 </script>
 <template>

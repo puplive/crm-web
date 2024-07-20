@@ -236,9 +236,9 @@
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border height="100%" header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="50" />
+        <el-table-column type="selection" width="40" />
         <!-- <el-table-column prop="id" label="ID" width="50" /> -->
-        <el-table-column prop="orderCode" label="订单编号" width="300" />
+        <el-table-column prop="orderCode" label="订单编号" width="280" />
         <el-table-column prop="companyName" label="企业名称" />
         <el-table-column prop="hallCode" label="展馆号" />
         <el-table-column prop="positionCode" label="展位号" />
@@ -268,7 +268,7 @@
         </el-table-column>
         <el-table-column prop="clueUser" label="所属人" />
         <el-table-column prop="authUser" label="下单人" />
-        <el-table-column fixed="right" label="操作" width="300">
+        <el-table-column fixed="right" label="操作" width="260">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
             <el-button link type="primary" size="small" v-if="scope.row.contractStatus === 0" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id } })">签订合同</el-button>

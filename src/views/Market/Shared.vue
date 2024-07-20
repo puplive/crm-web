@@ -23,7 +23,7 @@
 
   const getList = async () => {
     api.getList({status: 3, ...page, ...searchForm.value}).then((res) => {
-      if (res.code !== 200) {
+      if (res.code === 0) {
         tableData.value = res.data.data
         total.value = res.data.total
       }
@@ -98,7 +98,7 @@
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
         height="100%" header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="50" />
+        <el-table-column type="selection" width="42" />
         <el-table-column prop="companyName" label="公司名称" width="180" />
         <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
         <el-table-column prop="duties" label="职务" />

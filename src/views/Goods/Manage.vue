@@ -434,7 +434,7 @@ subGetGoodsListSetting()
             <el-button size="small" @click="handleDel(2, 0)">批量移除</el-button>
           </div>
           <el-table ref="tableRef" :data="goodsListSetting" border>
-            <el-table-column type="selection" fixed="left" width="50" />
+            <el-table-column type="selection" fixed="left" width="42" />
             <el-table-column prop="project" label="服务项目"></el-table-column>
             <el-table-column prop="position" label="位置/版面" width="100"></el-table-column>
             <el-table-column prop="size" label="尺寸规格" width="100"></el-table-column>

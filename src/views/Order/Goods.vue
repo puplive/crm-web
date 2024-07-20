@@ -225,7 +225,7 @@
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
         height="100%" header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="50" />
+        <el-table-column type="selection" width="42" />
         <!-- <el-table-column prop="id" label="ID" width="50" /> -->
         <el-table-column prop="hallCode" label="订单编号" />
         <el-table-column prop="companyName" label="企业名称" />
