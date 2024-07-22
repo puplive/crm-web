@@ -29,13 +29,20 @@
           <el-input v-model="formData.payPrice"></el-input>
         </el-form-item> -->
         <el-form-item label="到款时间">
-          <el-input v-model="formData.payTime"></el-input>
+          <!-- <el-input v-model="formData.payTime"></el-input> -->
+          <el-date-picker
+            v-model="formData.payTime"
+            type="date"
+            placeholder=""
+            style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="收款账户">
-          <el-select v-model="formData.account">
+          <el-input v-model="formData.account"></el-input>
+          <!-- <el-select v-model="formData.account">
             <el-option label="1" value="1"></el-option>
             <el-option label="2" value="2"></el-option>
-          </el-select>
+          </el-select> -->
         </el-form-item>
         <el-row>
           <el-col :span="12">
@@ -44,7 +51,7 @@
                 <el-image 
                   :src="formData.payImg" 
                   :preview-src-list="[formData.payImg]" 
-                  fit="cover" 
+                  fit="contain" 
                   style="width: 100px; height: 100px; margin-bottom: 10px;">
                   <template #error>
                     <div class="image-slot">
@@ -70,7 +77,7 @@
                 <el-image 
                   :src="formData.receiveImg" 
                   :preview-src-list="[formData.receiveImg]" 
-                  fit="cover" 
+                  fit="contain" 
                   style="width: 100px; height: 100px; margin-bottom: 10px;">
                   <template #error>
                     <div class="image-slot">
@@ -122,7 +129,7 @@
             <el-image 
               :src="formData.invoice.img" 
               :preview-src-list="[formData.invoice.img]" 
-              fit="cover" 
+              fit="contain" 
               style="width: 100px; height: 100px; margin-bottom: 10px;">
               <template #error>
                 <div class="image-slot">
@@ -161,12 +168,14 @@ import { invoice } from '@/api/Finances';
 import { ref, reactive } from 'vue'
 import { uploadFile } from '@/api/common'
 import { payment } from '@/api/Finances'
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter()
+const route = useRoute()
 
 
   const formData: any = reactive({
+    orderId: route.query.id,
     invoice: {}
   })
 

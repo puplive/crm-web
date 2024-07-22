@@ -38,6 +38,9 @@ export const boothImport = (data: any): Promise<any> => {
   return request({
     url: prefix + "/exhibition/position/import",
     method: "post",
+    // headers: {
+    //   "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundarynl6gT1BKdPWIejNq",
+    // },
     data,
   });
 }

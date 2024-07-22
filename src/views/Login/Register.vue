@@ -86,7 +86,7 @@
   import { registerApi, sendSmsApi } from "@/api/user";
   import { reactive, ref } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
-  import type { FormInstance, FormRules } from 'element-plus'
+  import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 
   // const activeName = ref('first')
   // const handleClick = (tab: string, event: Event) => {
@@ -155,7 +155,15 @@
     let {policy, ...params} = ruleForm
 
     registerApi(params).then(res => {
-      console.log(res)
+      // console.log(res)
+      if (res.code === 0) {
+        ElMessage.success('注册成功')
+        // setTimeout(() => {
+        //   router.push('/login')
+        // }, 1000)
+      }else {
+        ElMessage.error(res.msg)
+      }
     })
   }
 
@@ -163,7 +171,12 @@
     formRef.validateField(['phone'], (valid: any) => {
       if (valid) {
         sendSmsApi(ruleForm).then(res => {
-          console.log(res)
+          // console.log(res)
+          if (res.code === 0) {
+            ElMessage.success('验证码已发送，请注意查收')
+          }else {
+            ElMessage.error(res.msg)
+          }
         })
       } else {
         console.log('error phone')

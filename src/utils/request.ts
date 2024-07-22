@@ -22,7 +22,7 @@ request.interceptors.request.use(
     // console.log(config)
 
     const _userStore = userStore()
-    const _token = _userStore? _userStore.TOKEN : ''
+    const _token = _userStore ? _userStore.TOKEN : ''
     config.headers["Authorization"] = _token;
 
     return config;
@@ -40,14 +40,14 @@ request.interceptors.response.use(
     //成功回调
     //简化数据
     // console.log(response.data);
-    if(response.data.code === 100004){
+    if (response.data.code === 100004) {
       ElMessage({
         type: "error",
         message: "登录过期,请重新登录",
       });
       userStore().LOGOUT();
       return Promise.reject(response.data);
-    }else if(response.data.code === 100000){
+    } else if (response.data.code === 100000) {
       ElMessage({
         type: "error",
         message: response.data.msg,

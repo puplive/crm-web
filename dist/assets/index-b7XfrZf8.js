@@ -1,1 +1,0 @@
-import{r as t}from"./request-BBBgF-Ju.js";const e="/web/v1",o=r=>t({url:e+"/auth/login",method:"post",data:r}),n=r=>t({url:e+"/exhibitor/info/register",method:"post",data:r}),i=r=>t({url:e+"/exhibitor/info/sendSms",method:"post",data:r}),u=()=>t({url:"/auth/user/getSponsorUser",method:"get"});export{u as g,o as l,n as r,i as s};

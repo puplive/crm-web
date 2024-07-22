@@ -231,8 +231,9 @@
   }
 
   const uploadFile = (file: any) => {
+    // console.log(file)
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('file', file.file)
     formData.append('exhibitionId', id)
     boothImport(formData).then((res: any) => {
       if(res.code === 0) {
