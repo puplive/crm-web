@@ -2,37 +2,38 @@
   import { ref } from 'vue'
 
   const active = ref(0)
-  const file = ref(null)
+  const fileList: any = ref([])
   const handleFileChange = (event: any) => {
-    file.value = event.target.files[0]
+    // file.value = event.target.files[0]
   }
+  const handleDuplicate = ref('忽略')
 </script>
 <template>
   <div>
     <div></div>
     <div>
-      <div>
-        <el-steps style="max-width: 600px" :active="2" align-center>
+      <el-col :md="{span: 12, offset: 6}" style="margin-bottom: 20px">
+        <el-steps style="width: 100%" :active="2" align-center>
           <el-step title="上传文件" />
           <el-step title="导入数据" />
           <el-step title="导入结果" />
         </el-steps>
-      </div>
-      <div>
-        <div>
+      </el-col>
+      <el-row>
+        <el-col :span="12" class="l">
           <dl>
             <dt>一、请按最新的数据模版格式导入最新的数据</dt>
             <dd>
-              <el-btutton>下载数据模板</el-btutton>
+              <el-button type="primary">下载数据模板</el-button>
             </dd>
           </dl>
           <dl>
             <dt>二、请选择数据重复时的处理方式</dt>
             <dd>
               <el-radio-group v-model="handleDuplicate">
-                <el-radio label="忽略">导入新数据，跳过重复数据</el-radio>
-                <el-radio label="覆盖">去重</el-radio>
-                <el-radio label="新增">覆盖数据库已存在的数据</el-radio>
+                <el-radio label="忽略" style="width: 100%;">导入新数据，跳过重复数据</el-radio>
+                <el-radio label="覆盖" style="width: 100%;">去重</el-radio>
+                <el-radio label="新增" style="width: 100%;">覆盖数据库已存在的数据</el-radio>
               </el-radio-group>
             </dd>
           </dl>
@@ -42,7 +43,7 @@
               <el-upload
                 name="file"
                 :before-upload="handleFileChange"
-                :file-list="file"
+                v-model:file-list="fileList"
                 type="drag"
                 accept=".xls,.xlsx"
               >
@@ -50,19 +51,47 @@
               </el-upload>
             </dd>
           </dl>
-        </div>
-        <div>
+        </el-col>
+        <el-col :span="12" class="r">
           <p><el-icon><WarningFilled /></el-icon>注意事项</p>
           <p>1.模板中的表头名称不可更改，表头不能删除。</p>
           <p>2.数据必填字段必须录入</p>
           <p>3.相应数据必须填写所有人</p>
           <p>4.每次导入最大条数100000，导入文件大小最大20Mb</p>
           <p>5.客户查重规则：【客户姓名】重复 客户：客户名称 or 客户：邮箱 or 客户：手 机</p>
-        </div>
+        </el-col>
+      </el-row>
+      <div style="text-align: center;">
+        <el-button type="primary">保存</el-button>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
-  
+  .l{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    align-items: flex-end;
+    padding-right: 50px;
+    dl{
+      margin-bottom: 50px;
+      width: 300px;
+    }
+    dt{
+      margin-bottom: 10px;
+    }
+    dd{
+      padding-left: 30px;
+    }
+    
+  }
+  .r{
+    padding-left: 50px;
+    
+    p{
+      margin-bottom: 30px;
+      width: 320px;
+    }
+  }
 </style>

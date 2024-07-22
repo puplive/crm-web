@@ -158,9 +158,9 @@
       // console.log(res)
       if (res.code === 0) {
         ElMessage.success('注册成功')
-        // setTimeout(() => {
-        //   router.push('/login')
-        // }, 1000)
+        setTimeout(() => {
+          router.push('/login')
+        }, 1000)
       }else {
         ElMessage.error(res.msg)
       }

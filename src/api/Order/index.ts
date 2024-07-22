@@ -148,10 +148,11 @@ export const goods = {
       method: "get",
     });
   },
-  getDetail: (): Promise<any> => {
+  getDetail: (params: any): Promise<any> => {
     return request({
       url: prefix + "/order/material/getDetail",
       method: "get",
+      params
     });
   },
 }

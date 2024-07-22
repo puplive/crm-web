@@ -49,8 +49,8 @@
     //   ElMessage.error('Avatar picture must be JPG format!')
     //   // return false
     // } else 
-    if (rawFile.size / 1024 / 1024 > 2) {
-      ElMessage.error('最大 2MB!')
+    if (rawFile.size / 1024 / 1024 > 3) {
+      ElMessage.error('文件大小不能超过 3MB!')
       return false
     }
     return true

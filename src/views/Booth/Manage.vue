@@ -223,9 +223,9 @@
   }
 
   const beforeUpload = (file: any) => {
-    const isLt2M = file.size / 1024 / 1024 < 2
+    const isLt2M = file.size / 1024 / 1024 < 3
     if (!isLt2M) {
-      ElMessage.error('文件大小不能超过 2MB!')
+      ElMessage.error('文件大小不能超过 3MB!')
     }
     return isLt2M
   }

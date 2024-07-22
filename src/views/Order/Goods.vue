@@ -212,6 +212,21 @@
     
   }
 
+  const detail:any = reactive({
+    show: false,
+    data: {
+      materialData: [],
+    },
+  })
+  const getDetail = (id: any) => {
+    goodsApi.getDetail({ id }).then((res: any) => {
+      if (res.code === 0) {
+        detail.data = res.data
+        detail.show = true
+      }
+    })
+  }
+
   getList()
   
 </script>
@@ -228,7 +243,7 @@
         header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
         <!-- <el-table-column prop="id" label="ID" width="50" /> -->
-        <el-table-column prop="hallCode" label="订单编号" />
+        <el-table-column prop="orderCode" label="订单编号" />
         <el-table-column prop="companyName" label="企业名称" />
         <el-table-column prop="hallCode" label="展馆号" />
         <el-table-column prop="positionCode" label="展位号" />
@@ -256,9 +271,9 @@
         </el-table-column>
         <el-table-column prop="clueUser" label="所属人" />
         <el-table-column prop="authUser" label="下单人" />
-        <el-table-column fixed="right" label="操作" width="300">
+        <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
+            <el-button link type="primary" size="small" @click="getDetail(scope.row.id)">详情</el-button>
             <el-button link type="primary" size="small" v-if="scope.row.contractStatus === 0" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id } })">签订合同</el-button>
             <el-button link type="primary" size="small" v-if="scope.row.contractStatus === 1" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id } })">更新合同</el-button>
             <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
@@ -302,4 +317,34 @@
       <el-button @click="uploadContract.show = false">取消</el-button>
     </template>
   </el-dialog>
+
+  <el-dialog title="订单详情" v-model="detail.show" width="700">
+    <div>
+      <el-form>
+        <el-form-item label="展会名称" style="margin-bottom: 0;">{{ detail.data.exhibitionName }}</el-form-item>
+        <el-form-item label="企业名称">{{ detail.data.exhibitorName }}</el-form-item>
+      </el-form>
+      <el-table :data="detail.data.materialData" border show-overflow-tooltip
+        header-row-class-name="s-table-header">
+        <el-table-column prop="project" label="服务项目" />
+        <el-table-column prop="position" label="位置/版面" />
+        <el-table-column prop="size" label="尺寸规格" />
+        <el-table-column prop="num" label="数量" />
+        <el-table-column prop="price" label="单价(RMB)" />
+        <!-- <el-table-column prop="" label="小计(RMB)">
+          <template #default="scope">{{ (scope.row.num * scope.row.price).toFixed(2) }}</template>
+        </el-table-column> -->
+        <el-table-column prop="remark" label="备注" />
+      </el-table>
+      <div class="s-table-pagination" style="justify-content: space-between;">
+        <span>订单金额</span>
+        <span style="color: red;">{{ detail.data.price }}</span>
+      </div>
+    </div>
+    <!-- <template #footer>
+      <el-button type="primary" @click="subContract" :loading="Loading">确定</el-button>
+      <el-button @click="detail.show = false">取消</el-button>
+    </template> -->
+  </el-dialog>
+
 </template>

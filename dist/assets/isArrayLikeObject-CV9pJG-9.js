@@ -1,0 +1,1 @@
+import{s as i,r as s,q as e}from"./el-button-CG_o-Lai.js";import{t as o}from"./_initCloneObject-1jg3Pr7d.js";import{b5 as a}from"./index-CeUaYvVA.js";function f(r,t){return i(s(r,t,e),r+"")}function p(r){return a(r)&&o(r)}export{f as b,p as i};

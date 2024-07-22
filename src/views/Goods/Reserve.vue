@@ -246,8 +246,8 @@ getCart()
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="参展企业" style="width: 220px;" disabled>
-          <el-select v-model="exhibitorId" placeholder="请选择参展企业">
+        <el-form-item label="参展企业" style="width: 220px;">
+          <el-select v-model="exhibitorId" placeholder="请选择参展企业" disabled>
             <el-option
               v-for="item in zs"
               :key="item.id"

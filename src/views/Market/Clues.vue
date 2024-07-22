@@ -5,6 +5,7 @@
   import api from '@/api/Clues'
   import {exhibitionList} from '@/api/Exhibition'
   import {getSponsorUser} from '@/api/user'
+import router from '@/router'
 
   const page = reactive({
     page: 1,
@@ -148,7 +149,8 @@
   }
 
   const Import = () => {
-    console.log('import')
+    // console.log('import')
+    router.push('/market/clues/import')
   }
 
   const Export = () => {

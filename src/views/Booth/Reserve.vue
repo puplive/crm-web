@@ -380,7 +380,7 @@
       display: flex;
       flex-direction: column;
       .title{
-        margin-bottom: 20px;
+        /* margin-bottom: 20px; */
         span{
           margin-right: 20px;
         }
@@ -388,6 +388,7 @@
       .img-box{
         flex: 1;
         min-height: 0;
+        padding: 20px;
       }
     }
     .r{

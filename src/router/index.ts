@@ -206,6 +206,15 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
+        path: '/market/clues/import',
+        name: 'CluesImport',
+        component: () => import('@/views/Market/CluesImport.vue'),
+        meta: {
+          isMenu: false,
+          title: '线索导入',
+        }
+      },
+      {
         path: '/market/clues/info',
         name: 'CluesInfo',
         component: () => import('@/views/Market/CluesInfo.vue'),

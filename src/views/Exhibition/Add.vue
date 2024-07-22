@@ -420,11 +420,12 @@ const getHallData = () => {
 // }
 
 const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  if (rawFile.type !== 'image/jpeg') {
-    ElMessage.error('Avatar picture must be JPG format!')
-    // return false
-  } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error('Avatar picture size can not exceed 2MB!')
+  // if (rawFile.type !== 'image/jpeg') {
+  //   ElMessage.error('Avatar picture must be JPG format!')
+  //   // return false
+  // } else 
+  if (rawFile.size / 1024 / 1024 > 3) {
+    ElMessage.error('文件大小不能超过 3MB!')
     return false
   }
   return true
