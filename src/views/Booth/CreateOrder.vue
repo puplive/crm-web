@@ -57,7 +57,9 @@ const handleSubmit = () => {
 
   })
 }
-const handleBack = () => {}
+const handleBack = () => {
+  router.go(-1);
+}
 
 
 </script>

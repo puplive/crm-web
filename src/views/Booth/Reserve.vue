@@ -202,6 +202,8 @@
     booth_list.value = res.data
   })
 
+  const companyName = ref('')
+  const isNew = ref(true)
   getExhibitionInfo({clueId, exhibitionId}).then(res => {
     let data = res.data
     add_list.value = data.attachPrice.add
@@ -209,6 +211,9 @@
     pp_list.value = data.companyBrand
     gg_list.value = data.unitPrice
     hall_list.value = data.exhibitionHall
+
+    companyName.value = data.companyName
+    isNew.value = data.isNew
   })
 
   const hall_img = computed(() => {
@@ -250,12 +255,12 @@
           <el-form :model="form" label-width="auto" class="form">
             <div>预定展位</div>
             <el-form-item label="企业名称">
-              
+              {{ companyName }}
             </el-form-item>
             <el-form-item label="新展商">
-              <el-radio-group v-model="form.resource">
-                <el-radio value="1">是</el-radio>
-                <el-radio value="2">否</el-radio>
+              <el-radio-group v-model="isNew" disabled>
+                <el-radio :value="true">是</el-radio>
+                <el-radio :value="false">否</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="加收">

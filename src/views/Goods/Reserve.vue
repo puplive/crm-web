@@ -237,7 +237,7 @@ getCart()
     <div class="s-top_bar">
       <el-form :inline="true">
         <el-form-item label="展会名称" style="width: 220px;">
-          <el-select v-model="exhibitionId" placeholder="请选择展会名称">
+          <el-select v-model="exhibitionId" placeholder="请选择展会名称" disabled>
             <el-option
               v-for="item in zh"
               :key="item.id"
@@ -246,7 +246,7 @@ getCart()
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="参展企业" style="width: 220px;">
+        <el-form-item label="参展企业" style="width: 220px;" disabled>
           <el-select v-model="exhibitorId" placeholder="请选择参展企业">
             <el-option
               v-for="item in zs"
