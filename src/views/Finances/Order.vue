@@ -2,6 +2,7 @@
 <script lang="ts" setup>
   import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
+  import ApplyInvoice from './components/ApplyInvoice.vue'
   import api from '@/api/Finances'
 
   const page = reactive({
@@ -13,6 +14,7 @@
   const tableData: any = ref([])
   const tableRef: any = ref(null)
   const searchData = ref([])
+  const applyInvoiceRef: any = ref(null)
 
 
   const search = (d: any) => {
@@ -22,10 +24,10 @@
   }
 
   const getList = async () => {
-    api.order.getList().then((res: any) => {
+    api.order.getList({...searchForm.value, ...page}).then((res: any) => {
       if (res.code === 0) {
-        tableData.value = res.data
-        // total.value = res.data.total
+        tableData.value = res.data.data
+        total.value = res.data.total
       }
     })
   }
@@ -92,9 +94,11 @@
     <!-- </div> -->
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
-        height="100%" header-row-class-name="s-table-header">
+        height="100%"
+        show-overflow-tooltip
+        header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
-        <el-table-column prop="orderCode" label="订单编号" width="180" />
+        <el-table-column prop="orderCode" label="订单编号" width="200" />
         <el-table-column prop="companyName" label="企业名称" />
         <el-table-column prop="hallCode" label="展位号" />
         <el-table-column prop="brand" label="参展品牌" />
@@ -120,13 +124,14 @@
           </template>
         </el-table-column>
         <el-table-column prop="clueUser" label="持有人" />
-        <el-table-column fixed="right" label="操作" width="200">
+        <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">详情</el-button>
-            <el-button link type="primary" size="small" @click="Del([scope.row.id])">申请发票</el-button>
-            <el-button link type="primary" size="small" @click="Del([scope.row.id])">录入到款</el-button>
-            <el-button link type="primary" size="small" @click="Del([scope.row.id])">撤销</el-button>
-            <el-button link type="primary" size="small" @click="Del([scope.row.id])">下推</el-button>
+            <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
+            <!-- <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">详情</el-button> -->
+            <el-button link type="primary" size="small" @click="applyInvoiceRef.setApplay(scope.row)">申请发票</el-button>
+            <el-button link type="primary" size="small" @click="$router.push({ name: 'FinancesRecording', query: { id: scope.row.id } })">录入到款</el-button>
+            <el-button link type="primary" size="small" @click="">撤销</el-button>
+            <el-button link type="primary" size="small" @click="">下推</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -140,5 +145,7 @@
         @change="getList" />
     </div>
   </div>
+
+  <ApplyInvoice ref="applyInvoiceRef" @callback="getList" />
 
 </template>

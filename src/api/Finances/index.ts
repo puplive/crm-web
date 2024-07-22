@@ -27,11 +27,10 @@ export const payment = {
       params,
     });
   },
-  getSearchField: (params: any): Promise<any> => {
+  getSearchField: (): Promise<any> => {
     return request({
       url: prefix + "/finance/orderPayment/getSearchField",
       method: "get",
-      params,
     });
   },
   add: (data: any): Promise<any> => {
@@ -65,21 +64,20 @@ export const invoice = {
       params,
     });
   },
-  getSearchField: (params: any): Promise<any> => {
+  getSearchField: (): Promise<any> => {
     return request({
       url: prefix + "/finance/orderPaymentInvoice/getSearchField",
       method: "get",
-      params,
     });
   },
-  add: (data: any): Promise<any> => {
+  edit: (data: any): Promise<any> => {
     return request({
       url: prefix + "/finance/orderPaymentInvoice/edit",
       method: "post",
       data,
     });
   },
-  applyInvoice: (data: any): Promise<any> => {
+  openInvoice: (data: any): Promise<any> => {
     return request({
       url: prefix + "/finance/orderPaymentInvoice/openInvoice",
       method: "post",

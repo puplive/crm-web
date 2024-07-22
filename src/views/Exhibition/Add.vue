@@ -109,12 +109,12 @@
             <el-button link type="primary">上传图片</el-button>
           </el-upload>
           <el-image v-if="item.img" :src="item.img" :preview-src-list="[item.img]" fit="cover" style="width: 32px; height: 32px; margin-left: 10px;">
-              <template #error>
-                <div class="image-slot">
-                  <el-icon><Picture /></el-icon>
-                </div>
-              </template>
-            </el-image>
+            <template #error>
+              <div class="image-slot">
+                <el-icon><Picture /></el-icon>
+              </div>
+            </template>
+          </el-image>
           
         </div>
       </el-form-item>

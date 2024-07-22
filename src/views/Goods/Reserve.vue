@@ -6,8 +6,6 @@ import { useRouter, useRoute } from 'vue-router'
 import { exhibitionList } from '@/api/Exhibition'
 import { exhibitorList } from '@/api/Exhibitor'
 import { boothList } from '@/api/Booth'
-import { add } from '@/api/Custom';
-import { ro } from 'element-plus/es/locales.mjs';
 
 const router = useRouter()
 const route = useRoute()
@@ -58,8 +56,40 @@ const addShop = (item: any, num: number = 1) => {
     }
   })
 }
-const setNum = (newVal: number, oldVal: number, item: any) => {
-  console.log(newVal, oldVal, item)
+const editCart = (item: any, num: number = 1) => {
+  goodsApi.editCart({
+    exhibitorId: exhibitorId.value,
+    exhibitionId: exhibitionId.value,
+    hallCode: hallCode.value,
+    positionCode: positionCode.value, //.join(','),
+    id: item.id,
+    num: num,
+  }).then((res: any) => {
+    if(res.code === 0){
+      ElMessage.success('成功')
+      // getCart()
+    }else{
+      ElMessage.error(res.msg)
+    }
+    getCart()
+  })
+}
+const delCart = (item: any) => {
+  goodsApi.delCart({
+    exhibitorId: exhibitorId.value,
+    exhibitionId: exhibitionId.value,
+    hallCode: hallCode.value,
+    positionCode: positionCode.value, //.join(','),
+    id: item.id,
+    num: item.num,
+  }).then((res: any) => {
+    if(res.code === 0){
+      ElMessage.success('删除成功')
+      getCart()
+    }else{
+      ElMessage.error(res.msg)
+    }
+  })
 }
 
 const changeType = (i: number) => {
@@ -295,8 +325,8 @@ getCart()
             <el-table-column label="单价(RMB)" prop="price"></el-table-column>
             <el-table-column label="数量" width="200px">
               <template #default="scope">
-                <el-input-number v-model="scope.row.num" :min="1" size="small" @change="(newVal: number, oldVal: number) => {console.log(newVal, oldVal); addShop(scope.row, newVal-oldVal )}" ></el-input-number>
-                <el-button type="danger" link @click="setQuery({positionCode: scope.row.positionCode})" style="margin-left: 10px;" icon="Delete"></el-button>
+                <el-input-number v-model="scope.row.num" :min="1" size="small" @change="(newVal: number, oldVal: number) => { editCart(scope.row, newVal-oldVal )}" ></el-input-number>
+                <el-button type="danger" link @click="delCart(scope.row)" style="margin-left: 10px;" icon="Delete"></el-button>
               </template>
             </el-table-column>
           </el-table>

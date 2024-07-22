@@ -269,7 +269,8 @@
       <el-button size="small" @click="deleteSelected">删除</el-button>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
-      <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%" header-row-class-name="s-table-header">
+      <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%" show-overflow-tooltip
+        header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
         <el-table-column prop="id" label="ID" width="50" />
         <el-table-column prop="hallCode" label="展馆号" />

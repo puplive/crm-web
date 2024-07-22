@@ -8,7 +8,8 @@
     <div class="s-table-operations">
       <el-button size="small" icon="Plus" @click="showAddForm({})">新增</el-button>
     </div>
-    <el-table :data="tableData" row-key="id" border :tree-props="{ children: 'child' }" default-expand-all>
+    <el-table :data="tableData" row-key="id" border :tree-props="{ children: 'child' }" default-expand-all show-overflow-tooltip
+        header-row-class-name="s-table-header">
       <el-table-column prop="name" label="名称" />
       <el-table-column label="操作" width="180px">
         <template #default="scope">

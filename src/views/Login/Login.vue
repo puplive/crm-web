@@ -16,7 +16,7 @@
             <el-button style="width: 100%" type="primary" @click="login">登录</el-button>
             <div class="login-footer">
               <el-button link type="primary" @click="router.push('/register')">注册账号</el-button>
-              <el-button link type="primary" @click="router.push('/help')">操作手册</el-button>
+              <el-link type="primary" href="/handbooks.pdf" target="_blank">操作手册</el-link>
             </div>
           </el-form>
         </div>
@@ -32,7 +32,6 @@
   import { reactive } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { userStore } from '@/stores/user'
-import { ElMessage } from 'element-plus';
   const store = userStore()
 
   const router = useRouter()

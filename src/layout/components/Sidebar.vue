@@ -9,10 +9,10 @@
   routers.value = asyncRouterMap
   // console.log(routers)
   const handleOpen = (key, keyPath) => {
-    console.log(key, keyPath);
+    // console.log(key, keyPath);
   }
   const handleClose =(key, keyPath) =>{
-    console.log(key, keyPath);
+    // console.log(key, keyPath);
   }
 
 </script>

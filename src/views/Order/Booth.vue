@@ -235,7 +235,8 @@
       <el-button size="small" @click="handleExport">导出</el-button>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
-      <el-table ref="tableRef" :data="tableData" border height="100%" header-row-class-name="s-table-header">
+      <el-table ref="tableRef" :data="tableData" border height="100%" show-overflow-tooltip
+        header-row-class-name="s-table-header">
         <el-table-column type="selection" width="40" />
         <!-- <el-table-column prop="id" label="ID" width="50" /> -->
         <el-table-column prop="orderCode" label="订单编号" width="280" />

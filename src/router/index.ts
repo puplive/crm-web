@@ -93,7 +93,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ExhibitionEnroll',
         component: () => import('@/views/Exhibition/Enroll.vue'),
         meta: {
-          isMenu: true,
+          isMenu: false,
           title: '展会报名',
           // icon: 'list'
         }
@@ -382,7 +382,17 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           title: '发票管理',
           // icon: 'list'
         }
-      }
+      },
+      {
+        path: '/finances/recording',
+        name: 'FinancesRecording',
+        component: () => import('@/views/Finances/Recording.vue'),
+        meta: {
+          isMenu: false,
+          title: '录入到款',
+          // icon: 'list'
+        }
+      },
     ]
   },
   {
@@ -481,7 +491,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  console.log(to)
+  // console.log(to)
   // 页面标题
   document.title = to.meta.title || '招展管理系统';
 

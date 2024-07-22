@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="main-foot">
-      <!-- <img class="foot-logo" src="@/assets/logo.svg" alt="" /> -->
+      <img class="foot-logo" src="@/assets/images/foot-logo.svg" alt="" />
       <div class="foot-right-main">
         <ul class="">
           <li><a href="https://scm.exposaas.com/web/oa-yun/about">公司信息</a></li>
@@ -33,11 +33,9 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      .footer-logo{
-        margin-right:20px;
-        margin-top:43px;
+      .foot-logo{
         width:120px;
-        height:38px
+        /* height:38px */
       }
       
       .foot-right-main{

@@ -100,6 +100,20 @@ export const goods = {
       data,
     });
   },
+  editCart: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/order/material/editCart",
+      method: "post",
+      data,
+    });
+  },
+  delCart: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/order/material/delCart",
+      method: "post",
+      data,
+    });
+  },
   getCart: (params: any): Promise<any> => {
     return request({
       url: prefix + "/order/material/getCart",

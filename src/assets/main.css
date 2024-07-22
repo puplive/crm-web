@@ -53,8 +53,8 @@ ul,li{
   justify-content: space-between;
 }
 
-.s-table-header{
-  background-color: black;
+.s-table-header .el-table__cell{
+  background-color: #f4f4f5 !important;
 }
 .s-table-operations{
   display: flex;

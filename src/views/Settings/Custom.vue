@@ -5,7 +5,8 @@
       <div class="s-table-operations">
         <el-button size="small" icon="Plus" @click="showAddForm">线索字段</el-button>
       </div>
-      <el-table :data="tableData" row-key="id" border default-expand-all>
+      <el-table :data="tableData" row-key="id" border default-expand-all show-overflow-tooltip
+        header-row-class-name="s-table-header">
         <el-table-column prop="name" label="名称">
           <template #default="scope: any">
             <el-button v-if="scope.row.type != 1 && scope.row.type != 2" type="primary" link
@@ -43,8 +44,8 @@
         </el-table-column>
       </el-table>
     </el-tab-pane>
-    <el-tab-pane label="联系人"></el-tab-pane>
-    <el-tab-pane label="会员"></el-tab-pane>
+    <!-- <el-tab-pane label="联系人"></el-tab-pane>
+    <el-tab-pane label="会员"></el-tab-pane> -->
   </el-tabs>
 
   <el-dialog :title="addformTitle" v-model="addformShow" style="width: 400px;">

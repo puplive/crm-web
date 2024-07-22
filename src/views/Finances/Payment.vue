@@ -2,6 +2,7 @@
 <script lang="ts" setup>
   import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
+  import ApplyInvoice from './components/ApplyInvoice.vue'
   import api from '@/api/Finances'
 
   const page = reactive({
@@ -13,6 +14,8 @@
   const tableData: any = ref([])
   const tableRef: any = ref(null)
   const searchData = ref([])
+  const applyInvoiceRef: any = ref(null)
+  
 
 
   const search = (d: any) => {
@@ -22,10 +25,10 @@
   }
 
   const getList = async () => {
-    api.getList().then((res: any) => {
+    api.payment.getList({...searchForm.value, ...page}).then((res: any) => {
       if (res.code === 0) {
-        tableData.value = res.data
-        // total.value = res.data.total
+        tableData.value = res.data.data
+        total.value = res.data.total
       }
     })
   }
@@ -47,36 +50,35 @@
     // })
   }
 
-  const Del = () => {
-    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-    if (ids.length === 0) {
-      ElMessage.warning('请选择需要删除的线索')
-      return
-    }
-    ElMessageBox.confirm('确定删除所选线索？', '提示', {
+  const Del = (ids: any) => {
+    // let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+    // if (ids.length === 0) {
+    //   ElMessage.warning('请选择需要删除的线索')
+    //   return
+    // }
+    ElMessageBox.confirm('确定删除？', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
 
-      api.del({ id: ids}).then((res: any) => {
-        if(res.code === 0) {
-          ElMessage.success('删除成功')
-          getList()
-        }else {
-          ElMessage.error(res.msg)
-        }
-      })
+      // api.del({ id: ids}).then((res: any) => {
+      //   if(res.code === 0) {
+      //     ElMessage.success('删除成功')
+      //     getList()
+      //   }else {
+      //     ElMessage.error(res.msg)
+      //   }
+      // })
     }).catch(() => {
     })
   }
 
-  // api.getSearchField().then((res) => {
-  //   if(res.code === 0) {
-  //     searchData.value = res.data
-  //   }
-  // })
-  
+  api.payment.getSearchField().then((res) => {
+    if(res.code === 0) {
+      searchData.value = res.data
+    }
+  })
 
   getList()
   
@@ -85,38 +87,56 @@
   <div class="s-flex-col" style="height: 100%;">
     <div></div>
     <TableSearch :data="searchData" @search="search"/>
-    <!-- <div class="s-table-operations"> -->
+    <div class="s-table-operations">
       <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button> -->
       <!-- <el-button size="small" @click="Import">导入</el-button> -->
       <!-- <el-button size="small" @click="Export">导出</el-button> -->
-      <!-- <el-button size="small" @click="Del">删除</el-button> -->
-    <!-- </div> -->
+      <el-button size="small" @click="">合并开票</el-button>
+    </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
-        height="100%" header-row-class-name="s-table-header">
+        height="100%" show-overflow-tooltip
+        header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
-        <el-table-column prop="name" label="标题" width="180" />
-        <el-table-column prop="" label="类型" />
-        <el-table-column prop="" label="编号" />
-        <el-table-column prop="" label="开始日期" />
-        <el-table-column prop="" label="结束日期" />
-        <el-table-column prop="" label="签约日期" />
+        <el-table-column prop="code" label="编号" width="180" />
+        <el-table-column prop="companyName" label="企业名称" />
+        <el-table-column prop="positionCode" label="展位号" />
+        <el-table-column prop="payCompany" label="付款公司" />
+        <el-table-column prop="payPrice" label="付款金额" />
+        <el-table-column prop="" label="付款方式" />
+        <el-table-column prop="orderPrice" label="订单金额" />
+        <el-table-column prop="payType" label="付款类型">
+          <template #default="scope">
+            {{ {1:'预定金',2:'首款',3:'二次款',4:'尾款',5:'转款'}[scope.row.payType as number] }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="receiveAccount" label="收款账户" />
+        <el-table-column prop="payTime" label="到款时间" />
+        <el-table-column prop="invoiceStatus" label="发票">
+          <template #default="scope">
+            {{ {0:'未申请',1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="clueUser" label="持有人" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <!-- <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">编辑</el-button>
-            <el-button link type="primary" size="small" @click="Del([scope.row.id])">删除</el-button> -->
+            <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">详情</el-button>
+            <el-button link type="primary" size="small" @click="applyInvoiceRef.setApplay(scope.row)">申请发票</el-button>
+            <el-button link type="primary" size="small" @click="Del([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <!-- <div class="s-table-pagination">
+    <div class="s-table-pagination">
       <el-pagination layout="total, sizes, prev, pager, next" 
         :page-sizes="[10, 20, 50]" 
         :total="total"
         v-model:current-page="page.page" 
         v-model:page-size="page.perPage" 
         @change="getList" />
-    </div> -->
+    </div>
   </div>
+
+  <ApplyInvoice ref="applyInvoiceRef" @calback="getList"/>
 
 </template>
