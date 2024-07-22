@@ -111,7 +111,37 @@ const getClues = (data: any): Promise<any> => {
     data
   });
 }
+const contact = {
+  getList: (params: any): Promise<any> => {
+    return request({
+      url: prefix + "/sales/clueContact/getList",
+      method: "get",
+      params,
+    });
+  },
+  add: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/sales/clueContact/add",
+      method: "post",
+      data
+    });
+  },
+  edit: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/sales/clueContact/edit",
+      method: "post",
+      data
+    });
+  },
+  del: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/sales/clueContact/delete",
+      method: "post",
+      data
+    });
+  }
 
+}
 export default {
   getList,
   getData,
@@ -126,5 +156,6 @@ export default {
   getCity,
   getCustomField,
   getSearchField,
-  getClues
+  getClues,
+  contact
 };

@@ -325,7 +325,7 @@ getCart()
             <el-table-column label="单价(RMB)" prop="price"></el-table-column>
             <el-table-column label="数量" width="200px">
               <template #default="scope">
-                <el-input-number v-model="scope.row.num" :min="1" size="small" @change="(newVal: number, oldVal: number) => { editCart(scope.row, newVal-oldVal )}" ></el-input-number>
+                <el-input-number v-model="scope.row.num" :min="1" size="small" @change="(newVal: number, oldVal: number) => { editCart(scope.row, newVal )}" ></el-input-number>
                 <el-button type="danger" link @click="delCart(scope.row)" style="margin-left: 10px;" icon="Delete"></el-button>
               </template>
             </el-table-column>

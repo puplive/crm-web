@@ -17,7 +17,7 @@ export const loginApi = (data: UserLoginType): Promise<any> => {
 //   });
 // }
 
-export const registerApi = (data:any): Promise<any> => {
+export const registerApi = (data: any): Promise<any> => {
   return request({
     url: prefix + "/exhibitor/info/register",
     method: "post",
@@ -25,7 +25,7 @@ export const registerApi = (data:any): Promise<any> => {
   });
 }
 
-export const sendSmsApi = (data:any): Promise<any> => {
+export const sendSmsApi = (data: any): Promise<any> => {
   return request({
     url: prefix + "/exhibitor/info/sendSms",
     method: "post",
@@ -34,25 +34,25 @@ export const sendSmsApi = (data:any): Promise<any> => {
 }
 
 // 定义一个函数，用于获取用户列表
-export const getUser = (): Promise<any> =>{
+export const getUser = (): Promise<any> => {
   return request({
-    url: "/user/list",
+    url: prefix + "/user/list",
     method: "get",
   });
 }
 
 // menu
-export const getMenu = (): Promise<any> =>{
+export const getMenu = (): Promise<any> => {
   return request({
-    url: "/auth/menu/getList",
+    url: prefix + "/auth/menu/getList",
     method: "get",
   });
 }
 
 
-export const getSponsorUser = (): Promise<any> =>{
+export const getSponsorUser = (): Promise<any> => {
   return request({
-    url: "/auth/user/getSponsorUser",
+    url: prefix + "/auth/user/getSponsorUser",
     method: "get",
   });
 }
