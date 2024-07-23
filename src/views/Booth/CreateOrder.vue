@@ -7,9 +7,10 @@ import { ElMessage } from 'element-plus';
 const router = useRouter();
 const route: any = useRoute();
 
+const companyName = route.query.companyName;
 const data: any = ref({});
 data.value = JSON.parse(route.query.data);
-console.log(data.value);
+// console.log(data.value);
 const unit:any = {1:'%', 2:'￥'}
 const format = (d: any) => {
   let _t: any = []
@@ -72,7 +73,9 @@ const handleBack = () => {
 
     <div v-for="(item, index) in data.position" :key="index" class="item">
       <el-table :data="[item]" border>
-        <el-table-column prop="name" label="企业名称"></el-table-column>
+        <el-table-column prop="name" label="企业名称">
+          <template #default="scoped">{{ companyName }}</template>
+        </el-table-column>
         <el-table-column prop="companyBrand" label="参展品牌"></el-table-column>
         <el-table-column prop="hallCode" label="展馆号"></el-table-column>
         <el-table-column prop="positionCode" label="展位号"></el-table-column>

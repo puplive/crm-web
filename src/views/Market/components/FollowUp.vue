@@ -2,30 +2,84 @@
   <div class="follow-up">
     <div class="title">跟进记录</div>
     <div class="form">
-      <el-input type="textarea" placeholder="请输入跟进内容"></el-input>
+      <el-input type="textarea" placeholder="请输入跟进内容" v-model="text"></el-input>
       <div class="item">
         <label>跟进状态</label>
-        <el-select v-model="status"></el-select>
-        <el-select v-model="status"></el-select>
-        <el-button type="primary" @click="handleSubmit" size="mini">提交</el-button>
+        <el-select v-model="status" placeholder="跟进状态">
+          <el-option label="未跟进" :value="0"></el-option>
+          <el-option label="电话邀约" :value="1"></el-option>
+          <el-option label="客户拜访" :value="2"></el-option>
+          <el-option label="初步方案" :value="3"></el-option>
+          <el-option label="停滞" :value="4"></el-option>
+        </el-select>
+        <el-select v-model="contactId" placeholder="联系人" 
+          @change="(val: any)=>{ 
+            if(val === 0){
+              contactName.value = ''
+            }else{
+              let d = contactList.find(item => item.id === val)
+              contactName.value =  d? d.name : ''
+            }
+          }">
+          <el-option label="请选择" :value="0"></el-option>
+          <el-option v-for="item in contactList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+        </el-select>
+        <el-button type="primary" @click="handleSubmit" >提交</el-button>
       </div>
     </div>
     
     <div class="record">
       <el-scrollbar>
         <ul class="list">
-          <li v-for="(item, index) in 100" :key="index">{{item}}</li>
+          <li v-for="(item, index) in recordList" :key="index">{{item.text}}</li>
         </ul>
       </el-scrollbar>
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue'
-  const status = ref('')
+  import { contact, clueRecord } from '@/api/Clues'
+
+  const props = defineProps(['clueId'])
+
+  const text = ref('')
+  const status = ref(0)
+  const contactId = ref(0)
+  const contactName = ref('')
   const handleSubmit = () => {
-    console.log(status.value)
+    clueRecord.add({ 
+      clueId: props.clueId, 
+      text: text.value, 
+      status: status.value, 
+      contactId: contactId.value,
+      contactName: contactName.value
+    }).then(res => {
+      console.log(res)
+      if (res.code === 0) {
+        ElMessage.success('跟进记录添加成功')
+        getRecordList()
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
   }
+  const recordList: any = ref([])
+  const getRecordList = () => {
+    clueRecord.getList({ clueId: props.clueId }).then(res => {
+      if (res.code === 0) {
+        recordList.vue = res.data
+      }
+    })
+  }
+  getRecordList()
+
+  const contactList: any = ref([])
+  contact.getList({ clueId: props.clueId }).then(res => {
+    if (res.code === 0) {
+      contactList.value = res.data
+    }
+  })
 
 </script>
 <style scoped>

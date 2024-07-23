@@ -3,7 +3,7 @@ import request from "@/utils/request";
 
 const prefix = "/web/v1";
 
-const getList = (params: any): Promise<any> => {
+export const getList = (params: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getList",
     method: "get",
@@ -11,7 +11,7 @@ const getList = (params: any): Promise<any> => {
   });
 }
 
-const getData = (params: any): Promise<any> => {
+export const getData = (params: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getData",
     method: "get",
@@ -19,7 +19,7 @@ const getData = (params: any): Promise<any> => {
   });
 }
 
-const add = (data: any): Promise<any> => {
+export const add = (data: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/add",
     method: "post",
@@ -27,7 +27,7 @@ const add = (data: any): Promise<any> => {
   });
 }
 
-const edit = (data: any): Promise<any> => {
+export const edit = (data: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/edit",
     method: "post",
@@ -35,7 +35,7 @@ const edit = (data: any): Promise<any> => {
   });
 }
 
-const del = (data: any): Promise<any> => {
+export const del = (data: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/delete",
     method: "post",
@@ -43,7 +43,7 @@ const del = (data: any): Promise<any> => {
   });
 }
 
-const changeUser = (data: any): Promise<any> => {
+export const changeUser = (data: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/changeUser",
     method: "post",
@@ -51,7 +51,7 @@ const changeUser = (data: any): Promise<any> => {
   });
 }
 
-const changeIntention = (data: any): Promise<any> => {
+export const changeIntention = (data: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/changeIntention",
     method: "post",
@@ -59,7 +59,7 @@ const changeIntention = (data: any): Promise<any> => {
   });
 }
 
-const changePublic = (data: any): Promise<any> => {
+export const changePublic = (data: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/changePublic",
     method: "post",
@@ -67,14 +67,14 @@ const changePublic = (data: any): Promise<any> => {
   });
 }
 
-const getCountry = (): Promise<any> => {
+export const getCountry = (): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getCountry",
     method: "get",
   });
 }
 
-const getProvince = (params: any): Promise<any> => {
+export const getProvince = (params: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getProvince",
     method: "get",
@@ -82,7 +82,7 @@ const getProvince = (params: any): Promise<any> => {
   });
 }
 
-const getCity = (params: any): Promise<any> => {
+export const getCity = (params: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getCity",
     method: "get",
@@ -90,28 +90,36 @@ const getCity = (params: any): Promise<any> => {
   });
 }
 
-const getCustomField = (): Promise<any> => {
+export const getCustomField = (): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getCustomField",
     method: "get",
   });
 }
 
-const getSearchField = (): Promise<any> => {
+export const getSearchField = (): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getSearchField",
     method: "get",
   });
 }
 
-const getClues = (data: any): Promise<any> => {
+export const getClues = (data: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/receive",
     method: "post",
     data
   });
 }
-const contact = {
+
+export const merge = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/sales/clue/merge",
+    method: "post",
+    data
+  });
+}
+export const contact = {
   getList: (params: any): Promise<any> => {
     return request({
       url: prefix + "/sales/clueContact/getList",
@@ -142,6 +150,24 @@ const contact = {
   }
 
 }
+
+export const clueRecord = {
+  getList: (params: any): Promise<any> => {
+    return request({
+      url: prefix + "/sales/clueRecord/getList",
+      method: "get",
+      params,
+    });
+  },
+  add: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/sales/clueRecord/add",
+      method: "post",
+      data
+    });
+  },
+
+}
 export default {
   getList,
   getData,
@@ -157,5 +183,7 @@ export default {
   getCustomField,
   getSearchField,
   getClues,
-  contact
+  merge,
+  contact,
+  clueRecord
 };

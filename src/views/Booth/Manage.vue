@@ -4,7 +4,7 @@
   import TableSearch from '@/components/TableSearch/index.vue'
   import { useRouter, useRoute } from 'vue-router'
   import { boothList, boothAdd, boothEdit , boothDelete, boothImport, boothExport } from '@/api/Booth/index'
-  import { exhibitorList } from '@/api/Exhibitor/index'
+  import { getExhibitor } from '@/api/Exhibitor/index'
 // import { uploadFile } from '@/api/common'
 
   
@@ -93,7 +93,7 @@
   }
 
   let exhibitorOptions: any = ref([])
-  exhibitorList().then((res: any) => {
+  getExhibitor().then((res: any) => {
     if (res.code === 0) {
       exhibitorOptions.value = res.data
     }

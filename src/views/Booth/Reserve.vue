@@ -115,7 +115,7 @@
     // console.log({...route.query, data: form})
     router.push({
       name: 'BoothCreateOrder',
-      query: {...route.query, data: JSON.stringify(form)}
+      query: {...route.query, companyName: companyName.value, data: JSON.stringify(form)}
     })
     // boothApi.create(form).then(res => {
     //   console.log(res)

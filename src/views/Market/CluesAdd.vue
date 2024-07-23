@@ -1,6 +1,6 @@
 <template>
   <div class="" style="margin-bottom: 20px;">
-    <span>新建销售线索</span>
+    <span>{{route.name === 'CluesEdit'? '编辑' : '新建'}}销售线索</span>
   </div>
   <div style="width: 500px;">
     <el-form ref="formRef" :model="form" label-width="auto">
@@ -95,6 +95,9 @@ import { customFieldTypes } from "@/api/Custom";
 import rules from "@/utils/rules";
 const router = useRouter()
 const route = useRoute()
+
+console.log(route)
+
 // const activeName = ref('first')
 const formRef: any = ref(null)
 const form: any = ref({
@@ -117,19 +120,29 @@ const cityCode: any = ref('')
 const customField: any = ref([])
 
 const save = () => {
-  console.log(form.value)
   formRef.value.validate((valid: any) => {
     if (!valid) {
       return
     }
-    api.add(form.value).then(res => {
-      if (res.code === 0) {
-        ElMessage.success('保存成功')
-        router.go(-1)
-      } else {
-        ElMessage.error(res.msg)
-      }
-    })
+    if(route.name === 'CluesEdit'){
+      api.edit({ id: route.query.id, ...form.value}).then(res => {
+        if (res.code === 0) {
+          ElMessage.success('编辑成功')
+          router.go(-1)
+        } else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }else{
+      api.add(form.value).then(res => {
+        if (res.code === 0) {
+          ElMessage.success('保存成功')
+          router.go(-1)
+        } else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }
 
   })
 }
@@ -138,7 +151,9 @@ const getCountry = () => {
   api.getCountry().then(res => {
     if (res.code === 0) {
       country.value = res.data
-      countryCode.value = 'CHN'
+      if(route.name !== 'CluesEdit'){
+        countryCode.value = 'CHN'
+      }
     }
   })
 }
@@ -155,6 +170,7 @@ const getCity = () => {
   api.getCity({ provinceCode: provinceCode.value }).then(res => {
     if (res.code === 0) {
       city.value = res.data
+      
     }
   })
 }
@@ -181,23 +197,50 @@ const getCustomField = () => {
   api.getCustomField().then(res => {
     if (res.code === 0) {
       customField.value = res.data
-
       res.data.forEach((item: any) => {
         form.value.customField.push({
           [item.key]: customFieldTypes[item.type].value,
         })
       })
-      // form.value.customField[4]['custom11'] = [["1"], ["1", "1-2"], ["1", "1-2", "1-2-1"], ["1", "1-1", "1-1-2"]]
-      // console.log(form.value.customField)
-      // form.value.customField = res.data
+    }
+  })
+}
+
+getCountry()
+getCustomField()
+
+if(route.name === 'CluesEdit'){
+  api.getData({ id: route.query.id }).then((res: any) => {
+    if (res.code === 0) {
+      form.value = res.data
+
+      api.getCountry().then(res => {
+        if (res.code === 0) {
+          country.value = res.data
+          countryCode.value = country.value.find((i: any)=> { return i.name == form.value.country }).code
+          
+          api.getProvince({ countryCode: countryCode.value }).then(res => {
+            if (res.code === 0) {
+              province.value = res.data
+              provinceCode.value = province.value.find((i: any)=> { return i.name == form.value.province }).code
+              api.getCity({ provinceCode: provinceCode.value }).then(res => {
+                if (res.code === 0) {
+                  city.value = res.data
+                  cityCode.value = city.value.find((i: any)=> { return i.name == form.value.city }).code
+                  
+                }
+              })
+            }
+          })
+        }
+      })
+    }else {
+      // console.log(res.msg)
     }
   })
 }
 
 
-
-getCountry()
-getCustomField()
 </script>
 <style scoped>
 .title-bar {

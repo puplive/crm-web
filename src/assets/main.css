@@ -54,7 +54,9 @@ ul,li{
 }
 
 .s-table-header .el-table__cell{
-  background-color: #f4f4f5 !important;
+  /* background-color: #f4f4f5 !important; */
+  background-color: var(--el-fill-color-light) !important;
+  color: #444;
 }
 .s-table-operations{
   display: flex;

@@ -4,7 +4,7 @@ import { getGoodsList } from '@/api/Goods';
 import { goods as goodsApi, getHallInfo } from '@/api/Order/index'
 import { useRouter, useRoute } from 'vue-router'
 import { exhibitionList } from '@/api/Exhibition'
-import { exhibitorList } from '@/api/Exhibitor'
+import { getExhibitor } from '@/api/Exhibitor'
 import { boothList } from '@/api/Booth'
 
 const router = useRouter()
@@ -105,7 +105,7 @@ const getZh = () => {
 }
 
 const getZs = () => {
-  exhibitorList().then((res: any) => {
+  getExhibitor().then((res: any) => {
     if(res.code === 0){
       zs.value = res.data
     }

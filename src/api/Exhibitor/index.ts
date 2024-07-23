@@ -9,6 +9,13 @@ export const exhibitorList = (): Promise<any> => {
     method: "get",
   });
 }
+export const getExhibitor = (): Promise<any> => {
+  return request({
+    url: prefix + "/exhibitor/account/getExhibitor",
+    method: "get",
+  });
+}
+
 // export const boothAdd = (data:any): Promise<any> => {
 //   return request({
 //     url: prefix + "/exhibition/position/add",

@@ -37,46 +37,38 @@ const getList = async () => {
   })
 }
 
-const willForm: any = ref({})
-const willShow = ref(false)
-const willFormRef: any = ref(null)
-
-const willSet = (row: any) => {
-  willForm.value.id = row.id
-  willShow.value = true
-}
-const willSub = () => {
-  willFormRef.value.validate((valid: boolean) => {
-    if (!valid) {
+const merge: any = reactive({
+  show: false,
+  data: [],
+  masterId: '',
+  mergeId: '',
+  ref: null,
+  set: () => {
+    let d = tableRef.value.getSelectionRows()
+    if (d.length !== 2) {
+      ElMessage.warning('请选择需要合并的线索，必须选择两个')
       return
     }
-    api.changeIntention(willForm.value).then((res) => {
+    merge.show = true
+    merge.data = d
+    merge.masterId = d[0].id
+    merge.mergeId = d[1].id
+  },
+  sub: () => {
+    api.merge({ 
+      masterId: merge.masterId, 
+      mergeId: merge.mergeId 
+    }).then((res) => {
       if (res.code === 0) {
-        ElMessage.success('转为意向成功')
+        ElMessage.success('合并成功')
+        merge.show = false
         getList()
-        willShow.value = false
       } else {
         ElMessage.error(res.msg)
       }
     })
-  })
-}
-
-const GetClues = () => {
-  let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-  if (ids.length === 0) {
-    ElMessage.warning('请选择需要领取的线索')
-    return
   }
-  api.getClues({ id: ids }).then((res: any) => {
-    if (res.code === 0) {
-      ElMessage.success('领取成功')
-      getList()
-    } else {
-      ElMessage.error(res.msg)
-    }
-  })
-}
+})
 
 const Del = () => {
   let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
@@ -188,7 +180,7 @@ getList()
 </script>
 <template>
   <div class="s-flex-col" style="height: 100%;">
-    <div class="">
+    <div class="" style="margin-bottom: 10px;">
       <el-dropdown @command="handleCommand" style="outline: none;">
         <span class="el-dropdown-link">
           {{ zh_name }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -205,7 +197,7 @@ getList()
     <div class="s-table-operations">
       <el-button size="small" @click="Move">转移</el-button>
       <el-button size="small" @click="MoveShare">移至公海</el-button>
-      <el-button size="small" @click="">合并</el-button>
+      <el-button size="small" @click="merge.set">合并</el-button>
       <el-button size="small" @click="Export">导出</el-button>
       <el-button size="small" @click="Del">删除</el-button>
       <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
@@ -253,21 +245,30 @@ getList()
   </div>
 
 
-  <!-- <el-dialog v-model="willShow" title="转为意向客户" width="500" draggable>
-    <el-form ref="willFormRef" :model="willForm" label-width="auto">
-      <el-form-item label="项目" prop="exhibitionId" :rules="[ { required: true, message: '请选择项目' } ]">
-        <el-select v-model="willForm.exhibitionId" placeholder="">
-          <el-option v-for="item in exhibitionData" :key="item.id" :label="item.exhibitionName" :value="item.id" />
-        </el-select>
-      </el-form-item>
-    </el-form>
+  <el-dialog v-model="merge.show" title="合并销售线索" width="500" draggable>
+    <div style="font-size: 15px;margin-bottom: 2px; color: #444;">请在下列线索中选择主线索，合并后：</div>
+    <p>1. 被合并线索下的动态迁移到主线索下</p>
+    <p>2. 合并后的线索以主线索为主，并保留两条线索的所有记录</p>
+    <el-table :data="merge.data" border show-overflow-tooltip
+        header-row-class-name="s-table-header"
+        @current-change="(val: any)=>{ let old = merge.masterId;  merge.masterId = val.id; merge.mergeId = old; }">
+      <el-table-column label="主线索" width="70">
+        <template #default="scope">
+          <el-radio :value="scope.row.id" v-model="merge.masterId"></el-radio>
+        </template>
+      </el-table-column>
+      <el-table-column prop="companyName" label="公司名称"/>
+      <el-table-column prop="exhibitionName" label="展会姓名"/>
+      <!-- <el-table-column prop="recordTime" label="创建时间"/> -->
+      <el-table-column prop="authUser" label="线索所有人" />
+    </el-table>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="willShow = false">取消</el-button>
-        <el-button type="primary" @click="willSub">确定</el-button>
+        <el-button @click="merge.show = false">取消</el-button>
+        <el-button type="primary" @click="merge.sub">确定</el-button>
       </div>
     </template>
-  </el-dialog> -->
+  </el-dialog>
 
   <el-dialog v-model="moveShow" title="转移销售线索" width="500" draggable>
     <el-form ref="moveFormRef" :model="moveForm" label-width="auto">
