@@ -232,33 +232,11 @@ import router from '@/router'
 
   <el-dialog v-model="willShow" title="转为意向客户" width="500" draggable>
     <el-form ref="willFormRef" :model="willForm" label-width="auto">
-      <!-- <el-form-item label=" " style="margin-bottom: 0;">
-        <span style="font-size: 16px; font-weight: bold;">{{ willForm.name }}</span>
-      </el-form-item>
-      <el-form-item label=" ">
-        <el-radio-group v-model="willForm.type">
-          <el-radio value="1">新增账号</el-radio>
-          <el-radio value="2">关联账号</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="用户名" >
-        <el-input v-model="willForm.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="注册人" >
-        <el-input v-model="willForm.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="手机" >
-        <el-input v-model="willForm.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="邮箱" >
-        <el-input v-model="willForm.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="密码" >
-        <el-input v-model="willForm.name" autocomplete="off" />
-      </el-form-item> -->
       <el-form-item label="项目" prop="exhibitionId" :rules="[ { required: true, message: '请选择项目' } ]">
         <el-select v-model="willForm.exhibitionId" placeholder="">
-          <el-option v-for="item in exhibitionData" :key="item.id" :label="item.exhibitionName" :value="item.id" />
+          <template v-for="item in exhibitionData" :key="item.id">
+            <el-option v-if="item.status === 1" :label="item.exhibitionName" :value="item.id" />
+          </template>
         </el-select>
       </el-form-item>
     </el-form>
