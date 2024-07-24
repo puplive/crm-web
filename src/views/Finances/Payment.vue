@@ -137,6 +137,6 @@
     </div>
   </div>
 
-  <ApplyInvoice ref="applyInvoiceRef" @calback="getList"/>
+  <ApplyInvoice ref="applyInvoiceRef" @callback="getList"/>
 
 </template>

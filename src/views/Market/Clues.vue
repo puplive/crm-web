@@ -5,7 +5,10 @@
   import api from '@/api/Clues'
   import {exhibitionList} from '@/api/Exhibition'
   import {getSponsorUser} from '@/api/user'
-import router from '@/router'
+  import { useRouter, useRoute } from 'vue-router'
+
+  const router = useRouter()
+  const route = useRoute()
 
   const page = reactive({
     page: 1,
@@ -201,7 +204,7 @@ import router from '@/router'
         <el-table-column type="selection" width="42" />
         <el-table-column prop="companyName" label="公司名称" width="180">
           <template #default="scope"> 
-            <el-link :href="'/market/clues/info?id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
+            <el-link :href="'/market/clues/info?type=1&id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="exhibitionContact" label="联系方式" width="180" />

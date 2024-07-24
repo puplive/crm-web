@@ -15,13 +15,13 @@
         <el-select v-model="contactId" placeholder="联系人" 
           @change="(val: any)=>{ 
             if(val === 0){
-              contactName.value = ''
+              contactName = ''
             }else{
               let d = contactList.find(item => item.id === val)
-              contactName.value =  d? d.name : ''
+              contactName =  d? d.name : ''
             }
           }">
-          <el-option label="请选择" :value="0"></el-option>
+          <el-option label="联系人" :value="0"></el-option>
           <el-option v-for="item in contactList" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
         <el-button type="primary" @click="handleSubmit" >提交</el-button>
@@ -31,7 +31,10 @@
     <div class="record">
       <el-scrollbar>
         <ul class="list">
-          <li v-for="(item, index) in recordList" :key="index">{{item.text}}</li>
+          <li v-for="(item, index) in recordList" :key="index" class="item">
+            <div class="p1">{{item.time}}</div>
+            <div class="p2">（联系人：{{item.contact}}）{{item.text}}</div>
+          </li>
         </ul>
       </el-scrollbar>
     </div>
@@ -42,7 +45,7 @@
   import { contact, clueRecord } from '@/api/Clues'
 
   const props = defineProps(['clueId'])
-
+  
   const text = ref('')
   const status = ref(0)
   const contactId = ref(0)
@@ -55,7 +58,6 @@
       contactId: contactId.value,
       contactName: contactName.value
     }).then(res => {
-      console.log(res)
       if (res.code === 0) {
         ElMessage.success('跟进记录添加成功')
         getRecordList()
@@ -68,17 +70,25 @@
   const getRecordList = () => {
     clueRecord.getList({ clueId: props.clueId }).then(res => {
       if (res.code === 0) {
-        recordList.vue = res.data
+        recordList.value = res.data
       }
     })
   }
   getRecordList()
 
   const contactList: any = ref([])
-  contact.getList({ clueId: props.clueId }).then(res => {
-    if (res.code === 0) {
-      contactList.value = res.data
-    }
+  const getContactList = () => {
+    contact.getList({ clueId: props.clueId }).then(res => {
+      if (res.code === 0) {
+        contactList.value = res.data
+      }
+    })
+  }
+  getContactList()
+
+  // const emit = defineEmits(['callback'])
+  defineExpose({
+    getContactList,
   })
 
 </script>
@@ -119,6 +129,21 @@
       overflow-y: auto;
       .list{
         padding: 15px;
+        .item {
+          margin-bottom: 15px;
+          .p1 {
+            font-size: 14px;
+            color: var(--el-text-color-secondary);
+            margin-bottom: 5px;
+          }
+          .p2 {
+            font-size: 14px;
+            color: var(--el-text-color-primary);
+            margin-bottom: 5px;
+            background-color: rgba(249, 250, 251, 1);
+            padding: 5px;
+          }
+        }
       }
     }
   }

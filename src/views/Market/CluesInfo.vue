@@ -4,24 +4,28 @@
       <div class="clues-info-header-left">
         <div class="p1">{{ form.companyName }}</div>
         <div class="p2">
-          <span>所属展商：{{ form.companyName }}</span>
-          <span>新展商：
-            <el-radio-group v-model="exhibitionInfo.isNew">
+          <span v-if="type === '2'">所属展商：{{ form.companyName }}</span>
+          <span v-if="type === '2'">新展商：
+            <el-radio-group v-model:model-value="form.isNew" @change="changeIsNew">
               <el-radio :value="true" style="margin-right: 10px;">是</el-radio>
               <el-radio :value="false">否</el-radio>
             </el-radio-group>
           </span>
-          <span>客户经理：{{ authUser }}</span>
+          <span>客户经理：{{ form.authUser }}</span>
         </div>
       </div>
       <div class="clues-info-header-right">
-        <el-button type="primary" size="small">退展</el-button>
-        <el-button type="primary" size="small">转他人</el-button>
+        <template v-if="type === '2'"> 
+          <el-button type="info" size="small" plain v-if="form.isExit" disabled>已退展</el-button>
+          <el-button type="primary" size="small" v-else @click="exitClues">退展</el-button>
+        </template>
+        
+        <el-button type="primary" size="small" @click="()=>{ moveRef.setMove([id]) }">转他人</el-button>
       </div>
     </div>
     <div class="clues-info-content">
       <div class="clues-info-left">
-        <el-tabs v-model="activeName" type="border-card" class="demo-tabs" style="height: 100%;">
+        <el-tabs v-model="tab.activeName" @tab-change="tab.change" type="border-card" class="demo-tabs" style="height: 100%;" >
           <el-tab-pane label="资料" :name="1">
             <div style="">
             <el-form ref="form" label-width="auto">
@@ -73,15 +77,24 @@
               <el-table border :data="lxr.list" show-overflow-tooltip header-row-class-name="s-table-header">
                 <el-table-column prop="name" label="姓名"/>
                 <el-table-column prop="duties" label="职务"/>
-                <el-table-column prop="type" label="类别" />
+                <el-table-column prop="type" label="类别">
+                  <template #default="scope">
+                    {{ ['无', '展位', '财务', '市场', '现场'][scope.row.type]  }}
+                  </template>
+                </el-table-column>
                 <el-table-column prop="mobile" label="手机号" />
                 <el-table-column prop="tel" label="电话" />
                 <el-table-column prop="email" label="邮箱" />
                 <el-table-column prop="wechat" label="微信" />
-                <el-table-column prop="status" label="在职状态" />
-                <el-table-column prop="isExhibitionContact" label="展会联系人" />
-                <el-table-column label="操作" fixed="right">
+                <el-table-column prop="status" label="在职状态">
                   <template #default="scope">
+                    {{ ['','在职', '离职', '调岗'][scope.row.status]  }}
+                  </template>
+                </el-table-column>
+                <el-table-column prop="isExhibitionContact" label="展会联系人" />
+                <el-table-column label="操作" fixed="right" width="150">
+                  <template #default="scope">
+                    <el-button type="text" size="small" @click="lxr.setEdit(scope.row)">编辑</el-button>
                     <el-button type="text" size="small" @click="lxr.del(scope.row.id)">删除</el-button>
                   </template>
                 </el-table-column>
@@ -90,7 +103,7 @@
           </div>
           </el-tab-pane>
 
-          <el-tab-pane label="订单" :name="2">
+          <el-tab-pane label="订单" :name="2" v-if="type === '2'">
             <div><el-button type="primary">签订合同</el-button></div>
             <p style="padding: 10px 0;">展位订单</p>
             <el-table :data="orderData" border show-overflow-tooltip>
@@ -107,7 +120,7 @@
             </el-table>
           </el-tab-pane>
 
-          <el-tab-pane label="合同" :name="3">
+          <el-tab-pane label="合同" :name="3" v-if="type === '2'">
             <el-table :data="orderData" border  show-overflow-tooltip>
               <el-table-column prop="date" label="Date" width="180" />
               <el-table-column prop="name" label="Name" width="180" />
@@ -119,47 +132,91 @@
 
       <div class="clues-info-right">
         
-        <FollowUp :clueId="id"></FollowUp>
+        <FollowUp ref="followUp" :clueId="id"></FollowUp>
         
       </div>
     </div>
   </div>
 
-  <el-dialog title="添加联系人" v-model="lxr.show" width="500px">
-    <el-form :model="lxr.form" label-width="80px">
+  <el-dialog :title="lxr.isEdit?'编辑': '添加联系人'" v-model="lxr.show" width="500px">
+    <el-form :model="lxr.form" label-width="auto">
+      <el-form-item label="姓名">
+        <el-input v-model="lxr.form.name"></el-input>
+      </el-form-item>
+      <el-form-item label="职务">
+        <el-input v-model="lxr.form.duties"></el-input>
+      </el-form-item>
+      <el-form-item label="类别">
+        <el-select v-model="lxr.form.type">
+          <!-- 0无1展位2财务3市场4现场 -->
+          <el-option label="无" :value="0"></el-option>
+          <el-option label="展位" :value="1"></el-option>
+          <el-option label="财务" :value="2"></el-option>
+          <el-option label="市场" :value="3"></el-option>
+          <el-option label="现场" :value="4"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="手机号">
+        <el-input v-model="lxr.form.mobile"></el-input>
+      </el-form-item>
+      <el-form-item label="电话">
+        <el-input v-model="lxr.form.tel"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱">
+
+        <el-input v-model="lxr.form.email"></el-input>
+      </el-form-item>
+
+      <el-form-item label="微信">
+        <el-input v-model="lxr.form.wechat"></el-input>
+      </el-form-item>
+
+      <el-form-item label="在职状态">
+        <el-select v-model="lxr.form.status">
+          <el-option label="在职" :value="1"></el-option>
+          <el-option label="离职" :value="2"></el-option>
+          <el-option label="调岗" :value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
     </el-form>
     <template #footer>
       <el-button type="default" @click="lxr.show = false">取消</el-button>
-      <el-button type="primary" @click="lxr.add">添加</el-button>
+      <el-button v-if="lxr.isEdit" type="primary" @click="lxr.edit">修改</el-button>
+      <el-button v-else type="primary" @click="lxr.add">添加</el-button>
     </template>
   </el-dialog>
+
+  <Move ref="moveRef" @callback="_getData"></Move>
 
 </template>
 <script lang="ts" setup>
 import { ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 import FollowUp from './components/FollowUp.vue'
-import {getData, contact, getCustomField, del } from '@/api/Clues'
-import { getExhibitionInfo } from "@/api/Order";
+import Move from './components/Move.vue'
+import {getData, contact, getCustomField, del, editNew, exitExhibition } from '@/api/Clues'
 
 const router = useRouter()
 const route = useRoute()
 
+const type = route.query.type // 1: 线索 2: 资料 订单 合同
 const id = route.query.id
 const exhibitionId = route.query.exhibitionId
-const authUser = route.query.authUser
+// const authUser = ref('') //route.query.authUser
 
-const activeName = ref(1)
 const form: any = ref({
   customField: [],
   // customFieldTrans: []
 })
 const customField: any = ref([])
-getCustomField().then(res => {
-  if (res.code === 0) {
-    customField.value = res.data
-  }
-})
+const _getCustomField = () => {
+  getCustomField().then(res => {
+    if (res.code === 0) {
+      customField.value = res.data
+    }
+  })
+}
 
 const customFieldTrans = computed(() => {
   let list = []
@@ -201,33 +258,48 @@ const orderData = [
   },
 ]
 
-getData({ id }).then((res: any) => {
-  if (res.code === 0) {
-    form.value = res.data
-  }else {
-    // console.log(res.msg)
-  }
-})
+const _getData = () => {
+  getData({ id }).then((res: any) => {
+    if (res.code === 0) {
+      form.value = res.data
+    }else {
+      // console.log(res.msg)
+    }
+  })
+}
+
 
 const delClues = () => {
-  del({ id: [id] }).then(res => {
+  ElMessageBox.confirm('确定删除？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    del({ id: [id] }).then(res => {
+      if (res.code === 0) {
+        ElMessage.success('删除成功')
+        setTimeout(() => {
+          router.go(-1)
+        }, 1000)
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
+  }).catch(() => {
+    console.log('cancel')
+  })
+}
+
+const changeIsNew = () => {
+  console.log(form.value.isNew)
+  editNew({ id: id, status: form.value.isNew }).then(res => {
     if (res.code === 0) {
-      ElMessage.success('删除成功')
-      setTimeout(() => {
-        router.go(-1)
-      }, 1000)
+      ElMessage.success('修改成功')
     }else {
       ElMessage.error(res.msg)
     }
   })
 }
-
-const exhibitionInfo: any = ref({})
-getExhibitionInfo({ clueId: id, exhibitionId: exhibitionId }).then(res => {
-  if (res.code === 0) {
-    exhibitionInfo.value = res.data
-  }
-})
 
 
 const contactList = ()=>{
@@ -237,9 +309,10 @@ const contactList = ()=>{
     }
   })
 }
-contactList()
+
 const lxr: any = reactive({
   show: false,
+  isEdit: false,
   list: [],
   form: {
     clueId: id,
@@ -255,6 +328,7 @@ const lxr: any = reactive({
   },
   setAdd: ()=>{
     lxr.show = true
+    lxr.isEdit = false
     lxr.form = {
       clueId: id,
       name: '',
@@ -268,22 +342,31 @@ const lxr: any = reactive({
       // isExhibitionContact: false,
     }
   },
+  setEdit: (d: any)=>{
+    lxr.show = true
+    lxr.isEdit = true
+    lxr.form = d
+    lxr.form.clueId = id
+  },
   add: ()=>{
     contact.add(lxr.form).then(res => {
       if (res.code === 0) {
         ElMessage.success('添加成功')
         lxr.show = false
         contactList()
+        followUp.value.getContactList()
       }else {
         ElMessage.error(res.msg)
       }
     })
   },
-  edit: (d: any)=>{
-    contact.edit(d).then(res => {
+  edit: ()=>{
+    contact.edit(lxr.form).then(res => {
       if (res.code === 0) {
         ElMessage.success('修改成功')
-        // contactList()
+        lxr.show = false
+        contactList()
+        followUp.value.getContactList()
       }else {
         ElMessage.error(res.msg)
         contactList()
@@ -291,17 +374,61 @@ const lxr: any = reactive({
     })
   },
   del: (id: any)=>{
-    contact.del({id}).then(res => {
-      if (res.code === 0) {
-        ElMessage.success('删除成功')
-        contactList()
+    ElMessageBox.confirm('确定删除？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      contact.del({id}).then(res => {
+        if (res.code === 0) {
+          ElMessage.success('删除成功')
+          contactList()
+          followUp.value.getContactList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    })
+  }
+})
 
+const followUp: any = ref(null)
+const moveRef: any = ref(null)
+
+const exitClues = () => {
+  ElMessageBox.confirm('确定退展？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    exitExhibition({ id: id }).then(res => {
+      if (res.code === 0) {
+        ElMessage.success('退展成功')
+        setTimeout(() => {
+          router.go(-1)
+        }, 1000)
       }else {
         ElMessage.error(res.msg)
       }
     })
+  })
+}
+
+const tab = reactive({
+  activeName: 1,
+  change: (name: any) => {
+    tab.activeName = name
+    if (name === 1) {
+      _getCustomField()
+      contactList()
+    }
+    
+    _getData()
   }
 })
+_getData()
+_getCustomField()
+contactList()
 
 </script>
 <style>
@@ -341,6 +468,9 @@ const lxr: any = reactive({
     .clues-info-left{
       flex: 1;
       min-width: 0;
+      .el-form-item{
+        margin-bottom: 0;
+      }
     }
     .clues-info-right{
       width: 400px;
@@ -361,7 +491,5 @@ const lxr: any = reactive({
     font-weight: bold;
   }
 }
-.el-form-item{
-  margin-bottom: 0;
-}
+
 </style>

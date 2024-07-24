@@ -100,7 +100,11 @@
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
-        <el-table-column prop="companyName" label="公司名称" width="180" />
+        <el-table-column prop="companyName" label="公司名称" width="180">
+          <template #default="scope"> 
+            <el-link :href="'/market/clues/info?type=1&id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
+          </template>
+        </el-table-column>
         <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
         <el-table-column prop="duties" label="职务" />
         <el-table-column prop="phone" label="电话" />

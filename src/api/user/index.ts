@@ -56,3 +56,10 @@ export const getSponsorUser = (): Promise<any> => {
     method: "get",
   });
 }
+
+export const sponsor = (): Promise<any> => {
+  return request({
+    url: prefix + "/auth/sponsor/getList",
+    method: "get",
+  });
+}

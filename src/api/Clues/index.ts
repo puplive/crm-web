@@ -119,6 +119,23 @@ export const merge = (data: any): Promise<any> => {
     data
   });
 }
+
+export const editNew = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/sales/clue/editNew",
+    method: "post",
+    data
+  });
+}
+
+export const exitExhibition = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/sales/clue/exitExhibition",
+    method: "post",
+    data
+  });
+}
+
 export const contact = {
   getList: (params: any): Promise<any> => {
     return request({
@@ -184,6 +201,8 @@ export default {
   getSearchField,
   getClues,
   merge,
+  editNew,
+  exitExhibition,
   contact,
   clueRecord
 };

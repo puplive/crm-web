@@ -11,8 +11,8 @@
   const clueId = route.query.clueId;
   const exhibitionId = route.query.exhibitionId;
   const exhibitorId = route.query.exhibitorId;
-  const hallCode = route.query.hallCode;
-  const exhibitionName = route.query.exhibitionName
+  const hallCode = ref(route.query.hallCode);
+  // const exhibitionName = route.query.exhibitionName
 
   const hall_list: any = ref([])
   const booth_list: any = ref([])
@@ -43,7 +43,7 @@
     ],
     position: [
       {
-        hallCode: hallCode,
+        hallCode: hallCode.value,
         positionCode: '',
         companyBrand: [],
         product: '',
@@ -88,28 +88,37 @@
     }
   })
 
-  
-
   const Add = () => {
+    let n = form.position.length
+    set_booth_list(hallCode.value, n)
     form.position.push({
-        hallCode: hallCode,
-        positionCode: '',
-        companyBrand: [],
-        product: '',
-        unitPrice: '',
-        type: 1,
-        length: 0,
-        width: 0,
-        costPrice: 0,
-        addPrice: 0,
-        discountPrice: 0,
-        finalPrice: 0,
-        deposit: 0,
-        isOffset: 1,
-        payType: 1,
-        ratio: 0
-      })
+      hallCode: hallCode.value,
+      positionCode: '',
+      companyBrand: [],
+      product: '',
+      unitPrice: '',
+      type: 1,
+      length: 0,
+      width: 0,
+      costPrice: 0,
+      addPrice: 0,
+      discountPrice: 0,
+      finalPrice: 0,
+      deposit: 0,
+      isOffset: 1,
+      payType: 1,
+      ratio: 0
+    })
+    
   }
+
+  const  set_booth_list = (hall: any, n: any)=>{
+    booth_list.value[n] = []
+    getPosition({exhibitionId, hallCode: hall}).then(res => {
+      booth_list.value[n] = res.data
+    })
+  }
+  set_booth_list(hallCode.value, 0)
 
   const Sub = () => {
     // console.log({...route.query, data: form})
@@ -198,9 +207,7 @@
     return Number((_costPrice+_addPrice-_discountPrice).toFixed(2))
   }
 
-  getPosition({exhibitionId, hallCode}).then(res => {
-    booth_list.value = res.data
-  })
+  
 
   const companyName = ref('')
   const isNew = ref(true)
@@ -218,7 +225,7 @@
 
   const hall_img = computed(() => {
     let hall =hall_list.value.find((item:any) => {
-      return item.code === hallCode
+      return item.code === hallCode.value
     })
     if(hall){
       return hall.img
@@ -235,7 +242,7 @@
   <div class="booth-reserve">
     <div class="l">
       <div class="title">
-        <span>{{ exhibitionName }}</span>
+        <span>{{ companyName }}</span>
         <!-- <span>北京展会</span> -->
         <span>展馆号：{{ hallCode }}</span>
       </div>
@@ -279,20 +286,20 @@
             <div class="item" v-for="(item, index) in form.position" :key="index">
               <el-form-item label="展馆号">
                 <!-- <el-input v-model="form.position[index].hallCode" disabled /> -->
-                <el-select v-model="form.position[index].hallCode" placeholder="请选择">
+                <el-select v-model="form.position[index].hallCode" placeholder="请选择" @change="set_booth_list(item.hallCode, index); hallCode=item.hallCode">
                   <el-option v-for="(item,i) in hall_list" :key="i" :label="item.code" :value="item.code" />
                 </el-select>
               </el-form-item>
               <el-form-item label="展位号">
                 <el-select 
-                  v-model="form.position[index].positionCode"  
+                  v-model="form.position[index].positionCode"
                   
                   filterable
                   allow-create
                   default-first-option 
                   :reserve-keyword="false"
                   placeholder="请选择">
-                  <el-option v-for="(item,i) in booth_list" :key="i" :label="item" :value="item" />
+                  <el-option v-for="(item,i) in booth_list[index]" :key="i" :label="item" :value="item" />
                 </el-select>
               </el-form-item>
               <el-form-item label="品牌">
@@ -322,7 +329,7 @@
                 <el-input v-model="form.position[index].finalPrice" />
               </el-form-item>
               <div style="text-align: center;">
-                <el-button link type="danger" @click="form.position.splice(index, 1)"><el-icon><DeleteFilled /></el-icon></el-button>
+                <el-button link type="danger" @click="form.position.splice(index, 1); booth_list.splice(index, 1)"><el-icon><DeleteFilled /></el-icon></el-button>
               </div>
             </div>
           </el-form>

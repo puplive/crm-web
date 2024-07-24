@@ -22,6 +22,13 @@
                   <el-input v-model="ruleForm.companyName" />
                 </el-form-item>
               </el-col>
+              <el-col :span="12">
+                <el-form-item label="选择主办" prop="sponsorId">
+                  <el-select v-model="ruleForm.sponsorId" placeholder="请选择主办">
+                    <el-option v-for="item in sponsorList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="12">
@@ -83,10 +90,10 @@
 </template>
 <script lang="ts" setup>
   import vHeader from './components/Header.vue'
-  import { registerApi, sendSmsApi } from "@/api/user";
+  import { registerApi, sendSmsApi, sponsor } from "@/api/user";
   import { reactive, ref } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+  import {  type FormInstance, type FormRules } from 'element-plus'
 
   // const activeName = ref('first')
   // const handleClick = (tab: string, event: Event) => {
@@ -96,7 +103,8 @@
   const router = useRouter()
   const ruleFormRef = ref<FormInstance>()
   const ruleForm = reactive({ 
-    companyName: '', 
+    companyName: '',
+    sponsorId: '', 
     userName: '', 
     gender: '1',
     email: '',
@@ -108,6 +116,9 @@
   const rules = {
     companyName: [
       { required: true, message: '请输入企业名称', trigger: 'blur' },
+    ],
+    sponsorId:[
+      { required: true, message: '请选择主办', trigger: 'blur' },
     ],
     userName: [
       { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -135,6 +146,13 @@
       },
     ],
   }
+
+  const sponsorList:any = ref([])
+  sponsor().then((res) => {
+    if(res.code === 0){
+      sponsorList.value = res.data
+    }
+  })
 
   const submitForm = (formRef: any) => {
     formRef.validate((valid: any) => {

@@ -145,8 +145,8 @@ const getMaterial = () => {
 }
 
 const getCart = () => {
-  console.log('getCart')
-  if(!exhibitionId.value || !exhibitorId.value || !hallCode.value || !positionCode.value){
+  // console.log(exhibitionId.value , exhibitorId.value , hallCode.value ,positionCode.value)
+  if(!exhibitionId.value || !hallCode.value || !positionCode.value){
     carList.value = []
     return
   }

@@ -1,1 +1,0 @@
-import{s as i,r as s,q as e}from"./el-button-TEngkHeb.js";import{t as o}from"./_initCloneObject-Dw-py65Z.js";import{b5 as a}from"./index-F9QIZpl4.js";function f(r,t){return i(s(r,t,e),r+"")}function p(r){return a(r)&&o(r)}export{f as b,p as i};

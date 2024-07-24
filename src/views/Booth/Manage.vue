@@ -5,6 +5,7 @@
   import { useRouter, useRoute } from 'vue-router'
   import { boothList, boothAdd, boothEdit , boothDelete, boothImport, boothExport } from '@/api/Booth/index'
   import { getExhibitor } from '@/api/Exhibitor/index'
+  import { getHallInfo } from '@/api/Order/index'
 // import { uploadFile } from '@/api/common'
 
   
@@ -167,6 +168,7 @@
     
     isEdit.value = false
     addShow.value = true
+    addForm.remark = ''
     await nextTick()
     formRef.value.resetFields()
   }
@@ -204,6 +206,13 @@
       }
     })
   }
+
+  const zg: any = ref([])
+  getHallInfo({exhibitionId: id}).then((res: any) => {
+    if(res.code === 0){
+      zg.value = res.data
+    }
+  })
     
   // const handleImport = () => {
   //   boothImport().then(() => {
@@ -300,7 +309,10 @@
   <el-dialog v-model="addShow" title="新增展位信息" width="500" draggable>
     <el-form ref="formRef" :model="addForm" :rules="rules" label-width="auto">
       <el-form-item label="展馆号" prop="hallCode">
-        <el-input v-model="addForm.hallCode" autocomplete="off" />
+        <!-- <el-input v-model="addForm.hallCode" autocomplete="off" /> -->
+        <el-select v-model="addForm.hallCode" placeholder="请选择">
+          <el-option v-for="item in zg" :key="item.code" :label="item.code" :value="item.code" />
+        </el-select>
       </el-form-item>
       <el-form-item label="展位号" prop="positionCode">
         <el-input v-model="addForm.positionCode" autocomplete="off" />
