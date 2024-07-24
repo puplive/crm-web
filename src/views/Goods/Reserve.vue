@@ -336,13 +336,13 @@ getCart()
           </el-table>
         </div>
         <div class="bottom-bar">
-          <div class="p1"><span>已选物料 <font>{{ carList.length }}</font> 项</span> <span>物料金额 <font>¥{{ total }}</font></span></div>
+          <div class="p1"><span>已选物料 <b>{{ carList.length }}</b> 项</span> <span>物料金额 <b>¥{{ total }}</b></span></div>
           <div class="p2">
             <el-form-item label="最终金额" style="width: 100%; margin-bottom: 0;">
               <el-input v-model="price"></el-input>
             </el-form-item>
           </div>
-          <el-button type="primary" style="width: 100%;" @click="Sub" :loading="sub_loading" :disabled="total<=0">提交</el-button>
+          <el-button type="primary" style="width: 100%;" @click="Sub" :loading="sub_loading" :disabled="carList.length<=0">提交</el-button>
         </div>
       </div>
     </div>
@@ -416,7 +416,7 @@ getCart()
           margin-bottom: 10px;
           span{
             margin-right: 20px;
-            font{
+            b{
               color: red
             }
           }

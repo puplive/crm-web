@@ -91,7 +91,9 @@
                     {{ ['','在职', '离职', '调岗'][scope.row.status]  }}
                   </template>
                 </el-table-column>
-                <el-table-column prop="isExhibitionContact" label="展会联系人" />
+                <el-table-column prop="isExhibitionContact" label="展会联系人">
+                  <template #default="scope">{{ scope.row.isExhibitionContact === 1 ? '是' : '否' }}</template>
+                </el-table-column>
                 <el-table-column label="操作" fixed="right" width="150">
                   <template #default="scope">
                     <el-button type="text" size="small" @click="lxr.setEdit(scope.row)">编辑</el-button>
@@ -177,6 +179,13 @@
           <el-option label="离职" :value="2"></el-option>
           <el-option label="调岗" :value="3"></el-option>
         </el-select>
+      </el-form-item>
+
+      <el-form-item label="展会联系人" v-if="lxr.isEdit">
+        <el-radio-group v-model="lxr.form.isExhibitionContact" class="ml-4">
+          <el-radio :value="1">是</el-radio>
+          <el-radio :value="0">否</el-radio>
+        </el-radio-group>
       </el-form-item>
 
     </el-form>
