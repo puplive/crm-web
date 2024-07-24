@@ -33,7 +33,8 @@
     length: 0,
     width: 0,
     remark: '',
-    exhibitor: ''
+    exhibitor: '',
+    exhibitorId: ''
   })
   const rules = {
     hallCode: [
@@ -88,9 +89,9 @@
       } }
 
     ],
-    exhibitor: [
-      { required: true, message: '请选择展商', trigger: 'blur' }
-    ]
+    // exhibitor: [
+    //   { required: true, message: '请选择展商', trigger: 'blur' }
+    // ]
   }
 
   let exhibitorOptions: any = ref([])
@@ -178,6 +179,7 @@
       if (valid) {
         if(isEdit.value){
           let d = addForm
+          d.exhibitor = d.exhibitorId? exhibitorOptions.value.find((item: any) => item.id === addForm.exhibitorId).name : ''
           boothEdit(d).then((res: any) => {
             if (res.code === 0) {
               ElMessage.success('编辑成功')
@@ -189,6 +191,7 @@
           })
         }else {
           let {id, ...d} = addForm
+          d.exhibitor = d.exhibitorId? exhibitorOptions.value.find((item: any) => item.id === addForm.exhibitorId).name : ''
           boothAdd(d).then((res: any) => {
             if (res.code === 0) {
               ElMessage.success('新增成功')
@@ -306,7 +309,7 @@
     </div>
   </div>
 
-  <el-dialog v-model="addShow" title="新增展位信息" width="500" draggable>
+  <el-dialog v-model="addShow" :title="isEdit?'编辑':'新增展位信息'" width="500" draggable>
     <el-form ref="formRef" :model="addForm" :rules="rules" label-width="auto">
       <el-form-item label="展馆号" prop="hallCode">
         <!-- <el-input v-model="addForm.hallCode" autocomplete="off" /> -->
@@ -347,9 +350,10 @@
       <el-form-item label="备注" >
         <el-input v-model="addForm.remark" autocomplete="off" type="textarea" />
       </el-form-item>
-      <el-form-item label="参展商" prop="exhibitor">
-        <el-select v-model="addForm.exhibitor" placeholder="请选择">
-          <el-option v-for="item in exhibitorOptions" :key="item.id" :label="item.name" :value="item.name" />
+      <el-form-item label="参展商" prop="exhibitorId">
+        <el-select v-model="addForm.exhibitorId" placeholder="请选择">
+          <el-option label="无" value="" />
+          <el-option v-for="item in exhibitorOptions" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
     </el-form>
