@@ -5,7 +5,8 @@ import { goods as goodsApi, getHallInfo } from '@/api/Order/index'
 import { useRouter, useRoute } from 'vue-router'
 import { exhibitionList } from '@/api/Exhibition'
 import { getExhibitor } from '@/api/Exhibitor'
-import { boothList } from '@/api/Booth'
+// import { boothList } from '@/api/Booth'
+import { getPosition  } from '@/api/Booth'
 
 const router = useRouter()
 const route = useRoute()
@@ -121,7 +122,8 @@ const getZg = () => {
 }
 
 const getZw = () => {
-  boothList({exhibitionId: exhibitionId.value}).then((res: any) => {
+  zw.value = []
+  getPosition({exhibitionId: exhibitionId.value, hallCode: hallCode.value}).then((res: any) => {
     if(res.code === 0){
       zw.value = res.data
     }
@@ -207,6 +209,8 @@ watch(() => exhibitorId.value , (val) => {
   getCart()
 })
 watch(() => hallCode.value , (val) => {
+  positionCode.value = ''
+  getZw()
   getCart()
 })
 watch(() => positionCode.value , (val) => {
@@ -280,9 +284,9 @@ getCart()
           >
             <el-option
               v-for="item in zw"
-              :key="item.positionCode"
-              :label="item.positionCode"
-              :value="item.positionCode"
+              :key="item"
+              :label="item"
+              :value="item"
             />
           </el-select>
         </el-form-item>
