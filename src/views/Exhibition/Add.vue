@@ -218,10 +218,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref, watch } from 'vue'
-// import type { FormInstance } from 'element-plus'
-// import { Plus, Minus } from '@element-plus/icons-vue'
 import { useRouter, useRoute } from 'vue-router'
-// import { ElMessage } from 'element-plus'
 import type { UploadProps } from 'element-plus'
 import { getCityList, hallData, exhibitionAdd, getHallImg, exhibitionData, exhibitionEdit } from '@/api/Exhibition'
 import { uploadFile } from '@/api/common'
@@ -231,7 +228,6 @@ const route = useRoute()
 // console.log(route, router)
 let id = route.query.id
 
-// const formRef = ref<FormInstance>()
 const form: any = reactive({
   exhibitionName : '',  //string 展会名称 必需
   cityId: '',  //integer 城市ID 必需

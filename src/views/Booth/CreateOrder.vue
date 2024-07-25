@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { booth as boothApi } from '@/api/Order';
-import { ElMessage } from 'element-plus';
 
 const router = useRouter();
 const route: any = useRoute();

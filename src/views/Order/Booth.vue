@@ -272,9 +272,14 @@
         <el-table-column fixed="right" label="操作" width="300">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
-            <el-button link type="primary" size="small" v-if="scope.row.contractStatus === 0" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id } })">签订合同</el-button>
-            <el-button link type="primary" size="small" v-if="scope.row.contractStatus === 1" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id } })">更新合同</el-button>
-            <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+            <template v-if="scope.row.contractStatus === 0">
+              <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">签订合同</el-button>
+              <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+            </template>
+            <template v-else>
+              <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">更新合同</el-button>
+              <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+            </template>
             <!-- <el-button link type="primary" size="small" @click="Recording(scope.row.id)">录入到款</el-button> -->
             <el-button link type="primary" size="small" v-if="scope.row.orderStatus === 1" @click="revoke(scope.row.id)">撤销</el-button>
             <template v-else-if="scope.row.orderStatus === 0">

@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import api from '@/api/Contract'
-import * as docx from 'docx'
+import vTemplate from './components/Template.vue'
+import { useRouter, useRoute } from 'vue-router'
+// import * as docx from 'docx'
+
+const router = useRouter()
+const route = useRoute()
 
 
 const radio: any = ref('')
 const list: any = ref([])
 const getList = async () => {
-    api.getList().then((res) => {
+    api.getList({type: route.query.type}).then((res) => {
       if (res.code === 0) {
         list.value = res.data
-        radio.value = res.data.length > 0? res.data[0].value : ''
+        radio.value = res.data.length > 0? res.data[0].id : ''
         // total.value = res.data.total
       }
     })
@@ -23,20 +28,24 @@ const getList = async () => {
 <template>
   <div class="contract-templates">
     <div style="margin-bottom: 20px;">签订合同</div>
-    <div class="content">
+    <div class="content" style="min-height: 0;">
       <div class="l list">
         <el-radio-group v-model="radio">
           <el-radio v-for="item in list" :value="item.id" :key="item.id" style="width: 100%; margin-right: 0">
             <template #default>
               <div class="item">
                 <span>{{ item.name }}</span>
-                <el-button v-show="radio === item.id" type="primary" size="small">使用模板</el-button>
+                <el-button v-show="radio === item.id" type="primary" size="small" @click="$router.push({ name: 'ContractConclude', query: { id: item.id, orderId: route.query.id } })">使用模板</el-button>
               </div>
             </template>
           </el-radio>
         </el-radio-group>
       </div>
-      <div class="r"></div>
+      <div class="r" >
+        <el-scrollbar>
+        <vTemplate></vTemplate>
+        </el-scrollbar>
+      </div>
     </div>
   </div>
 </template>

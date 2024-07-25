@@ -1,7 +1,7 @@
 <!-- 销售线索列表 -->
 <script lang="ts" setup>
   import { ref, reactive, watch } from 'vue'
-  import TableSearch from '@/components/TableSearch/index.vue'
+  // import TableSearch from '@/components/TableSearch/index.vue'
   import api from '@/api/Contract'
 
   const page = reactive({

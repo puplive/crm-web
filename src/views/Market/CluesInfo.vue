@@ -106,7 +106,7 @@
           </el-tab-pane>
 
           <el-tab-pane label="订单" :name="2" v-if="type === '2'">
-            <div><el-button type="primary">签订合同</el-button></div>
+            <!-- <div><el-button type="primary">签订合同</el-button></div> -->
             <p style="padding: 10px 0;">展位订单</p>
             <el-table :data="form.orderPosition" border show-overflow-tooltip>
               <el-table-column prop="orderCode" label="订单编号"/>

@@ -322,8 +322,12 @@
               <el-form-item label="展位原价">
                 <el-input v-model="form.position[index].costPrice" disabled/>
               </el-form-item>
-              <el-form-item label="折后金额">
-                <el-input :model-value="setFinalPrice(index)" disabled />
+              <el-form-item label="加收金额">
+                <el-input :model-value="form.position[index].addPrice" disabled />
+              </el-form-item>
+              <el-form-item label="折扣金额">
+                <el-input :model-value="form.position[index].discountPrice" disabled />
+                <!-- <el-input :model-value="setFinalPrice(index)" disabled /> -->
               </el-form-item>
               <el-form-item label="最终金额">
                 <el-input v-model="form.position[index].finalPrice" />
