@@ -17,7 +17,7 @@
             if(val === 0){
               contactName = ''
             }else{
-              let d = contactList.find(item => item.id === val)
+              let d = contactList.find((item:any) => item.id === val)
               contactName =  d? d.name : ''
             }
           }">
@@ -32,7 +32,7 @@
       <el-scrollbar>
         <ul class="list">
           <li v-for="(item, index) in recordList" :key="index" class="item">
-            <div class="p1">{{item.time}}</div>
+            <div class="p1">{{item.time}} <span>{{item.authUser}}</span> <span>{{ {0: '无', 1: '电话邀约', 2: '客户拜访', 3: '初步方案', 4: '停滞'}[item.status as number] }}</span> </div>
             <div class="p2">（联系人：{{item.contact}}）{{item.text}}</div>
           </li>
         </ul>
@@ -135,6 +135,9 @@
             font-size: 14px;
             color: var(--el-text-color-secondary);
             margin-bottom: 5px;
+            span{
+              margin-left: 10px;
+            }
           }
           .p2 {
             font-size: 14px;

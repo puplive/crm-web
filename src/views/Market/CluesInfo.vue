@@ -108,25 +108,77 @@
           <el-tab-pane label="订单" :name="2" v-if="type === '2'">
             <div><el-button type="primary">签订合同</el-button></div>
             <p style="padding: 10px 0;">展位订单</p>
-            <el-table :data="orderData" border show-overflow-tooltip>
-              <el-table-column prop="date" label="Date" width="180" />
-              <el-table-column prop="name" label="Name" width="180" />
-              <el-table-column prop="address" label="Address" />
+            <el-table :data="form.orderPosition" border show-overflow-tooltip>
+              <el-table-column prop="orderCode" label="订单编号"/>
+              <el-table-column prop="brand" label="品牌"/>
+              <el-table-column prop="positionCode" label="展位号" />
+              <el-table-column prop="price" label="订单金额" />
+              <el-table-column label="操作" width="150" fixed="right">
+                <template #default="scope"> 
+                  <el-button link type="primary" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
+                  <el-button link type="primary" v-if="scope.row.orderStatus === 1" @click="orderRevoke(scope.row.id, 1)">撤销</el-button>
+                  <template v-else>
+                    <el-button link type="info" disabled>已撤销</el-button>
+                    <el-button link type="primary" @click="orderDel(scope.row.id, 1)">删除</el-button>
+                  </template>
+                </template>
+              </el-table-column>
             </el-table>
 
             <p style="padding: 10px 0; margin-top: 10px;">物料订单</p>
-            <el-table :data="orderData" border  show-overflow-tooltip>
-              <el-table-column prop="date" label="Date" width="180" />
-              <el-table-column prop="name" label="Name" width="180" />
-              <el-table-column prop="address" label="Address" />
+            <el-table :data="form.orderMaterial" border  show-overflow-tooltip>
+              <el-table-column prop="orderCode" label="订单编号"/>
+              <!-- <el-table-column prop="name" label="品牌"/> -->
+              <el-table-column prop="positionCode" label="展位号"/>
+              <el-table-column prop="price" label="订单金额" />
+              <el-table-column label="操作" width="150" fixed="right">
+                <template #default="scope"> 
+                  <el-button link type="primary" @click="goodsDetail(scope.row.id)">详情</el-button>
+                  <el-button link type="primary" v-if="scope.row.orderStatus === 1" @click="orderRevoke(scope.row.id, 2)">撤销</el-button>
+                  <template v-else>
+                    <el-button link type="info" disabled>已撤销</el-button>
+                    <el-button link type="primary" @click="orderDel(scope.row.id, 2)">删除</el-button>
+                  </template>
+                </template>
+              </el-table-column>
             </el-table>
           </el-tab-pane>
 
           <el-tab-pane label="合同" :name="3" v-if="type === '2'">
-            <el-table :data="orderData" border  show-overflow-tooltip>
-              <el-table-column prop="date" label="Date" width="180" />
-              <el-table-column prop="name" label="Name" width="180" />
-              <el-table-column prop="address" label="Address" />
+            <el-table :data="form.contract" border  show-overflow-tooltip>
+              <el-table-column prop="contractCode" label="合同编号"/>
+              <el-table-column prop="contractType" label="合同类型">
+                <template #default="scope"> 
+                  <!-- 1展位合同，2物料合同，3展位+物料 -->
+                  {{ {1: '展位合同', 2: '物料合同', 3: '展位+物料'}[scope.row.contractType as number] }}
+                </template>
+              </el-table-column>
+              <el-table-column prop="" label="付款方式" />
+              <el-table-column prop="contractAmount" label="合同金额" />
+              <el-table-column prop="deposit" label="预定金" />
+              <el-table-column prop="" label="抵扣" />
+              <el-table-column prop="firstPayPrice" label="一期款" />
+              <el-table-column prop="firstPayTime" label="期限" />
+              <el-table-column prop="finalPayPrice" label="尾款" />
+              <el-table-column prop="finalPayTime" label="期限" />
+              <el-table-column prop="receivedPrice" label="已收款" />
+              <el-table-column prop="unknownPrice" label="未收款" />
+              <el-table-column prop="contractStatus" label="合同状态">
+                <template #default="scope"> 
+                  <!-- 合同状态，0撤销，1已完成 -->
+                  {{ {0: '撤销', 1: '已完成'}[scope.row.contractStatus as number] }}
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="150" fixed="right">
+                <template #default="scope"> 
+                  <el-button link type="primary">详情</el-button>
+                  <el-button link type="primary" v-if="scope.row.orderStatus === 1">撤销</el-button>
+                  <template v-else>
+                    <el-button link type="info" disabled>已撤销</el-button>
+                    <el-button link type="primary">删除</el-button>
+                  </template>
+                </template>
+              </el-table-column>
             </el-table>
           </el-tab-pane>
         </el-tabs>
@@ -197,6 +249,7 @@
   </el-dialog>
 
   <Move ref="moveRef" @callback="_getData"></Move>
+  <GoodsOrderDetail ref="detailRef" />
 
 </template>
 <script lang="ts" setup>
@@ -204,7 +257,9 @@ import { ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 import FollowUp from './components/FollowUp.vue'
 import Move from './components/Move.vue'
+import GoodsOrderDetail from '@/views/Order/components/GoodsOrderDetail.vue'
 import {getData, contact, getCustomField, del, editNew, exitExhibition } from '@/api/Clues'
+import { booth as boothApi, goods as goodsApi } from '@/api/Order/index'
 
 const router = useRouter()
 const route = useRoute()
@@ -217,6 +272,9 @@ const exhibitionId = route.query.exhibitionId
 const form: any = ref({
   customField: [],
   // customFieldTrans: []
+  orderPosition: [],
+  orderMaterial: [],
+  contract: [],
 })
 const customField: any = ref([])
 const _getCustomField = () => {
@@ -243,29 +301,6 @@ const customFieldTrans = computed(() => {
   }
   return list
 })
-
-const orderData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
 
 const _getData = () => {
   getData({ id }).then((res: any) => {
@@ -435,6 +470,56 @@ const tab = reactive({
     _getData()
   }
 })
+
+const orderRevoke = (id: any, type: any) => {
+  ElMessageBox.confirm('是否确认要撤销订单?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    let _revoke = boothApi.revoke
+    if (type === 2) {
+      _revoke = goodsApi.revoke
+    }
+    _revoke({ id }).then((res: any) => {
+      if(res.code === 0) {
+        ElMessage.success('撤销成功')
+        _getData()
+      }else {
+        ElMessage.error(res.msg)
+      }
+      
+    })
+  }).catch(() => {
+  })
+}
+const orderDel = (id: any, type: any) => {
+  ElMessageBox.confirm('是否确认要删除订单?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    let _del = boothApi.del
+    if (type === 2) {
+      _del = goodsApi.del
+    }
+    _del({ id }).then((res: any) => {
+      if(res.code === 0) {
+        ElMessage.success('删除成功')
+        _getData()
+      }else {
+        ElMessage.error(res.msg)
+      }
+      
+    })
+  }).catch(() => {
+  })
+}
+const detailRef: any = ref(null)
+const goodsDetail = (id: any) => {
+  detailRef.value.getDetail(id)
+}
+
 _getData()
 _getCustomField()
 contactList()

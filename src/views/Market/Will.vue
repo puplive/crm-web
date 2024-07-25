@@ -2,9 +2,11 @@
 <script lang="ts" setup>
 import { ref, reactive, watch } from 'vue'
 import TableSearch from '@/components/TableSearch/index.vue'
+import Move from './components/Move.vue'
 import api from '@/api/Clues'
 import { exhibitionList } from '@/api/Exhibition'
-import { getSponsorUser } from '@/api/user'
+// import { getSponsorUser } from '@/api/user'
+
 
 const zh_name = ref('全部')
 const exhibitionId = ref('')
@@ -94,36 +96,15 @@ const Del = () => {
   })
 }
 
-const moveForm: any = ref({})
-const moveShow = ref(false)
-const moveFormRef: any = ref(null)
-const SponsorUser: any = ref([])
-const Move = () => {
+const moveRef: any = ref(null)
+const changeUser = () => {
   let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
   if (ids.length === 0) {
     ElMessage.warning('请选择需要转移的线索')
     return
   }
-  moveForm.value.id = ids
-  moveShow.value = true
+  moveRef.value.setMove(ids)
 
-}
-const MoveSub = () => {
-  moveFormRef.value.validate((valid: boolean) => {
-    if (!valid) {
-      return
-    }
-
-    api.changeUser(moveForm.value).then((res) => {
-      if (res.code === 0) {
-        ElMessage.success('转移成功')
-        moveShow.value = false
-        getList()
-      } else {
-        ElMessage.error(res.msg)
-      }
-    })
-  })
 }
 
 const MoveShare = () => {
@@ -160,19 +141,29 @@ exhibitionList().then((res) => {
     exhibitionData.value = [{ exhibitionName: '全部', id: '' }, ...res.data]
   }
 })
-getSponsorUser().then((res) => {
-  if (res.code === 0) {
-    SponsorUser.value = res.data
-  }
-})
 
-const handleCommand = (command: string | number | object) => {
-  console.log(command)
+const handleCommand = (command: any) => {
+  // console.log(command)
   zh_name.value = command.exhibitionName
   exhibitionId.value = command.id
   getList()
 }
 
+const customField: any = ref([])
+  const getCustomField = () => {
+  api.getCustomField().then(res => {
+    if (res.code === 0) {
+      customField.value = res.data
+      // res.data.forEach((item: any) => {
+      //   form.value.customField.push({
+      //     [item.key]: customFieldTypes[item.type].value,
+      //   })
+      // })
+    }
+  })
+}
+
+getCustomField()
 
 getList()
 
@@ -195,7 +186,7 @@ getList()
     </div>
     <TableSearch :data="searchData" @search="search" />
     <div class="s-table-operations">
-      <el-button size="small" @click="Move">转移</el-button>
+      <el-button size="small" @click="changeUser">转移</el-button>
       <el-button size="small" @click="MoveShare">移至公海</el-button>
       <el-button size="small" @click="merge.set">合并</el-button>
       <el-button size="small" @click="Export">导出</el-button>
@@ -219,20 +210,25 @@ getList()
         <el-table-column prop="recordTime" label="记录时间" width="180" />
         <el-table-column prop="recordText" label="记录内容" />
         <el-table-column prop="authUser" label="授权人" />
-        <el-table-column fixed="right" label="操作" width="180">
+        <template v-for="item in customField" :key="item.key">
+          <el-table-column :prop="item.key" :label="item.name">
+            <!-- <template #default="scope" v-if="item.type === 5 || item.type === 7">
+              {{ scope.row[item.key].join('，') }}
+            </template> -->
+          </el-table-column>
+        </template>
+        <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <!-- <el-button link type="primary" size="small" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
             <el-button 
-              v-if="scope.row.orderPositionStatus"
               link type="primary" size="small"
               @click="$router.push({ name: 'HallLayout', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId } })">
-              展位预定
+              {{scope.row.orderPositionStatus?'新增':''}}展位预定
             </el-button>
-            <el-button 
-              v-if="scope.row.orderMaterialStatus"
+            <el-button
               link type="primary" size="small"
               @click="$router.push({ name: 'GoodsReserve', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode, positionCode: scope.row.positionCode } })">
-              物料预定
+              {{scope.row.orderMaterialStatus?'新增':''}}物料预定
             </el-button>
             <!-- <el-button link type="primary" size="small" @click="willSet(scope.row)">
               移除意向
@@ -274,22 +270,8 @@ getList()
     </template>
   </el-dialog>
 
-  <el-dialog v-model="moveShow" title="转移销售线索" width="500" draggable>
-    <el-form ref="moveFormRef" :model="moveForm" label-width="auto">
-      <el-form-item label="">是否将选中的销售线索转移？</el-form-item>
-      <el-form-item label="销售线索所有人" prop="userId" :rules="[{ required: true, message: '请选择销售线索所有人' }]">
-        <el-select v-model="moveForm.userId" placeholder="">
-          <el-option v-for="item in SponsorUser" :key="item.id" :label="item.name" :value="item.id" />
-        </el-select>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="moveShow = false">取消</el-button>
-        <el-button type="primary" @click="MoveSub">确定</el-button>
-      </div>
-    </template>
-  </el-dialog>
+  <Move ref="moveRef" @callback="getList"></Move>
+
 </template>
 
 <style scoped>

@@ -269,7 +269,7 @@
         </el-table-column>
         <el-table-column prop="clueUser" label="所属人" />
         <el-table-column prop="authUser" label="下单人" />
-        <el-table-column fixed="right" label="操作" width="260">
+        <el-table-column fixed="right" label="操作" width="300">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
             <el-button link type="primary" size="small" v-if="scope.row.contractStatus === 0" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id } })">签订合同</el-button>

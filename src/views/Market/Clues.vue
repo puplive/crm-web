@@ -5,6 +5,7 @@
   import api from '@/api/Clues'
   import {exhibitionList} from '@/api/Exhibition'
   import {getSponsorUser} from '@/api/user'
+  // import { customFieldTypes } from "@/api/Custom";
   import { useRouter, useRoute } from 'vue-router'
 
   const router = useRouter()
@@ -176,6 +177,22 @@
     }
   })
 
+  const customField: any = ref([])
+  const getCustomField = () => {
+  api.getCustomField().then(res => {
+    if (res.code === 0) {
+      customField.value = res.data
+      // res.data.forEach((item: any) => {
+      //   form.value.customField.push({
+      //     [item.key]: customFieldTypes[item.type].value,
+      //   })
+      // })
+    }
+  })
+}
+
+getCustomField()
+
   getList()
 
 
@@ -213,6 +230,14 @@
         <el-table-column prop="recordTime" label="记录时间" width="180" />
         <el-table-column prop="recordText" label="记录内容" />
         <el-table-column prop="authUser" label="授权人" />
+        <template v-for="item in customField" :key="item.key">
+          <el-table-column :prop="item.key" :label="item.name">
+            <!-- <template #default="scope" v-if="item.type === 5 || item.type === 7">
+              {{ scope.row[item.key].join('，') }}
+            </template> -->
+          </el-table-column>
+        </template>
+          
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="willSet(scope.row)">
@@ -231,7 +256,6 @@
         @change="getList" />
     </div>
   </div>
-
 
   <el-dialog v-model="willShow" title="转为意向客户" width="500" draggable>
     <el-form ref="willFormRef" :model="willForm" label-width="auto">

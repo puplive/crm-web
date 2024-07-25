@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import api from '@/api/Contract'
+import * as docx from 'docx'
 
 
-const radio = ref('1')
+const radio: any = ref('')
+const list: any = ref([])
+const getList = async () => {
+    api.getList().then((res) => {
+      if (res.code === 0) {
+        list.value = res.data
+        radio.value = res.data.length > 0? res.data[0].value : ''
+        // total.value = res.data.total
+      }
+    })
+  }
+  getList()
 
-const list: any = ref([
-  { value: '1', label: '合同模板1' },
-  { value: '2', label: '合同模板2' }
-])
+
 
 </script>
 <template>
@@ -16,11 +26,11 @@ const list: any = ref([
     <div class="content">
       <div class="l list">
         <el-radio-group v-model="radio">
-          <el-radio v-for="item in list" :label="item.value" :key="item.value" style="width: 100%; margin-right: 0">
+          <el-radio v-for="item in list" :value="item.id" :key="item.id" style="width: 100%; margin-right: 0">
             <template #default>
               <div class="item">
-                <span>{{ item.label }}</span>
-                <el-button v-show="radio === item.value" type="primary" size="small">使用模板</el-button>
+                <span>{{ item.name }}</span>
+                <el-button v-show="radio === item.id" type="primary" size="small">使用模板</el-button>
               </div>
             </template>
           </el-radio>
