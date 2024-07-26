@@ -228,10 +228,10 @@ getCustomField()
         <el-table-column prop="duties" label="职务" />
         <el-table-column prop="phone" label="电话" />
         <el-table-column prop="recordTime" label="记录时间" width="180" />
-        <el-table-column prop="recordText" label="记录内容" />
+        <el-table-column prop="recordText" label="记录内容" min-width="120" />
         <el-table-column prop="authUser" label="授权人" />
         <template v-for="item in customField" :key="item.key">
-          <el-table-column :prop="item.key" :label="item.name">
+          <el-table-column :prop="item.key" :label="item.name" min-width="120">
             <!-- <template #default="scope" v-if="item.type === 5 || item.type === 7">
               {{ scope.row[item.key].join('，') }}
             </template> -->

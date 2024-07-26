@@ -99,18 +99,18 @@
         header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
         <el-table-column prop="orderCode" label="订单编号" width="200" />
-        <el-table-column prop="companyName" label="企业名称" />
+        <el-table-column prop="companyName" label="企业名称" min-width="120" />
         <el-table-column prop="hallCode" label="展位号" />
-        <el-table-column prop="brand" label="参展品牌" />
+        <el-table-column prop="brand" label="参展品牌" min-width="120" />
         <el-table-column prop="area" label="面积" />
         <el-table-column prop="num" label="展位数" />
-        <el-table-column prop="orderPrice" label="订单金额" />
-        <el-table-column prop="contractStatus" label="合同状态">
+        <el-table-column prop="orderPrice" label="订单金额" min-width="120" />
+        <el-table-column prop="contractStatus" label="合同状态" min-width="120">
           <template #default="scope">
             {{ ['未签订','已签订','已回执'][scope.row.contractStatus] }}
           </template>
         </el-table-column>
-        <el-table-column prop="contractReceipt" label="合同附件">
+        <el-table-column prop="contractReceipt" label="合同附件" min-width="120">
           <template #default="scope">
             <el-link :href="scope.row.contractReceipt" target="_blank">{{ scope.row.contractReceipt }}</el-link>
           </template>

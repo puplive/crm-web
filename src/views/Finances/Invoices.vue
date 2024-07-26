@@ -222,66 +222,66 @@ const openInvoice: any = reactive({
         header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
         <el-table-column prop="orderCode" label="订单编号" width="180" />
-        <el-table-column prop="companyName" label="企业名称" />
+        <el-table-column prop="companyName" label="企业名称" min-width="120" />
         <el-table-column prop="hallCode" label="展馆号" />
         <el-table-column prop="positionCode" label="展位号" />
-        <el-table-column prop="positionType" label="展位类型">
+        <el-table-column prop="positionType" label="展位类型" min-width="120">
           <template #default="scope">
             {{ {1:'标准',2:'特装'}[scope.row.positionType as number] }}
           </template>
         </el-table-column>
         <!-- <el-table-column prop="brand" label="参展品牌" /> -->
         <el-table-column prop="positionArea" label="面积" />
-        <el-table-column prop="positionUnitPrice" label="展位单价" />
-        <el-table-column prop="orderPrice" label="订单金额" />
-        <el-table-column prop="payType" label="付款方式">
+        <el-table-column prop="positionUnitPrice" label="展位单价" min-width="120" />
+        <el-table-column prop="orderPrice" label="订单金额" min-width="120" />
+        <el-table-column prop="payType" label="付款方式" min-width="120">
           <template #default="scope">
             {{ {1:'全款',2:'分期'}[scope.row.payType as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="payStatus" label="付款状态">
+        <el-table-column prop="payStatus" label="付款状态" min-width="120">
           <template #default="scope">
             {{ {0:'未付款',1:'部分付款',2:'已付款'}[scope.row.payStatus as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="orderStatus" label="订单状态">
+        <el-table-column prop="orderStatus" label="订单状态" min-width="120">
           <template #default="scope">
             {{ {0:'已撤销',1:'已完成'}[scope.row.orderStatus as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="orderType" label="订单类型">
+        <el-table-column prop="orderType" label="订单类型" min-width="120">
           <template #default="scope">
             {{ {1:'代下单',2:'展商下单'}[scope.row.orderType as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="payCode" label="录款编号" />
-        <el-table-column prop="invoiceType" label="发票类型">
+        <el-table-column prop="payCode" label="录款编号" min-width="120" />
+        <el-table-column prop="invoiceType" label="发票类型" min-width="120">
           <template #default="scope">
             {{ {1:'电子专票',2:'电子普票'}[scope.row.invoiceType as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="invoiceTitle" label="发票抬头" />
-        <el-table-column prop="socialCode" label="社会信用代码" />
+        <el-table-column prop="invoiceTitle" label="发票抬头" min-width="120" />
+        <el-table-column prop="socialCode" label="社会信用代码" min-width="120" />
         <el-table-column prop="contact" label="联系人" />
         <el-table-column prop="phone" label="手机号" />
         <el-table-column prop="email" label="邮箱" />
-        <el-table-column prop="invoicePrice" label="开票金额" />
-        <el-table-column prop="invoiceStatus" label="开票状态">
+        <el-table-column prop="invoicePrice" label="开票金额" min-width="120" />
+        <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
           <template #default="scope">
             {{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="payImg" label="付款凭证">
+        <el-table-column prop="payImg" label="付款凭证" min-width="120">
           <template #default="scope">
             <el-link :href="scope.row.payImg" target="_blank">{{ scope.row.payImg }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="receiveImg" label="到款凭证">
+        <el-table-column prop="receiveImg" label="到款凭证" min-width="120">
           <template #default="scope">
             <el-link :href="scope.row.receiveImg" target="_blank">{{ scope.row.receiveImg }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="invoiceImg" label="发票附件">
+        <el-table-column prop="invoiceImg" label="发票附件" min-width="120">
           <template #default="scope">
             <el-link :href="scope.row.invoiceImg" target="_blank">{{ scope.row.invoiceImg }}</el-link>
           </template>

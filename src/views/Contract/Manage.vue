@@ -99,9 +99,9 @@
         <el-table-column prop="name" label="标题" width="180" />
         <el-table-column prop="" label="类型" />
         <el-table-column prop="" label="编号" />
-        <el-table-column prop="" label="开始日期" />
-        <el-table-column prop="" label="结束日期" />
-        <el-table-column prop="" label="签约日期" />
+        <el-table-column prop="" label="开始日期" min-width="120" />
+        <el-table-column prop="" label="结束日期" min-width="120" />
+        <el-table-column prop="" label="签约日期" min-width="120" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
             <!-- <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">编辑</el-button>

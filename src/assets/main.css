@@ -57,6 +57,7 @@ ul,li{
   /* background-color: #f4f4f5 !important; */
   background-color: var(--el-fill-color-light) !important;
   color: #444;
+  /* min-width: 100px !important; */
 }
 .s-table-operations{
   display: flex;

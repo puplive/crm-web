@@ -68,26 +68,26 @@ const revoke = (id: any) => {
       </div>
       <div class="table">
         <el-table :data="[d]" border table-layout="fixed" header-row-class-name="s-table-header">
-          <el-table-column prop="exhibitionName" label="项目名称"></el-table-column>
+          <el-table-column prop="exhibitionName" label="项目名称" min-width="120"></el-table-column>
           <el-table-column prop="hallCode" label="展馆号"></el-table-column>
           <el-table-column prop="positionCode" label="展位号"></el-table-column>
           <el-table-column prop="area" label="面积"></el-table-column>
-          <el-table-column prop="length" label="展位尺寸">
+          <el-table-column prop="length" label="展位尺寸" min-width="120">
             <template #default="scope">{{ scope.row.length }} X {{ scope.row.width }}</template>
           </el-table-column>
-          <el-table-column prop="num" label="展位数量"></el-table-column>
-          <el-table-column prop="product" label="产品名称"></el-table-column>
+          <el-table-column prop="num" label="展位数量" min-width="120"></el-table-column>
+          <el-table-column prop="product" label="产品名称" min-width="120"></el-table-column>
           <el-table-column prop="unitPrice" label="单价"></el-table-column>
-          <el-table-column prop="orderPrice" label="订单金额"></el-table-column>
-          <el-table-column prop="contractStatus" label="合同状态">
+          <el-table-column prop="orderPrice" label="订单金额" min-width="120"></el-table-column>
+          <el-table-column prop="contractStatus" label="合同状态" min-width="120">
             <template #default="scope">{{ ['未签约', '已签约', '已回执'][scope.row.contractStatus] }}</template>
           </el-table-column>
-          <el-table-column prop="payStatus" label="付款方式">
+          <el-table-column prop="payStatus" label="付款方式" min-width="120">
             <template #default="scope">{{ ['未付款', '部分付款', '已付款'][scope.row.payStatus] }}</template>
           </el-table-column>
-          <el-table-column prop="receivedPrice" label="到款金额"></el-table-column>
-          <el-table-column prop="notReceivedPrice" label="未到金额"></el-table-column>
-          <el-table-column prop="invoiceStatus" label="发票状态">
+          <el-table-column prop="receivedPrice" label="到款金额" min-width="120"></el-table-column>
+          <el-table-column prop="notReceivedPrice" label="未到金额" min-width="120"></el-table-column>
+          <el-table-column prop="invoiceStatus" label="发票状态" min-width="120">
             <template #default="scope">{{ ['未申请', '待开票', '部分开票', '已开票'][scope.row.invoiceStatus] }}</template>
           </el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
@@ -103,17 +103,17 @@ const revoke = (id: any) => {
       <div class="title">到款详情</div>
       <div class="table">
         <el-table :data="d.payment" border table-layout="fixed" header-row-class-name="s-table-header">
-          <el-table-column prop="code" label="录款编号"></el-table-column>
-          <el-table-column prop="payCompany" label="付款公司"></el-table-column>
-          <el-table-column prop="payType" label="到款类型">
+          <el-table-column prop="code" label="录款编号" min-width="120"></el-table-column>
+          <el-table-column prop="payCompany" label="付款公司" min-width="120"></el-table-column>
+          <el-table-column prop="payType" label="到款类型" min-width="120">
             <template #default="scope">{{ {1:'预定金',2:'首款',3:'二次款',4:'尾款',5:'转款'}[scope.row.payType as number] }}</template>
           </el-table-column>
-          <el-table-column prop="payPrice" label="到款金额"></el-table-column>
-          <el-table-column prop="payType" label="付款方式">
+          <el-table-column prop="payPrice" label="到款金额" min-width="120"></el-table-column>
+          <el-table-column prop="payType" label="付款方式" min-width="120">
             <template #default="scope">{{ {1:'预定金',2:'首款',3:'二次款',4:'尾款',5:'转款'}[scope.row.payType as number] }}</template>
           </el-table-column>
-          <el-table-column prop="payTime" label="到款时间"></el-table-column>
-          <el-table-column prop="receiveAccount" label="收款账户"></el-table-column>
+          <el-table-column prop="payTime" label="到款时间" min-width="120"></el-table-column>
+          <el-table-column prop="receiveAccount" label="收款账户" min-width="120"></el-table-column>
           <el-table-column prop="payImg" label="付款凭证">
             <template #default="scope">
               <el-image 
@@ -125,7 +125,7 @@ const revoke = (id: any) => {
               />
             </template>
           </el-table-column>
-          <el-table-column prop="receiveImg" label="到款凭证">
+          <el-table-column prop="receiveImg" label="到款凭证" min-width="120">
             <template #default="scope">
               <el-image
                 v-if="scope.row.receiveImg"
@@ -136,7 +136,7 @@ const revoke = (id: any) => {
               />
             </template>
           </el-table-column>
-          <el-table-column prop="invoiceStatus" label="发票状态">
+          <el-table-column prop="invoiceStatus" label="发票状态" min-width="120">
             <template #default="scope">{{ {0:'未申请',1:'待开票',2:'部分开票',3:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
@@ -154,15 +154,15 @@ const revoke = (id: any) => {
       <div class="table">
         <el-table :data="d.invoice" border table-layout="fixed" header-row-class-name="s-table-header">
           <el-table-column prop="code" label="编号"></el-table-column>
-          <el-table-column prop="title" label="发票抬头"></el-table-column>
-          <el-table-column prop="socialCode" label="社会信用代码"></el-table-column>
-          <el-table-column prop="price" label="开票金额"></el-table-column>
-          <el-table-column prop="invoiceType" label="发票类型">
+          <el-table-column prop="title" label="发票抬头" min-width="120"></el-table-column>
+          <el-table-column prop="socialCode" label="社会信用代码" min-width="120"></el-table-column>
+          <el-table-column prop="price" label="开票金额" min-width="120"></el-table-column>
+          <el-table-column prop="invoiceType" label="发票类型" min-width="120">
             <template #default="scope">{{ {1:'电子专票',2:'电子普票'}[scope.row.invoiceType as number] }}</template>
           </el-table-column>
           <el-table-column prop="contact" label="联系人"></el-table-column>
-          <el-table-column prop="email" label="发送邮箱"></el-table-column>
-          <el-table-column prop="invoiceStatus" label="开票状态">
+          <el-table-column prop="email" label="发送邮箱" min-width="120"></el-table-column>
+          <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
             <template #default="scope">{{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="invoiceCode" label="发票号"></el-table-column>

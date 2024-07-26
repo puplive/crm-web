@@ -288,14 +288,14 @@
         <el-table-column prop="id" label="ID" width="50" />
         <el-table-column prop="hallCode" label="展馆号" />
         <el-table-column prop="positionCode" label="展位号" />
-        <el-table-column prop="standardPrice" label="标摊/元" />
-        <el-table-column prop="specialPrice" label="特装/元" />
-        <el-table-column prop="specialUnit" label="特装/㎡/个" />
+        <el-table-column prop="standardPrice" label="标摊/元" min-width="120" />
+        <el-table-column prop="specialPrice" label="特装/元" min-width="120" />
+        <el-table-column prop="specialUnit" label="特装/㎡/个"  min-width="120"/>
         <el-table-column prop="length" label="长" />
         <el-table-column prop="width" label="宽" />
         <el-table-column prop="remark" label="备注" />
         <el-table-column prop="exhibitor" label="参展商" />
-        <el-table-column prop="createTime" label="创建时间" />
+        <el-table-column prop="createTime" label="创建时间" min-width="120" />
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>

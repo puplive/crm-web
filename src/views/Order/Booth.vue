@@ -240,49 +240,51 @@
         <el-table-column type="selection" width="40" />
         <!-- <el-table-column prop="id" label="ID" width="50" /> -->
         <el-table-column prop="orderCode" label="订单编号" width="280" />
-        <el-table-column prop="companyName" label="企业名称" />
+        <el-table-column prop="companyName" label="企业名称" min-width="120" />
         <el-table-column prop="hallCode" label="展馆号" />
         <el-table-column prop="positionCode" label="展位号" />
         <el-table-column prop="area" label="面积" />
-        <el-table-column prop="num" label="展位数量" />
-        <el-table-column prop="orderPrice" label="订单金额" />
-        <el-table-column prop="orderType" label="下单方式" >
+        <el-table-column prop="num" label="展位数量"  min-width="120"/>
+        <el-table-column prop="orderPrice" label="订单金额" min-width="120" />
+        <el-table-column prop="orderType" label="下单方式" min-width="120" >
           <template #default="scope">
             {{ scope.row.orderType === 1 ? '代下单' : '展商下单' }}
           </template>
         </el-table-column>
-        <el-table-column prop="payStatus" label="付款状态" >
+        <el-table-column prop="payStatus" label="付款状态"  min-width="120">
           <template #default="scope">
             {{ {0:'未付款',1:'部分付款',2:'已付款'}[scope.row.payStatus as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="receivedPrice" label="到款金额" />
-        <el-table-column prop="contractStatus" label="合同状态" >
+        <el-table-column prop="receivedPrice" label="到款金额" min-width="120" />
+        <el-table-column prop="contractStatus" label="合同状态"  min-width="120">
           <template #default="scope">
             {{ {0:'未签订',1:'已签订',2:'已回执'}[scope.row.contractStatus as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="invoiceStatus" label="发票状态" >
+        <el-table-column prop="invoiceStatus" label="发票状态" min-width="120" >
           <template #default="scope">
             {{ {0:'未申请',1:'待开票',2:'部分开票',3:'已开票'}[scope.row.invoiceStatus as number] }}
           </template>
         </el-table-column>
         <el-table-column prop="clueUser" label="所属人" />
         <el-table-column prop="authUser" label="下单人" />
-        <el-table-column fixed="right" label="操作" width="300">
+        <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
-            <template v-if="scope.row.contractStatus === 0">
-              <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">签订合同</el-button>
-              <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+            <template v-if="scope.row.orderStatus !== 0">
+              <template v-if="scope.row.contractStatus === 0">
+                <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">签订合同</el-button>
+                <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+              </template>
+              <template v-else>
+                <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">更新合同</el-button>
+                <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+              </template>
+              <!-- <el-button link type="primary" size="small" @click="Recording(scope.row.id)">录入到款</el-button> -->
+              <el-button link type="primary" size="small" @click="revoke(scope.row.id)">撤销</el-button>
             </template>
             <template v-else>
-              <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">更新合同</el-button>
-              <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
-            </template>
-            <!-- <el-button link type="primary" size="small" @click="Recording(scope.row.id)">录入到款</el-button> -->
-            <el-button link type="primary" size="small" v-if="scope.row.orderStatus === 1" @click="revoke(scope.row.id)">撤销</el-button>
-            <template v-else-if="scope.row.orderStatus === 0">
               <el-button link type="" size="small" disabled>已撤销</el-button>
               <el-button link type="primary" size="small"  @click="del(scope.row.id)">删除</el-button>
             </template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, toRef } from 'vue'
 import { getContractData, create } from '@/api/Contract'
-import { booth } from '@/api/Order'
+// import { booth } from '@/api/Order'
 const contract: any = ref({
   exhibitorName: '', //string 乙方必需
   discount: [], //array[string] 折扣数据 必需
@@ -19,25 +19,29 @@ const contract: any = ref({
   }], //array[string] 付款信息 必需
 })
 
+// toRef(contract)
+
 const orderId: any = ref('')
-const boothData: any = ref({})
+// const boothData: any = ref({})
+const _date: any = ref(new Date().toLocaleDateString('zh-CN', { year: 'numeric',month: 'long',day: 'numeric', }))
 
 const setData = (id: any) => {
-  orderId.value = id
+  orderId.value = Number(id)
   getContractData({ orderId: id }).then((res: any) => {
     if (res.code === 0) {
       contract.value = res.data
     }
   })
 
-  booth.getDetail({id: id}).then((res: any) => {
-    if (res.code === 0) {
-      boothData.value = res.data
-    }
-  })
+  // booth.getDetail({id: id}).then((res: any) => {
+  //   if (res.code === 0) {
+  //     boothData.value = res.data
+  //   }
+  // })
 }
 
 const createContract = (templateId: any) => {
+  // console.log(contract.value)
   create({
     orderId: orderId.value,
     templateId: templateId,
@@ -90,7 +94,7 @@ defineExpose({
       <thead>
         <tr>
           <th>展位号</th>
-          <th>展位类型</th>
+          <th style="width: 90px;">展位类型</th>
           <th>单价（RMB）</th>
           <th>面积（平米）</th>
           <th>折扣比例（%）</th>
@@ -99,12 +103,12 @@ defineExpose({
       </thead>
       <tbody>
         <tr>
-          <td>{{ contract.positionCode }}</td>
+          <td><input :value="contract.positionCode"/></td>
           <td>{{ { 1: '标准', 2: '特装' }[contract.positionType] }}</td>
-          <td>{{ contract.positionUnitPrice }}</td>
-          <td>{{ contract.positionArea }}</td>
-          <td>{{ contract.discountRatio }}</td>
-          <td>{{ contract.finalPrice }}</td>
+          <td><input :value="contract.positionUnitPrice"/></td>
+          <td><input :value="contract.positionArea"/></td>
+          <td><input :value="contract.discountRatio"/></td>
+          <td><input :value="contract.finalPrice"/></td>
         </tr>
       </tbody>
     </table>
@@ -122,10 +126,10 @@ defineExpose({
       </thead>
       <tbody>
         <tr v-for="(item, index) in contract.payment" :key="index">
-          <td>{{ item.name }}</td>
-          <td>{{ item.ratio }}</td>
-          <td>{{ item.price }}</td>
-          <td>{{ item.time }}</td>
+          <td><input :value="item.name"/></td>
+          <td><input :value="item.ratio * 100"/></td>
+          <td><input :value="item.price"/></td>
+          <td><input :value="item.time"/></td>
         </tr>
       </tbody>
     </table>
@@ -207,7 +211,7 @@ defineExpose({
       <div>
         <div>乙方：<input class="input s-flex-grow" :value="contract.exhibitorName"></div>
         <div>代表（签字盖章）</div>
-        <div>日期：<input class="input s-flex-grow" :value="contract.exhibitorName"></div>
+        <div>日期：<input class="input s-flex-grow" :value="_date"></div>
       </div>
     </div>
     <div class="d2">
@@ -267,9 +271,16 @@ defineExpose({
 
     td {
       border: 1px solid #000000;
-      padding: 2px 10px;
+      /* padding: 2px 10px; */
       height: 30px;
       /* border-top: 1px solid #000000; */
+      input{
+        border: none;
+        width: 100%;
+        outline: none;
+        padding: 2px 10px;
+        text-align: center;
+      }
     }
   }
 

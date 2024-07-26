@@ -323,10 +323,10 @@ getCart()
       <div class="col col3">
         <div class="table">
           <el-table :data="carList" border >
-            <el-table-column label="服务项目" prop="project"></el-table-column>
-            <el-table-column label="位置/版面" prop="position"></el-table-column>
+            <el-table-column label="服务项目" prop="project" min-width="120"></el-table-column>
+            <el-table-column label="位置/版面" prop="position" min-width="120"></el-table-column>
             <el-table-column label="规格" prop="size"></el-table-column>
-            <el-table-column label="单价(RMB)" prop="price"></el-table-column>
+            <el-table-column label="单价(RMB)" prop="price" min-width="120"></el-table-column>
             <el-table-column label="数量" width="200px">
               <template #default="scope">
                 <el-input-number v-model="scope.row.num" :min="1" size="small" @change="(newVal: number, oldVal: number) => { editCart(scope.row, newVal )}" ></el-input-number>

@@ -86,7 +86,7 @@
                 <el-table-column prop="tel" label="电话" />
                 <el-table-column prop="email" label="邮箱" />
                 <el-table-column prop="wechat" label="微信" />
-                <el-table-column prop="status" label="在职状态">
+                <el-table-column prop="status" label="在职状态" min-width="120">
                   <template #default="scope">
                     {{ ['','在职', '离职', '调岗'][scope.row.status]  }}
                   </template>
@@ -109,10 +109,10 @@
             <!-- <div><el-button type="primary">签订合同</el-button></div> -->
             <p style="padding: 10px 0;">展位订单</p>
             <el-table :data="form.orderPosition" border show-overflow-tooltip>
-              <el-table-column prop="orderCode" label="订单编号"/>
+              <el-table-column prop="orderCode" label="订单编号" min-width="120"/>
               <el-table-column prop="brand" label="品牌"/>
               <el-table-column prop="positionCode" label="展位号" />
-              <el-table-column prop="price" label="订单金额" />
+              <el-table-column prop="price" label="订单金额"  min-width="120"/>
               <el-table-column label="操作" width="150" fixed="right">
                 <template #default="scope"> 
                   <el-button link type="primary" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
@@ -127,10 +127,10 @@
 
             <p style="padding: 10px 0; margin-top: 10px;">物料订单</p>
             <el-table :data="form.orderMaterial" border  show-overflow-tooltip>
-              <el-table-column prop="orderCode" label="订单编号"/>
+              <el-table-column prop="orderCode" label="订单编号" min-width="120"/>
               <!-- <el-table-column prop="name" label="品牌"/> -->
               <el-table-column prop="positionCode" label="展位号"/>
-              <el-table-column prop="price" label="订单金额" />
+              <el-table-column prop="price" label="订单金额"  min-width="120"/>
               <el-table-column label="操作" width="150" fixed="right">
                 <template #default="scope"> 
                   <el-button link type="primary" @click="goodsDetail(scope.row.id)">详情</el-button>
@@ -146,15 +146,15 @@
 
           <el-tab-pane label="合同" :name="3" v-if="type === '2'">
             <el-table :data="form.contract" border  show-overflow-tooltip>
-              <el-table-column prop="contractCode" label="合同编号"/>
-              <el-table-column prop="contractType" label="合同类型">
+              <el-table-column prop="contractCode" label="合同编号" min-width="120"/>
+              <el-table-column prop="contractType" label="合同类型" min-width="120">
                 <template #default="scope"> 
                   <!-- 1展位合同，2物料合同，3展位+物料 -->
                   {{ {1: '展位合同', 2: '物料合同', 3: '展位+物料'}[scope.row.contractType as number] }}
                 </template>
               </el-table-column>
-              <el-table-column prop="" label="付款方式" />
-              <el-table-column prop="contractAmount" label="合同金额" />
+              <el-table-column prop="" label="付款方式" min-width="120" />
+              <el-table-column prop="contractAmount" label="合同金额"  min-width="120"/>
               <el-table-column prop="deposit" label="预定金" />
               <el-table-column prop="" label="抵扣" />
               <el-table-column prop="firstPayPrice" label="一期款" />
@@ -163,7 +163,7 @@
               <el-table-column prop="finalPayTime" label="期限" />
               <el-table-column prop="receivedPrice" label="已收款" />
               <el-table-column prop="unknownPrice" label="未收款" />
-              <el-table-column prop="contractStatus" label="合同状态">
+              <el-table-column prop="contractStatus" label="合同状态" min-width="120">
                 <template #default="scope"> 
                   <!-- 合同状态，0撤销，1已完成 -->
                   {{ {0: '撤销', 1: '已完成'}[scope.row.contractStatus as number] }}

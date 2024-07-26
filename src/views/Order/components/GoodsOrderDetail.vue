@@ -31,11 +31,11 @@
       </el-form>
       <el-table :data="detail.data.materialData" border show-overflow-tooltip
         header-row-class-name="s-table-header">
-        <el-table-column prop="project" label="服务项目" />
-        <el-table-column prop="position" label="位置/版面" />
-        <el-table-column prop="size" label="尺寸规格" />
+        <el-table-column prop="project" label="服务项目" min-width="120" />
+        <el-table-column prop="position" label="位置/版面" min-width="120" />
+        <el-table-column prop="size" label="尺寸规格" min-width="120" />
         <el-table-column prop="num" label="数量" />
-        <el-table-column prop="price" label="单价(RMB)" />
+        <el-table-column prop="price" label="单价(RMB)" min-width="120" />
         <!-- <el-table-column prop="" label="小计(RMB)">
           <template #default="scope">{{ (scope.row.num * scope.row.price).toFixed(2) }}</template>
         </el-table-column> -->

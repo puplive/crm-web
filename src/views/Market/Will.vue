@@ -196,27 +196,45 @@ getList()
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%"
+        :cell-style="{minWidth: '120px'}"
         show-overflow-tooltip
         header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="42" />
-        <el-table-column prop="companyName" label="公司名称" width="180">
+        <!-- 序号 企业名称 展会名称 展位号 展位类型 展位面积 展位合同 物料合同 是否退展 会展联系人 职位 手机号 曾用名 通讯地圳 主营业务 持有人 -->
+        <el-table-column type="selection" width="42" fixed="left"/>
+        <el-table-column type="index" label="序号" width="60"/>
+        <el-table-column prop="companyName" label="企业名称" width="180">
           <template #default="scope"> 
-            <el-link :href="'/market/clues/info?type=2&id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
+            <el-link :href="'/market/clues/info?type=1&id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
-        <el-table-column prop="duties" label="职务" />
-        <el-table-column prop="phone" label="电话" />
-        <el-table-column prop="recordTime" label="记录时间" width="180" />
-        <el-table-column prop="recordText" label="记录内容" />
-        <el-table-column prop="authUser" label="授权人" />
+        <el-table-column prop="exhibitionName" label="展会名称" width="180" />
+        <el-table-column prop="positionCode" label="展位号" />
+        <el-table-column prop="positionType" label="展位类型" min-width="120">
+          <template #default="scope">{{ {1:'标准',2:'特装'}[scope.row.positionType as number] }}</template>
+        </el-table-column>
+        <el-table-column prop="positionArea" label="展位面积" min-width="120" />
+        <el-table-column prop="contractPosition" label="展位合同" min-width="120">
+          <!-- 0未签订，1已签订，2已回执 -->
+          <template #default="scope">{{ {0:'未签订',1:'已签订',2:'已回执'}[scope.row.contractPosition as number] }}</template>
+        </el-table-column>
+        <el-table-column prop="contractMaterial" label="物料合同" min-width="120">
+          <!-- 0未签订，1已签订，2已回执 -->
+          <template #default="scope">{{ {0:'未签订',1:'已签订',2:'已回执'}[scope.row.contractMaterial as number] }}</template>
+        </el-table-column>
+        <el-table-column prop="isExit" label="是否退展" min-width="120">
+          <!-- 0否，1是 -->
+          <template #default="scope">{{ {0:'否',1:'是'}[scope.row.isExit as number] }}</template>
+        </el-table-column>
+        <el-table-column prop="exhibitionContact" label="展会联系人" min-width="120" />
+        <el-table-column prop="duties" label="职位"  min-width="120"/>
+        <el-table-column prop="phone" label="手机号" min-width="120" />
+        <el-table-column prop="" label="曾用名"  min-width="120"/>
         <template v-for="item in customField" :key="item.key">
-          <el-table-column :prop="item.key" :label="item.name">
-            <!-- <template #default="scope" v-if="item.type === 5 || item.type === 7">
-              {{ scope.row[item.key].join('，') }}
-            </template> -->
+          <el-table-column :prop="item.key" :label="item.name" min-width="120" v-if="item.name == '通讯地址' || item.name == '主营业务'">
           </el-table-column>
         </template>
+        <el-table-column prop="authUser" label="持有人" />
+        
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <!-- <el-button link type="primary" size="small" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
@@ -257,10 +275,10 @@ getList()
           <el-radio :value="scope.row.id" v-model="merge.masterId"></el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="companyName" label="公司名称"/>
-      <el-table-column prop="exhibitionName" label="展会姓名"/>
+      <el-table-column prop="companyName" label="公司名称" min-width="120"/>
+      <el-table-column prop="exhibitionName" label="展会姓名" min-width="120"/>
       <!-- <el-table-column prop="recordTime" label="创建时间"/> -->
-      <el-table-column prop="authUser" label="线索所有人" />
+      <el-table-column prop="authUser" label="线索所有人"  min-width="120"/>
     </el-table>
     <template #footer>
       <div class="dialog-footer">

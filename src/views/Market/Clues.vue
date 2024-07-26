@@ -219,19 +219,23 @@ getCustomField()
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
-        <el-table-column prop="companyName" label="公司名称" width="180">
+        <el-table-column type="index" label="序号" width="60" />
+        <el-table-column prop="companyName" label="企业名称" width="180">
           <template #default="scope"> 
             <el-link :href="'/market/clues/info?type=1&id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="exhibitionContact" label="联系方式" width="180" />
-        <el-table-column prop="duties" label="职务" />
-        <el-table-column prop="phone" label="电话" />
-        <el-table-column prop="recordTime" label="记录时间" width="180" />
-        <el-table-column prop="recordText" label="记录内容" />
-        <el-table-column prop="authUser" label="授权人" />
+        <el-table-column prop="exhibitionContact" label="展会联系人" min-width="120" />
+        <el-table-column prop="duties" label="职位" />
+        <el-table-column prop="phone" label="手机号" min-width="120" />
+        <el-table-column prop="recordStatus" label="跟进状态" min-width="120">
+          <!-- 0无1电话邀约2客户拜访3初步方案4停滞 -->
+          <template #default="scope">{{ {0: '无', 1: '电话邀约', 2: '客户拜访', 3: '初步方案', 4: '停滞'}[scope.row.recordStatus as number]  }}</template>
+        </el-table-column>
+        <el-table-column prop="authUser" label="持有人" />
+
         <template v-for="item in customField" :key="item.key">
-          <el-table-column :prop="item.key" :label="item.name">
+          <el-table-column :prop="item.key" :label="item.name"  min-width="120">
             <!-- <template #default="scope" v-if="item.type === 5 || item.type === 7">
               {{ scope.row[item.key].join('，') }}
             </template> -->

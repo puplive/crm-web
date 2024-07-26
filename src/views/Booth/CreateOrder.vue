@@ -72,13 +72,13 @@ const handleBack = () => {
 
     <div v-for="(item, index) in data.position" :key="index" class="item">
       <el-table :data="[item]" border>
-        <el-table-column prop="name" label="企业名称">
+        <el-table-column prop="name" label="企业名称" min-width="120">
           <template #default="scoped">{{ companyName }}</template>
         </el-table-column>
-        <el-table-column prop="companyBrand" label="参展品牌"></el-table-column>
+        <el-table-column prop="companyBrand" label="参展品牌" min-width="120"></el-table-column>
         <el-table-column prop="hallCode" label="展馆号"></el-table-column>
         <el-table-column prop="positionCode" label="展位号"></el-table-column>
-        <el-table-column prop="product" label="产品名称"></el-table-column> 
+        <el-table-column prop="product" label="产品名称" min-width="120"></el-table-column> 
         <el-table-column prop="unitPrice" label="单价"></el-table-column> 
         <el-table-column prop="area" label="面积"></el-table-column> 
         <el-table-column prop="discount" label="折扣">

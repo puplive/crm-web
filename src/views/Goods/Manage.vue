@@ -436,12 +436,12 @@ subGetGoodsListSetting()
           </div>
           <el-table ref="tableRef" :data="goodsListSetting" border>
             <el-table-column type="selection" fixed="left" width="42" />
-            <el-table-column prop="project" label="服务项目"></el-table-column>
+            <el-table-column prop="project" label="服务项目" min-width="120"></el-table-column>
             <el-table-column prop="position" label="位置/版面" width="100"></el-table-column>
             <el-table-column prop="size" label="尺寸规格" width="100"></el-table-column>
-            <el-table-column prop="price" label="单价(RMB)"></el-table-column>
-            <el-table-column prop="num" label="上架数量"></el-table-column>
-            <el-table-column prop="buy" label="已购数量"></el-table-column>
+            <el-table-column prop="price" label="单价(RMB)" min-width="120"></el-table-column>
+            <el-table-column prop="num" label="上架数量" min-width="120"></el-table-column>
+            <el-table-column prop="buy" label="已购数量" min-width="120"></el-table-column>
             <el-table-column prop="stock" label="库存"></el-table-column>
             <el-table-column label="操作" fixed="right" width="170">
               <template #default="scope">
