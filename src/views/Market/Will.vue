@@ -228,7 +228,7 @@ getList()
         <el-table-column prop="exhibitionContact" label="展会联系人" min-width="120" />
         <el-table-column prop="duties" label="职位"  min-width="120"/>
         <el-table-column prop="phone" label="手机号" min-width="120" />
-        <el-table-column prop="" label="曾用名"  min-width="120"/>
+        <!-- <el-table-column prop="" label="曾用名"  min-width="120"/> -->
         <template v-for="item in customField" :key="item.key">
           <el-table-column :prop="item.key" :label="item.name" min-width="120" v-if="item.name == '通讯地址' || item.name == '主营业务'">
           </el-table-column>

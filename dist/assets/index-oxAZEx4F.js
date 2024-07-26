@@ -1,0 +1,1 @@
+import{r as e}from"./request-DuPLO9ut.js";const r="/web/v1",o=t=>e({url:r+"/contract/template/getList",method:"get",params:t}),s=t=>e({url:r+"/order/position/getContractData",method:"get",params:t}),c=t=>e({url:r+"/contract/orderPosition/create",method:"post",data:t}),n={getList:o};export{n as a,c,s as g};
