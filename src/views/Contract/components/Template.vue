@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getContractData } from '@/api/Contract'
+import { getContractData, create } from '@/api/Contract'
+import { booth } from '@/api/Order'
 const contract: any = ref({
   exhibitorName: '', //string 乙方必需
   discount: [], //array[string] 折扣数据 必需
@@ -18,16 +19,49 @@ const contract: any = ref({
   }], //array[string] 付款信息 必需
 })
 
+const orderId: any = ref('')
+const boothData: any = ref({})
+
 const setData = (id: any) => {
+  orderId.value = id
   getContractData({ orderId: id }).then((res: any) => {
     if (res.code === 0) {
       contract.value = res.data
+    }
+  })
+
+  booth.getDetail({id: id}).then((res: any) => {
+    if (res.code === 0) {
+      boothData.value = res.data
+    }
+  })
+}
+
+const createContract = (templateId: any) => {
+  create({
+    orderId: orderId.value,
+    templateId: templateId,
+    hallCode: contract.value.hallCode,
+    positionCode: contract.value.positionCode,
+    unitPrice: contract.value.positionUnitPrice,
+    positionType: contract.value.positionType,
+    positionArea: contract.value.positionArea,
+    discountRatio: contract.value.discountRatio,
+    amount: contract.value.finalPrice,
+    discount: contract.value.discount,
+    payment: contract.value.payment
+  }).then((res: any) => {
+    if (res.code === 0) {
+      ElMessage.success('签订成功')
+    }else{
+      ElMessage.error(res.msg)
     }
   })
 }
 
 defineExpose({
   setData,
+  createContract
 })
 </script>
 <template>
@@ -35,7 +69,7 @@ defineExpose({
     <h3 class="title">中国特许加盟展参展协议</h3>
     <div class="d1">
       <div><b>甲方：北京智霖博雅展览有限公司</b></div>
-      <div><b class="s-flex-row">乙方：<el-input type="text" class="input s-flex-auto" v-model="contract.exhibitorName"/></b></div>
+      <div><b class="s-flex-row">乙方：<input class="input s-flex-grow" :value="contract.exhibitorName"></b></div>
     </div>
     <p>根据《中华人民共和国民法典》《中华人民共和国广告法》及相关规定，甲乙双方本着诚实信用、平等互利的原则，就甲方为乙方提供服务事宜签订本合同。</p>
     <p><b>第一条 合作细则</b></p>
@@ -171,9 +205,9 @@ defineExpose({
         <div>日期：2024-04-09 </div>
       </div>
       <div>
-        <div>乙方：</div>
+        <div>乙方：<input class="input s-flex-grow" :value="contract.exhibitorName"></div>
         <div>代表（签字盖章）</div>
-        <div>日期：</div>
+        <div>日期：<input class="input s-flex-grow" :value="contract.exhibitorName"></div>
       </div>
     </div>
     <div class="d2">
@@ -185,19 +219,7 @@ defineExpose({
     </div>
   </div>
 </template>
-<style>
-.contract-template {
-  .input{ 
-    border-bottom: 1px solid #000000; 
-    /* min-width: 0; */
-    flex: 1;
-    width: 0;
-    .el-input__wrapper{
-      box-shadow: none;
-    }
-  }
-}
-</style>
+
 <style scoped>
 .contract-template {
   padding: 30px;
@@ -207,6 +229,13 @@ defineExpose({
   .title{
     font-size: 20px;
     margin-bottom: 30px;
+  }
+  .input{ 
+    border: none;
+    border-bottom: 1px solid #000000; 
+    outline: none;
+    /* min-width: 0;
+    flex: 1; */
   }
   
   &>h3 {

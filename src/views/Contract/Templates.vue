@@ -23,6 +23,23 @@ const getList = async () => {
   getList()
 
 
+  // export default {
+  //   methods: {
+        /*
+            Generate Report using refs and calling the
+            refs function generatePdf()
+        */
+        // generateReport () {
+        //     this.$refs.html2Pdf.generatePdf()
+        // }
+//     },
+ 
+//     components: {
+//         VueHtml2pdf
+//     }
+// }
+
+
 
 </script>
 <template>
@@ -42,7 +59,7 @@ const getList = async () => {
         </el-radio-group>
       </div>
       <div class="r" >
-        <el-scrollbar>
+        <el-scrollbar >
         <vTemplate></vTemplate>
         </el-scrollbar>
       </div>
@@ -71,7 +88,7 @@ const getList = async () => {
     }
     .r{
       flex: 1;
-
+      min-width: 0;
     }
     
   }

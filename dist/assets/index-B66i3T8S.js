@@ -1,1 +1,0 @@
-import{r as e}from"./request-DQ5XCXvm.js";const r="/web/v1",o=t=>e({url:r+"/contract/template/getList",method:"get",params:t}),s=t=>e({url:r+"/order/position/getContractData",method:"get",params:t}),n={getList:o};export{n as a,s as g};
