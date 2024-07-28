@@ -233,7 +233,7 @@ import { order } from '@/api/Finances'
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="42" />
+        <el-table-column type="selection" width="42" fixed="left" />
         <!-- <el-table-column prop="id" label="ID" width="50" /> -->
         <el-table-column prop="orderCode" label="订单编号" min-width="120" />
         <el-table-column prop="companyName" label="企业名称" min-width="120" />

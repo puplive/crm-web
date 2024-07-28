@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, toRef } from 'vue'
-import { getContractData, create } from '@/api/Contract'
+import { getContractData, create, edit } from '@/api/Contract'
 // import { booth } from '@/api/Order'
 const contract: any = ref({
   exhibitorName: '', //string 乙方必需
@@ -63,9 +63,34 @@ const createContract = (templateId: any) => {
   })
 }
 
+const editContract = (templateId: any) => {
+  // console.log(contract.value)
+  edit({
+    orderId: orderId.value,
+    templateId: templateId,
+    hallCode: contract.value.hallCode,
+    positionCode: contract.value.positionCode,
+    unitPrice: contract.value.positionUnitPrice,
+    positionType: contract.value.positionType,
+    positionArea: contract.value.positionArea,
+    discountRatio: contract.value.discountRatio,
+    amount: contract.value.finalPrice,
+    discount: contract.value.discount,
+    payment: contract.value.payment
+  }).then((res: any) => {
+    if (res.code === 0) {
+      ElMessage.success('签订成功')
+    }else{
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
+
 defineExpose({
   setData,
-  createContract
+  createContract,
+  editContract,
 })
 </script>
 <template>
@@ -272,7 +297,7 @@ defineExpose({
     td {
       border: 1px solid #000000;
       /* padding: 2px 10px; */
-      height: 30px;
+      min-height: 40px;
       /* border-top: 1px solid #000000; */
       input{
         border: none;
@@ -280,6 +305,7 @@ defineExpose({
         outline: none;
         padding: 2px 10px;
         text-align: center;
+        height: 20px;
       }
     }
   }

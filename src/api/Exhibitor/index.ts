@@ -16,37 +16,60 @@ export const getExhibitor = (): Promise<any> => {
   });
 }
 
-// export const boothAdd = (data:any): Promise<any> => {
-//   return request({
-//     url: prefix + "/exhibition/position/add",
-//     method: "post",
-//     data,
-//   });
-// }
+export const getList = (params: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibitor/account/getList",
+    method: "get",
+    params,
+  });
+}
 
-// export const boothEdit = (data:any): Promise<any> => {
-//   return request({
-//     url: prefix + "/exhibition/position/edit",
-//     method: "post",
-//     data,
-//   });
-// }
+export const getSearchField = (): Promise<any> => {
+  return request({
+    url: prefix + "/exhibitor/account/getSearchField",
+    method: "get",
+  });
+}
 
-// export const boothDelete = (data:any): Promise<any> => {
-//   return request({
-//     url: prefix + "/exhibition/position/delete",
-//     method: "post",
-//     data,
-//   });
-// }
+export const add = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibitor/account/add",
+    method: "post",
+    data,
+  });
+}
 
-// export const boothImport = (data:any): Promise<any> => {
-//   return request({
-//     url: prefix + "/exhibition/position/import",
-//     method: "post",
-//     data,
-//   });
-// }
+export const edit = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibitor/account/edit",
+    method: "post",
+    data,
+  });
+}
+
+export const del = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibitor/account/delete",
+    method: "post",
+    data,
+  });
+}
+
+export const verify = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibitor/account/verify",
+    method: "post",
+    data,
+  });
+}
+
+export const getDetail = (params: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibitor/account/getDetail",
+    method: "get",
+    params,
+  });
+}
 
 // export const boothExport = (data:any): Promise<any> => {
 //   return request({
@@ -55,4 +78,16 @@ export const getExhibitor = (): Promise<any> => {
 //     data,
 //   });
 // }
+
+export default {
+  exhibitorList,
+  getExhibitor,
+  getList,
+  getSearchField,
+  add,
+  edit,
+  del,
+  verify,
+  getDetail,
+}
 

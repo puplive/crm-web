@@ -2,9 +2,8 @@
 <script lang="ts" setup>
   import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
-  // import ApplyInvoice from './components/ApplyInvoice.vue'
+  import UpInvoice from './components/UpInvoice.vue'
   import api from '@/api/Finances'
-  import { uploadFile } from '@/api/common'
 
   const page = reactive({
     page: 1,
@@ -15,7 +14,6 @@
   const tableData: any = ref([])
   const tableRef: any = ref(null)
   const searchData = ref([])
-
 
   const search = (d: any) => {
     searchForm.value = d
@@ -49,25 +47,20 @@
   }
 
   const Del = (ids: any) => {
-    // let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-    // if (ids.length === 0) {
-    //   ElMessage.warning('请选择需要删除的线索')
-    //   return
-    // }
     ElMessageBox.confirm('确定删除？', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
 
-      // api.del({ id: ids}).then((res: any) => {
-      //   if(res.code === 0) {
-      //     ElMessage.success('删除成功')
-      //     getList()
-      //   }else {
-      //     ElMessage.error(res.msg)
-      //   }
-      // })
+      api.invoice.del({ id: ids}).then((res: any) => {
+        if(res.code === 0) {
+          ElMessage.success('删除成功')
+          getList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
     }).catch(() => {
     })
   }
@@ -81,17 +74,17 @@
       contact: '', // 联系人,
       phone: '', // 手机号,
       email: '', // 邮箱,
-      type: '', // 1,
-      status: '', // 1,
-      invoiceCode: '', // 发票号,
-      img: '', // 发票附件,
+      // type: '', // 1,
+      // status: '', // 1,
+      // invoiceCode: '', // 发票号,
+      // img: '', // 发票附件,
     },
   })
 
   const editSub = () => {
     api.invoice.edit(edit.form).then((res: any) => {
       if(res.code === 0) {
-        ElMessage.success('申请成功')
+        ElMessage.success('修改成功')
         edit.show = false
         getList()
       }else {
@@ -102,7 +95,7 @@
   const setEdit = (row: any) => {
     edit.show = true
     edit.form.id = row.id
-    edit.form.title = row.title
+    edit.form.title = row.invoiceTitle
     edit.form.socialCode = row.socialCode
     edit.form.contact = row.contact
     edit.form.phone = row.phone
@@ -112,62 +105,6 @@
     // edit.form.invoiceCode = row.invoiceCode
     // edit.form.img = row.img
   }
-
-  const beforeUpload: any = (rawFile: any) => {
-  // if (rawFile.type !== 'image/jpeg') {
-  //   ElMessage.error('Avatar picture must be JPG format!')
-  //   // return false
-  // } else 
-  if (rawFile.size / 1024 / 1024 > 3) {
-    ElMessage.error('文件大小不能超过 3MB!')
-    return false
-  }
-  return true
-}
-
-const uploadImg = (fileObj: any) => {
-  let formData = new FormData()
-  formData.append('upload', fileObj.file)
-  return new Promise((resolve, reject) => {
-    uploadFile(formData).then((res: any) => {
-      if(res.code === 0){
-        resolve(res.data)
-      }else{
-        reject(res)
-      }
-    })
-  })
-}
-
-const uploadInvoice = (d: any)=> {
-  api.invoice.uploadInvoice(d).then((res: any) => {
-    if(res.code === 0) {
-      ElMessage.success('上传成功')
-      getList()
-    }else {
-      ElMessage.error(res.msg)
-    }
-  })
-
-}
-
-// const openInvoice = () => {
-//   ElMessageBox.confirm('确定开票？', '提示', {
-//     confirmButtonText: '确定',
-//     cancelButtonText: '取消',
-//     type: 'warning'
-//   }).then(() => {
-//     api.invoice.openInvoice({ id: tableRef.value.getSelectionRows()[0].id}).then((res: any) => {
-//       if(res.code === 0) {
-//         ElMessage.success('开票成功')
-//         getList()
-//       }else {
-//         ElMessage.error(res.msg)
-//       }
-//     })
-//   }).catch(() => {
-//   })
-// }
 
 const openInvoice: any = reactive({
     show: false,
@@ -220,7 +157,7 @@ const openInvoice: any = reactive({
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="42" />
+        <!-- <el-table-column type="selection" width="42" /> -->
         <el-table-column prop="orderCode" label="订单编号" width="180" />
         <el-table-column prop="companyName" label="企业名称" min-width="120" />
         <el-table-column prop="hallCode" label="展馆号" />
@@ -236,7 +173,8 @@ const openInvoice: any = reactive({
         <el-table-column prop="orderPrice" label="订单金额" min-width="120" />
         <el-table-column prop="payType" label="付款方式" min-width="120">
           <template #default="scope">
-            {{ {1:'全款',2:'分期'}[scope.row.payType as number] }}
+            {{ '银行转账' }}
+            <!-- {{ {1:'全款',2:'分期'}[scope.row.payType as number] }} -->
           </template>
         </el-table-column>
         <el-table-column prop="payStatus" label="付款状态" min-width="120">
@@ -268,37 +206,48 @@ const openInvoice: any = reactive({
         <el-table-column prop="invoicePrice" label="开票金额" min-width="120" />
         <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
           <template #default="scope">
-            {{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}
+            <!-- {{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }} -->
+            {{ {0:'未申请',1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}
           </template>
         </el-table-column>
         <el-table-column prop="payImg" label="付款凭证" min-width="120">
           <template #default="scope">
-            <el-link :href="scope.row.payImg" target="_blank">{{ scope.row.payImg }}</el-link>
+            <!-- <el-link :href="scope.row.payImg" target="_blank">{{ scope.row.payImg }}</el-link> -->
+            <el-image 
+              style="width: 30px; height: 30px; margin-right: 5px;"
+              :src="scope.row.payImg" 
+              fit="contain" 
+              :preview-src-list="[scope.row.payImg]" 
+              preview-teleported="true"
+              loading="lazy" />
           </template>
         </el-table-column>
         <el-table-column prop="receiveImg" label="到款凭证" min-width="120">
           <template #default="scope">
-            <el-link :href="scope.row.receiveImg" target="_blank">{{ scope.row.receiveImg }}</el-link>
+            <el-image 
+              style="width: 30px; height: 30px; margin-right: 5px;"
+              :src="scope.row.receiveImg" 
+              fit="contain" 
+              :preview-src-list="[scope.row.receiveImg]" 
+              preview-teleported="true"
+              loading="lazy" />
           </template>
         </el-table-column>
         <el-table-column prop="invoiceImg" label="发票附件" min-width="120">
           <template #default="scope">
-            <el-link :href="scope.row.invoiceImg" target="_blank">{{ scope.row.invoiceImg }}</el-link>
+            <el-image
+              style="width: 30px; height: 30px; margin-right: 5px;" 
+              :src="scope.row.invoiceImg" 
+              fit="contain" 
+              :preview-src-list="[scope.row.invoiceImg]" 
+              preview-teleported="true"
+              loading="lazy" />
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-            <!-- <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">详情</el-button> -->
-            <el-button link type="primary" size="small" @click="openInvoiceSet(scope.row)">开票</el-button>
-            <!-- <el-button link type="primary" size="small" @click="up([scope.row.id])">上传发票</el-button> -->
-            <el-upload
-              :show-file-list="false"
-              :on-success="(response:any, file:any, fileList:any) => { uploadInvoice({ id: scope.row.id, url: response.url }) }"
-              :before-upload="beforeUpload"
-              :http-request="uploadImg"
-            >
-              <el-button link type="primary" size="small">上传发票</el-button>
-            </el-upload>
+            <el-button link type="primary" size="small" @click="openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+            <UpInvoice :id="scope.row.id" @callback="getList" />
             <el-button link type="primary" size="small" @click="setEdit(scope.row)">编辑</el-button>
             <el-button link type="primary" size="small" @click="Del([scope.row.id])">删除</el-button>
           </template>
@@ -341,7 +290,7 @@ const openInvoice: any = reactive({
     </template>
   </el-dialog>
 
-  <el-dialog v-model="openInvoice.show" title="转为意向客户" width="500" draggable>
+  <el-dialog v-model="openInvoice.show" title="开票" width="500" draggable>
     <el-form ref="willFormRef" :model="edit.form" label-width="auto">
       <el-form-item label="发票类型" >
         <el-radio-group v-model="openInvoice.form.type">

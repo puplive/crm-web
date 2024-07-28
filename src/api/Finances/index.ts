@@ -1,4 +1,5 @@
 import request from "@/utils/request";
+import type { del } from "../Exhibitor";
 // import type { UserType } from './types'
 
 const prefix = "/web/v1";
@@ -47,6 +48,20 @@ export const payment = {
       params,
     });
   },
+  del: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/finance/orderPayment/delete",
+      method: "post",
+      data,
+    });
+  },
+  edit: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/finance/orderPayment/edit",
+      method: "post",
+      data,
+    });
+  },
 }
 
 export const invoice = {
@@ -87,6 +102,13 @@ export const invoice = {
   uploadInvoice: (data: any): Promise<any> => {
     return request({
       url: prefix + "/finance/orderPaymentInvoice/uploadInvoice",
+      method: "post",
+      data,
+    });
+  },
+  del: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/finance/orderPaymentInvoice/delete",
       method: "post",
       data,
     });

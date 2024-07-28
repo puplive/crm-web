@@ -2,32 +2,51 @@
   import { ref, onMounted } from 'vue'
   import vTemplate from './components/Template.vue'
   import { useRoute, useRouter } from 'vue-router';
+  import { htmlToPDF, goPrint } from '@/utils/html2pdf'
+  import htmlToPdfmake  from '@/utils/htmlToPdfmake'
+  
+
   // import VueHtml2pdf from 'vue-html2pdf'
 
   const route = useRoute();
   const orderId = route.query.orderId;
   const templateId = route.query.id
-
+  const pageName = route.name
+  // console.log(route)
   const contractRef:any = ref(null);
-  onMounted(() => {
-    contractRef.value.setData(orderId)
-  })
+  
   const createContract = () => {
     contractRef.value.createContract(templateId)
   }
+  const printContract = () => {
+    contractRef.value.printContract()
+  }
+  const exportContract = () => {
+    contractRef.value.exportContract()
+  }
+  const edit = () => {
+    contractRef.value.editContract()
+    // edit(orderId, contractRef.value.getData())
+  }
   // const html2Pdf:any = ref(null);
 
-
+  onMounted(() => {
+    contractRef.value.setData(orderId)
+  })
 </script>
 <template>
     <div class="conclude">
-      <div class="p1">
+      <div class="p1" v-if="pageName === 'ContractDetail'">
+        <span style="margin-right: 20px;">合同详情</span>
+        <el-button type="" @click="$router.back()">返回</el-button>
+      </div>
+      <div class="p1" v-else >
         <el-button type="primary" @click="createContract">签订合同</el-button>
-        <el-button type="primary" @click="">打印</el-button>
-        <el-button type="primary" @click="">导出</el-button>
-        <el-button type="primary" @click="">编辑</el-button>
-        <el-button type="primary" @click="">保存</el-button>
-        <el-button type="" @click="">取消</el-button>
+        <el-button type="primary" @click="() => htmlToPdfmake.pdf.download()">打印</el-button>
+        <el-button type="primary" @click="() => htmlToPDF('pdf-content','test pdf')">导出</el-button>
+        <el-button type="primary" @click="edit">编辑</el-button>
+        <!-- <el-button type="primary" @click="">保存</el-button> -->
+        <el-button type="" @click="$router.back()">取消</el-button>
       </div>
       <div class="p2">
         <el-scrollbar>
@@ -50,7 +69,9 @@
             ref="html2Pdf"
           >
             <section slot="pdf-content"> -->
+              <div id="pdf-content">
               <vTemplate ref="contractRef"></vTemplate>
+              </div>
             <!-- </section>
           </vue-html2pdf> -->
         </el-scrollbar>

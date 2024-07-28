@@ -51,25 +51,20 @@
   }
 
   const Del = (ids: any) => {
-    // let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
-    // if (ids.length === 0) {
-    //   ElMessage.warning('请选择需要删除的线索')
-    //   return
-    // }
     ElMessageBox.confirm('确定删除？', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
 
-      // api.del({ id: ids}).then((res: any) => {
-      //   if(res.code === 0) {
-      //     ElMessage.success('删除成功')
-      //     getList()
-      //   }else {
-      //     ElMessage.error(res.msg)
-      //   }
-      // })
+      api.payment.del({ id: ids}).then((res: any) => {
+        if(res.code === 0) {
+          ElMessage.success('删除成功')
+          getList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
     }).catch(() => {
     })
   }
@@ -103,7 +98,9 @@
         <el-table-column prop="positionCode" label="展位号" />
         <el-table-column prop="payCompany" label="付款公司" min-width="120" />
         <el-table-column prop="payPrice" label="付款金额" min-width="120" />
-        <el-table-column prop="" label="付款方式" min-width="120" />
+        <el-table-column prop="" label="付款方式" min-width="120">
+          <template #default="scope">{{ '银行转账' }}</template>
+        </el-table-column>
         <el-table-column prop="orderPrice" label="订单金额" min-width="120" />
         <el-table-column prop="payType" label="付款类型" min-width="120">
           <template #default="scope">
@@ -118,11 +115,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="clueUser" label="持有人" />
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">详情</el-button>
-            <el-button link type="primary" size="small" @click="applyInvoiceRef.setApplay(scope.row)">申请发票</el-button>
-            <el-button link type="primary" size="small" @click="Del([scope.row.id])">删除</el-button>
+            <el-button link type="primary" size="small" @click="$router.push({name:'FinancesPaymentDetail',query:{id:scope.row.id}})">详情</el-button>
+            <el-button link type="primary" size="small" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.invoiceStatus === 0">申请发票</el-button>
+            <el-button link type="primary" size="small" @click="Del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

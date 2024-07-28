@@ -63,3 +63,103 @@ export const sponsor = (): Promise<any> => {
     method: "get",
   });
 }
+
+export const role = {
+  getList: (): Promise<any> => {
+    return request({
+      url: prefix + "/auth/role/getList",
+      method: "get",
+    });
+  },
+
+  add: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/roleMenu/add",
+      method: "post",
+      data,
+    });
+  },
+
+  getData: (params: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/roleMenu/getData",
+      method: "get",
+      params,
+    });
+  }
+}
+
+export const org = {
+  getList: (): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorDepartment/getList",
+      method: "get",
+    });
+  },
+
+  add: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorDepartment/add",
+      method: "post",
+      data,
+    });
+  },
+
+  edit: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorDepartment/edit",
+      method: "post",
+      data,
+    });
+  },
+
+  del: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorDepartment/delete",
+      method: "post",
+      data,
+    });
+  }
+}
+
+export const sponsorAccount = {
+  getList: (params: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorAccount/getList",
+      method: "get",
+      params,
+    });
+  },
+
+  add: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorAccount/add",
+      method: "post",
+      data,
+    });
+  },
+
+  edit: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorAccount/edit",
+      method: "post",
+      data,
+    });
+  },
+
+  del: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorAccount/delete",
+      method: "post",
+      data,
+    });
+  },
+
+  setStatus: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorAccount/setStatus",
+      method: "post",
+      data,
+    });
+  }
+}

@@ -4,6 +4,7 @@
   import TableSearch from '@/components/TableSearch/index.vue'
   import ApplyInvoice from './components/ApplyInvoice.vue'
   import api from '@/api/Finances'
+  import { booth as boothApi} from '@/api/Order/index'
 
   const page = reactive({
     page: 1,
@@ -77,6 +78,26 @@
   //     searchData.value = res.data
   //   }
   // })
+
+  const revoke = (id: any) => {
+    ElMessageBox.confirm('是否确认要撤销订单?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+
+      boothApi.revoke({ id }).then((res) => {
+        if(res.code === 0) {
+          ElMessage.success('撤销成功')
+          getList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+        
+      })
+    }).catch(() => {
+    })
+  }
   
 
   getList()
@@ -118,6 +139,12 @@
         <el-table-column prop="deposit" label="定金" />
         <el-table-column prop="receivedPrice" label="已收" />
         <el-table-column prop="unknownPrice" label="未收款" />
+        <el-table-column prop="payStatus" label="付款状态">
+          <template #default="scope">
+            <!-- 0未付款，1部分付款，2已付款 -->
+            {{ ['未付款','部分付款','已付款'][scope.row.payStatus] }}
+          </template>
+        </el-table-column>
         <el-table-column prop="invoiceStatus" label="发票">
           <template #default="scope">
             {{ ['未申请','待开票','部分开票','已开票'][scope.row.invoiceStatus] }}
@@ -128,10 +155,10 @@
           <template #default="scope">
             <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
             <!-- <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">详情</el-button> -->
-            <el-button link type="primary" size="small" @click="applyInvoiceRef.setApplay(scope.row)">申请发票</el-button>
+            <!-- <el-button link type="primary" size="small" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.payStatus !== 0">申请发票</el-button> -->
             <el-button link type="primary" size="small" @click="$router.push({ name: 'FinancesRecording', query: { id: scope.row.id } })">录入到款</el-button>
-            <el-button link type="primary" size="small" @click="">撤销</el-button>
-            <el-button link type="primary" size="small" @click="">下推</el-button>
+            <el-button link type="primary" size="small" @click="revoke(scope.row.id)">撤销</el-button>
+            <!-- <el-button link type="primary" size="small" @click="">下推</el-button> -->
           </template>
         </el-table-column>
       </el-table>

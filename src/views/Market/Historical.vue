@@ -31,7 +31,7 @@
   }
 
   const getList = async () => {
-    api.getList({status: 1, ...page, ...searchForm.value}).then((res) => {
+    api.getList({status: 4, ...page, ...searchForm.value}).then((res) => {
       if (res.code === 0) {
         tableData.value = res.data.data
         total.value = res.data.total
@@ -238,13 +238,13 @@ getCustomField()
           </el-table-column>
         </template>
           
-        <el-table-column fixed="right" label="操作" width="120">
+        <!-- <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="willSet(scope.row)">
               转为意向客户
             </el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
     <div class="s-table-pagination">

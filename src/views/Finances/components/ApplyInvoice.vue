@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-  import { reactive } from 'vue'
+  import { ref, reactive } from 'vue'
   import { invoice } from '@/api/Finances'
   import { uploadFile } from '@/api/common'
   
+  const loading = ref(false)
+  const uploadRef = ref(null)
   const apply: any = reactive({
     show: false,
     form: {
@@ -30,7 +32,7 @@
       }
     })
   }
-  const setApplay = (row: any) => {
+  const setApply = (row: any) => {
     apply.show = true
     apply.form.paymentId = row.id
     apply.form.title = row.title
@@ -57,6 +59,7 @@
   }
 
   const uploadImg = (fileObj: any) => {
+    loading.value = true
     let formData = new FormData()
     formData.append('upload', fileObj.file)
     return new Promise((resolve, reject) => {
@@ -65,14 +68,22 @@
           resolve(res.data)
         }else{
           reject(res)
+          ElMessage.error('上传失败');
+          uploadRef.value.clearFiles()
         }
+        loading.value = false
+      }).catch((err: any) => {
+        reject(err)
+        ElMessage.error('上传失败'); 
+        uploadRef.value.clearFiles()
+        loading.value = false
       })
     })
   }
 
   const emit = defineEmits(['callback'])
   defineExpose({
-    setApplay,
+    setApply: setApply,
   })
 </script>
 <template>
@@ -114,6 +125,7 @@
       </el-form-item>
       <el-form-item label="发票附件" prop="img">
         <el-upload
+          ref="uploadRef"
           :on-success="(response:any, file:any, fileList:any) => { apply.form.img = response.url }"
           :before-upload="beforeUpload"
           :http-request="uploadImg"
@@ -126,7 +138,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="apply.show = false">取消</el-button>
-        <el-button type="primary" @click="applySub">确定</el-button>
+        <el-button type="primary" @click="applySub" :loading="loading">确定</el-button>
       </div>
     </template>
   </el-dialog>

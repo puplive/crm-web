@@ -357,6 +357,16 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           title: '签订合同',
           // icon: 'list'
         }
+      },
+      {
+        path: 'detail',
+        name: 'ContractDetail',
+        component: () => import('@/views/Contract/Conclude.vue'),
+        meta: {
+          isMenu: false,
+          title: '合同详情',
+          // icon: 'list'
+        }
       }
     ]
   },
@@ -411,6 +421,16 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           // icon: 'list'
         }
       },
+      {
+        path: '/finances/PaymentDetail',
+        name: 'FinancesPaymentDetail',
+        component: () => import('@/views/Finances/PaymentDetail.vue'),
+        meta: {
+          isMenu: false,
+          title: '到款详情',
+          // icon: 'list'
+        }
+      },
     ]
   },
   {
@@ -419,7 +439,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     redirect: '/baoguan/consult',
     name: 'Baoguan',
     meta: {
-      isMenu: true,
+      isMenu: false,
       title: '报馆查询',
       icon: ''
     },
@@ -466,7 +486,47 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           title: '',
           // icon: 'list'
         }
-      }
+      },
+      {
+        path: '/settings/org',
+        name: 'Org',
+        component: () => import('@/views/Settings/Org.vue'),
+        meta: {
+          isMenu: true,
+          title: '公司架构',
+          // icon: 'list'
+        }
+      },
+      {
+        path: '/settings/role',
+        name: 'Role',
+        component: () => import('@/views/Settings/Role.vue'),
+        meta: {
+          isMenu: true,
+          title: '角色权限',
+          // icon: 'list'
+        }
+      },
+      {
+        path: '/settings/exhibitors',
+        name: 'Exhibitors',
+        component: () => import('@/views/Settings/Exhibitors.vue'),
+        meta: {
+          isMenu: true,
+          title: '参展商账号管理',
+          // icon: 'list'
+        }
+      },
+      {
+        path: '/settings/exhibitors/detail',
+        name: 'ExhibitorsDetail',
+        component: () => import('@/views/Settings/ExhibitorsDetail.vue'),
+        meta: {
+          isMenu: false,
+          title: '参展商详情',
+          // icon: 'list'
+        }
+      },
     ]
   },
   {

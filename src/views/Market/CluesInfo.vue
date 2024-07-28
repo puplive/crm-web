@@ -153,7 +153,9 @@
                   {{ {1: '展位合同', 2: '物料合同', 3: '展位+物料'}[scope.row.contractType as number] }}
                 </template>
               </el-table-column>
-              <el-table-column prop="" label="付款方式" min-width="120" />
+              <el-table-column prop="" label="付款方式" min-width="120">
+                <template #default="scope">{{ '银行转账' }}</template>
+              </el-table-column>
               <el-table-column prop="contractAmount" label="合同金额"  min-width="120"/>
               <el-table-column prop="deposit" label="预定金" />
               <el-table-column prop="" label="抵扣" />

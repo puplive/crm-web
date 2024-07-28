@@ -82,7 +82,7 @@ const revoke = (id: any) => {
           <el-table-column prop="contractStatus" label="合同状态" min-width="120">
             <template #default="scope">{{ ['未签约', '已签约', '已回执'][scope.row.contractStatus] }}</template>
           </el-table-column>
-          <el-table-column prop="payStatus" label="付款方式" min-width="120">
+          <el-table-column prop="payStatus" label="付款状态" min-width="120">
             <template #default="scope">{{ ['未付款', '部分付款', '已付款'][scope.row.payStatus] }}</template>
           </el-table-column>
           <el-table-column prop="receivedPrice" label="到款金额" min-width="120"></el-table-column>
@@ -110,7 +110,8 @@ const revoke = (id: any) => {
           </el-table-column>
           <el-table-column prop="payPrice" label="到款金额" min-width="120"></el-table-column>
           <el-table-column prop="payType" label="付款方式" min-width="120">
-            <template #default="scope">{{ {1:'预定金',2:'首款',3:'二次款',4:'尾款',5:'转款'}[scope.row.payType as number] }}</template>
+            <template #default="scope">{{ '银行转账' }}</template>
+            <!-- <template #default="scope">{{ {1:'预定金',2:'首款',3:'二次款',4:'尾款',5:'转款'}[scope.row.payType as number] }}</template> -->
           </el-table-column>
           <el-table-column prop="payTime" label="到款时间" min-width="120"></el-table-column>
           <el-table-column prop="receiveAccount" label="收款账户" min-width="120"></el-table-column>

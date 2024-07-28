@@ -2,9 +2,12 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { booth as boothApi  } from '@/api/Order/index'
+import UpInvoice from '@/views/Finances/components/UpInvoice.vue'
+import ApplyInvoice from '@/views/Finances/components/ApplyInvoice.vue'
 
 const route = useRoute()
 const id = ref(route.query.id)
+const applyInvoiceRef: any = ref(null)
 
 const d:any = ref({
   brand: [],
@@ -67,7 +70,7 @@ const revoke = (id: any) => {
         <span>对应销售：{{ d.clueUser }}</span>
       </div>
       <div class="table">
-        <el-table :data="[d]" border table-layout="fixed" header-row-class-name="s-table-header">
+        <el-table :data="[d]" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
           <el-table-column prop="exhibitionName" label="项目名称" min-width="120"></el-table-column>
           <el-table-column prop="hallCode" label="展馆号"></el-table-column>
           <el-table-column prop="positionCode" label="展位号"></el-table-column>
@@ -82,7 +85,7 @@ const revoke = (id: any) => {
           <el-table-column prop="contractStatus" label="合同状态" min-width="120">
             <template #default="scope">{{ ['未签约', '已签约', '已回执'][scope.row.contractStatus] }}</template>
           </el-table-column>
-          <el-table-column prop="payStatus" label="付款方式" min-width="120">
+          <el-table-column prop="payStatus" label="付款状态" min-width="120">
             <template #default="scope">{{ ['未付款', '部分付款', '已付款'][scope.row.payStatus] }}</template>
           </el-table-column>
           <el-table-column prop="receivedPrice" label="到款金额" min-width="120"></el-table-column>
@@ -102,7 +105,7 @@ const revoke = (id: any) => {
       </div>
       <div class="title">到款详情</div>
       <div class="table">
-        <el-table :data="d.payment" border table-layout="fixed" header-row-class-name="s-table-header">
+        <el-table :data="d.payment" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
           <el-table-column prop="code" label="录款编号" min-width="120"></el-table-column>
           <el-table-column prop="payCompany" label="付款公司" min-width="120"></el-table-column>
           <el-table-column prop="payType" label="到款类型" min-width="120">
@@ -110,7 +113,7 @@ const revoke = (id: any) => {
           </el-table-column>
           <el-table-column prop="payPrice" label="到款金额" min-width="120"></el-table-column>
           <el-table-column prop="payType" label="付款方式" min-width="120">
-            <template #default="scope">{{ {1:'预定金',2:'首款',3:'二次款',4:'尾款',5:'转款'}[scope.row.payType as number] }}</template>
+            <template #default="scope">{{ {1:'全款',2:'分期'}[scope.row.payType as number] }}</template>
           </el-table-column>
           <el-table-column prop="payTime" label="到款时间" min-width="120"></el-table-column>
           <el-table-column prop="receiveAccount" label="收款账户" min-width="120"></el-table-column>
@@ -121,7 +124,9 @@ const revoke = (id: any) => {
                 style="width: 30px; height: 30px"
                 :src="scope.row.payImg"
                 :preview-src-list="[scope.row.payImg]"
-                fit="cover"
+                fit="contain"
+                preview-teleported="true"
+                loading="lazy"
               />
             </template>
           </el-table-column>
@@ -132,7 +137,9 @@ const revoke = (id: any) => {
                 style="width: 30px; height: 30px"
                 :src="scope.row.receiveImg"
                 :preview-src-list="[scope.row.receiveImg]"
-                fit="cover"
+                fit="contain"
+                preview-teleported="true"
+                loading="lazy"
               />
             </template>
           </el-table-column>
@@ -143,7 +150,7 @@ const revoke = (id: any) => {
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button link type="primary">编辑</el-button>
-              <el-button link type="primary">申请发票</el-button>
+              <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)">申请发票</el-button>
               <el-button link type="primary">删除</el-button>
             </template>
           </el-table-column>
@@ -152,7 +159,7 @@ const revoke = (id: any) => {
 
       <div class="title">发票详情</div>
       <div class="table">
-        <el-table :data="d.invoice" border table-layout="fixed" header-row-class-name="s-table-header">
+        <el-table :data="d.invoice" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
           <el-table-column prop="code" label="编号"></el-table-column>
           <el-table-column prop="title" label="发票抬头" min-width="120"></el-table-column>
           <el-table-column prop="socialCode" label="社会信用代码" min-width="120"></el-table-column>
@@ -163,13 +170,13 @@ const revoke = (id: any) => {
           <el-table-column prop="contact" label="联系人"></el-table-column>
           <el-table-column prop="email" label="发送邮箱" min-width="120"></el-table-column>
           <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
-            <template #default="scope">{{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}</template>
+            <template #default="scope">{{ {0:'未申请',1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="invoiceCode" label="发票号"></el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
-              <el-button link type="primary">上传发票</el-button>
+              <UpInvoice :id="scope.row.id" @callback="getBoothDetail"></UpInvoice>
               <el-button link type="primary">编辑</el-button>
               <el-button link type="primary">删除</el-button>
             </template>
@@ -179,6 +186,7 @@ const revoke = (id: any) => {
 
     </div>
   </div>
+  <ApplyInvoice ref="applyInvoiceRef" @callback="getBoothDetail"/>
 </template>
 <style scoped>
   .title {

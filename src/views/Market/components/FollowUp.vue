@@ -105,7 +105,7 @@
       line-height: 40px;
       padding: 0 15px;
       background-color: var(--el-fill-color-light);
-      border-bottom: 1px solid var(--el-border-color-light);
+      border-bottom: 1px solid var(--el-border-color-lighter);
     }
     .form {
       padding: 15px 15px 0;
