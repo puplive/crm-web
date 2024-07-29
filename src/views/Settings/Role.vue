@@ -1,7 +1,7 @@
 <!-- 销售线索列表 -->
 <script lang="ts" setup>
   import { ref, reactive, watch } from 'vue'
-  import { role } from '@/api/user'
+  import { role, getMenuAll } from '@/api/user'
 
   // const page = reactive({
   //   page: 1,
@@ -29,35 +29,47 @@
   const getData = async () => {
     role.getData({roleId: roleId.value}).then((res: any) => {
       if (res.code === 0) {
-        tableData.value = res.data
+        checkList.value = res.data
         // checkList
       }
     })
   }
+  getMenuAll().then((res: any) => {
+    if (res.code === 0) {
+      tableData.value = res.data
+    }
+  })
 
 
-  const Del = (id: any) => {
-    // ElMessageBox.confirm('确定删除？', '提示', {
-    //   confirmButtonText: '确定',
-    //   cancelButtonText: '取消',
-    //   type: 'warning'
-    // }).then(() => {
-
-      role.del({ id: id}).then((res: any) => {
-        if(res.code === 0) {
-          ElMessage.success('删除成功')
-          getList()
-        }else {
-          ElMessage.error(res.msg)
-        }
-      })
-    // }).catch(() => {
-    // })
+  const add = () => {
+    role.add({ roleId: roleId.value, menuId: checkList.value }).then((res: any) => {
+      if(res.code === 0) {
+        ElMessage.success('成功')
+        // getList()
+      }else {
+        ElMessage.error(res.msg)
+        getData()
+      }
+    }).catch(() => {
+      getData()
+      // ElMessage.error('请求失败')
+    })
   }
+
 
   watch(roleId, () => {
     getData()
   })
+  // watch(checkList, () => {
+  //   console.log(checkList.value)
+  //   role.add({ roleId: roleId.value, menuId: checkList.value }).then((res: any) => {
+  //     if(res.code === 0) {
+  //       ElMessage.success('修改成功')
+  //     }else {
+  //       ElMessage.error(res.msg)
+  //     }
+  //   })
+  // })
 
 
   getList()
@@ -72,29 +84,27 @@
       </div>
     </div>
     <div class="r">
-      <el-checkbox-group v-model="checkList">
-      <!-- <el-table 
+      <el-checkbox-group v-model="checkList" @change="() => { add(); }">
+      <el-table 
         ref="tableRef" 
         :data="tableData" 
         border 
         table-layout="fixed" 
         height="100%"
         header-row-class-name="s-table-header">
-        <el-table-column prop="status" label="一级模块">
-          <template #default="scope"> -->
-              <template v-for="item in tableData" :key="item.id">
-                <el-checkbox :label="item.name" :value="item.id" v-model="item.id" />
-              </template>
-              <!-- <el-checkbox label="Option B" value="Value B" />
-              <el-checkbox label="Option C" value="Value C" /> -->
-          <!-- </template>
-        </el-table-column>
-        <el-table-column label="二级模块">
+        <el-table-column prop="" label="一级模块" min-width="150">
           <template #default="scope">
-            
+            <el-checkbox :label="scope.row.meta.title" :value="scope.row.id" v-model="scope.row.id" />
           </template>
         </el-table-column>
-      </el-table> -->
+        <el-table-column label="二级模块" min-width="400">
+          <template #default="scope">
+            <template v-for="item in scope.row.child" :key="item.id">
+              <el-checkbox :label="item.meta.title" :value="item.id" v-model="item.id" />
+            </template>
+          </template>
+        </el-table-column>
+      </el-table>
       </el-checkbox-group>
     </div>
   </div>

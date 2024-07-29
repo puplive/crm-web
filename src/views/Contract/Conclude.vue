@@ -3,7 +3,7 @@
   import vTemplate from './components/Template.vue'
   import { useRoute, useRouter } from 'vue-router';
   import { htmlToPDF, goPrint } from '@/utils/html2pdf'
-  import htmlToPdfmake  from '@/utils/htmlToPdfmake'
+  // import htmlToPdfmake  from '@/utils/htmlToPdfmake'
   
 
   // import VueHtml2pdf from 'vue-html2pdf'
@@ -42,7 +42,7 @@
       </div>
       <div class="p1" v-else >
         <el-button type="primary" @click="createContract">签订合同</el-button>
-        <el-button type="primary" @click="() => htmlToPdfmake.pdf.download()">打印</el-button>
+        <!-- <el-button type="primary" @click="() => htmlToPdfmake.pdf.download()">打印</el-button> -->
         <el-button type="primary" @click="() => htmlToPDF('pdf-content','test pdf')">导出</el-button>
         <el-button type="primary" @click="edit">编辑</el-button>
         <!-- <el-button type="primary" @click="">保存</el-button> -->

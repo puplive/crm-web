@@ -1,8 +1,8 @@
 <!-- 销售线索列表 -->
 <script lang="ts" setup>
   import { ref, reactive, watch } from 'vue'
-  import { org, sponsorAccount } from '@/api/user'
-  import TableSearch from '@/components/TableSearch/index.vue'
+  import { org, sponsorAccount, role } from '@/api/user'
+  // import TableSearch from '@/components/TableSearch/index.vue'
 
   const page = reactive({
     page: 1,
@@ -11,10 +11,12 @@
   const total = ref(0)
   const searchForm = ref({})
   const searchData = ref([])
-  const list: any = ref([])
-  const tableData: any = ref([])
+  const departmentList: any = ref([])
+  const roleList: any = ref([])
+  const accountList: any = ref([])
   const tableRef: any = ref(null)
-  const roleId: any = ref('')
+  // const roleId: any = ref('')
+  const departmentId: any = ref(0)
 
   const checkList = ref([])
 
@@ -24,22 +26,29 @@
     getList()
   }
 
-  const getList = async () => {
+  const getList = () => {
     org.getList().then((res: any) => {
       if (res.code === 0) {
-        list.value = res.data
-        // roleId.value = res.data[0].id
+        departmentList.value = res.data
+        departmentId.value = res.data[0].id
         // getData()
       }
     })
   }
-  const getData = async () => {
-    sponsorAccount.getList({roleId: roleId.value}).then((res: any) => {
+  const getData = () => {
+    sponsorAccount.getList({departmentId: departmentId.value, ...page }).then((res: any) => {
       if (res.code === 0) {
-        tableData.value = [[]]//  res.data
+        accountList.value = res.data.data
+        total.value = res.data.total
       }
     })
   }
+
+  role.getList().then((res: any) => {
+    if (res.code === 0) {
+      roleList.value = res.data
+    }
+  })
 
 
   const Del = (id: any) => {
@@ -99,7 +108,100 @@
     })
   }
 
-  watch(page, () => {
+
+  const delAccount = (id: any) => {
+    ElMessageBox.confirm('确定删除？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+
+      sponsorAccount.del({ id: id}).then((res: any) => {
+        if(res.code === 0) {
+          ElMessage.success('删除成功')
+          getList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }).catch(() => {
+    })
+  }
+
+  const setStatus = (id: any, status: any) => {
+    ElMessageBox.confirm(`确定${status === 1 ? '启用' : '停用'}该账号？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+
+      sponsorAccount.setStatus({ id: id, status: status}).then((res: any) => {
+        if(res.code === 0) {
+          ElMessage.success(`账号${status === 1 ? '启用' : '停用'}成功`)
+          getData()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }).catch(() => {
+    })
+  }
+
+  const addAccount: any = reactive({
+    show: false,
+    isEdit: false,
+    data: {
+      account: '',
+      password: '',
+      departmentId: '',
+      roleId: '',
+      phone: '',
+      email: '',
+    },
+    set: (d?: any) => {
+      // console.log(d)
+      addAccount.show = true
+      if(d) {
+        addAccount.isEdit = true
+        addAccount.data= {
+          id: d.id,
+          account: d.account,
+          password: d.password,
+          departmentId: [d.departmentId],
+          roleId: d.roleId,
+          phone: d.phone,
+          email: d.email
+        }
+      }else{
+        addAccount.isEdit = false
+        addAccount.data= {
+          account: '',
+          password: '',
+          departmentId: '',
+          roleId: '',
+          phone: '',
+          email: ''
+        }
+      }
+      
+    },
+    sub: () => {
+      let _api = addAccount.isEdit? sponsorAccount.edit : sponsorAccount.add
+      let _data = {...addAccount.data }
+      _data.departmentId = _data.departmentId.pop()
+      _api(_data).then((res: any) => {
+        if(res.code === 0) {
+          ElMessage.success(addAccount.isEdit?'修改成功':'新增成功')
+          addAccount.show = false
+          getData()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }
+  })
+
+  watch(departmentId, () => {
     getData()
   })
   
@@ -113,16 +215,19 @@
     <!-- <TableSearch :data="searchData" @search="search"/> -->
     <div class="content">
       <div class="l">
+        <div style="margin-bottom: 20px;">
+          <el-button type="primary" icon="Plus" @click="addOrg(0)">新增部门</el-button>
+        </div>
         <el-tree
           style="max-width: 300px"
           default-expand-all
-          :data="list"
+          :data="departmentList"
           node-key="id"
           :props="{ children: 'child', label: 'name' }"
         >
           <template #default="{ node, data }">
             <span class="tree-item">
-              <el-link class="tree-item-label" @click="" >{{ node.label }}</el-link>
+              <el-link class="tree-item-label" @click="departmentId = data.id" >{{ node.label }}</el-link>
               <el-button link icon="Plus" @click="addOrg(data.id)"></el-button>
               <el-button link icon="Edit" @click="editOrg(data)"></el-button>
               <el-button link icon="Delete" @click="Del(data.id)"></el-button>
@@ -132,31 +237,31 @@
       </div>
       <div class="r">
         <div class="s-table-operations">
-          <el-button size="small" @click="handleExport">新增员工</el-button>
-          <el-button size="small" @click="handleExport">导入</el-button>
-          <el-button size="small" @click="handleExport">导出</el-button>
+          <el-button size="small" @click="addAccount.set()">新增员工</el-button>
+          <!-- <el-button size="small" @click="handleExport">导入</el-button>
+          <el-button size="small" @click="handleExport">导出</el-button> -->
         </div>
         <div class="s-flex-auto" style="min-height: 0;">
           <el-table 
             ref="tableRef" 
-            :data="tableData" 
+            :data="accountList" 
             border 
             table-layout="fixed" 
             height="100%"
             header-row-class-name="s-table-header">
-            <el-table-column prop="status" label="登录名" />
-            <el-table-column prop="name" label="部门" />
-            <el-table-column prop="phone" label="系统角色" min-width="120"/>
-            <el-table-column prop="email" label="手机" />
-            <el-table-column prop="address" label="邮箱" />
-            <el-table-column prop="desc" label="密码" />
-            <el-table-column prop="desc" label="添加时间" min-width="120" />
-            <el-table-column prop="desc" label="登录时间" min-width="120" />
+            <el-table-column prop="account" label="登录名" />
+            <el-table-column prop="department" label="部门" />
+            <el-table-column prop="role" label="系统角色" min-width="120"/>
+            <el-table-column prop="phone" label="手机" />
+            <el-table-column prop="email" label="邮箱" />
+            <el-table-column prop="" label="密码" />
+            <el-table-column prop="creatTime" label="添加时间" min-width="120" />
+            <el-table-column prop="" label="登录时间" min-width="120" />
             <el-table-column label="操作" fixed="right" width="150">
               <template #default="scope">
-                <el-button type="text" @click="Del(scope.row.id)">删除</el-button>
-                <el-button type="text" @click="Del(scope.row.id)">删除</el-button>
-                <el-button type="text" @click="Del(scope.row.id)">删除</el-button>
+                <el-button link type="primary" @click="addAccount.set(scope.row)">编辑</el-button>
+                <el-button link type="primary" @click="setStatus(scope.row.id, scope.row.status === 1 ? 0 : 1)">{{ scope.row.status === 1 ? '停用' : '启用' }}</el-button>
+                <el-button link type="danger" @click="delAccount(scope.row.id)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -172,6 +277,42 @@
       </div>
     </div>
   </div>
+
+  <el-dialog title="新增员工" v-model="addAccount.show" width="500">
+    <el-form :model="addAccount.data" label-width="auto">
+      <el-form-item label="登录名">
+        <el-input v-model="addAccount.data.account" placeholder="请输入登录名"></el-input>
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input v-model="addAccount.data.password" placeholder="请输入密码"></el-input>
+      </el-form-item>
+
+      <el-form-item label="部门">
+        <el-cascader 
+          v-model="addAccount.data.departmentId" 
+          :options="departmentList" 
+          :props="{ value: 'id', label: 'name', children: 'child', checkStrictly: true, }"
+          style="width: 100%;">
+        </el-cascader>
+
+      </el-form-item>
+      <el-form-item label="系统角色">
+        <el-select v-model="addAccount.data.roleId">
+          <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="手机">
+        <el-input v-model="addAccount.data.phone" placeholder="请输入手机"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input v-model="addAccount.data.email" placeholder="请输入邮箱"></el-input>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="addAccount.show = false">取消</el-button>
+      <el-button type="primary" @click="addAccount.sub">确定</el-button>
+    </template>
+  </el-dialog>
 </template>
 <style scoped>
   .org-main {
@@ -208,7 +349,6 @@
       .r{
         flex: 1;
         min-width: 0;
-        display: none;
       }
     }
   }

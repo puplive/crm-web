@@ -48,6 +48,12 @@ export const getMenu = (): Promise<any> => {
     method: "get",
   });
 }
+export const getMenuAll = (): Promise<any> => {
+  return request({
+    url: prefix + "/auth/menu/getAll",
+    method: "get",
+  });
+}
 
 
 export const getSponsorUser = (): Promise<any> => {
