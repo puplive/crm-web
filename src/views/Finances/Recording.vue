@@ -64,7 +64,7 @@
                         :preview-src-list="[item.payImg]" 
                         fit="contain" 
                         style="width: 100px; height: 100px;">
-                        <template #error>
+                        <template #error v-if="item.payImg === ''">
                           <div class="image-slot">
                             <el-icon><Picture /></el-icon>
                           </div>
@@ -90,7 +90,7 @@
                         :preview-src-list="[item.receiveImg]" 
                         fit="contain" 
                         style="width: 100px; height: 100px;">
-                        <template #error>
+                        <template #error v-if="item.receiveImg === ''">
                           <div class="image-slot">
                             <el-icon><Picture /></el-icon>
                           </div>
@@ -148,7 +148,7 @@
                     :preview-src-list="[item.invoice.img]" 
                     fit="contain" 
                     style="width: 100px; height: 100px;">
-                    <template #error>
+                    <template #error v-if="item.invoice.img === ''">
                       <div class="image-slot">
                         <el-icon><Picture /></el-icon>
                       </div>
@@ -205,7 +205,11 @@ const orderId: any = ref(Number(route.query.id))
 
   const formData: any = reactive([{
     orderId: orderId,
-    invoice: {}
+    payImg: '',
+    receiveImg: '',
+    invoice: {
+      img: '',
+    }
   }])
 
   const addDetail = () => {

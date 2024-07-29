@@ -2,13 +2,17 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { booth as boothApi  } from '@/api/Order/index'
+import { payment, invoice,  } from '@/api/Finances/index'
 import UpInvoice from '@/views/Finances/components/UpInvoice.vue'
 import ApplyInvoice from '@/views/Finances/components/ApplyInvoice.vue'
+import EditInvoice from '@/views/Finances/components/EditInvoice.vue'
+import EditPayment from '@/views/Finances/components/EditPayment.vue'
 
 const route = useRoute()
 const id = ref(route.query.id)
 const applyInvoiceRef: any = ref(null)
-
+const editInvoiceRef: any = ref(null)
+const editPaymentRef: any = ref(null)
 const d:any = ref({
   brand: [],
   payment: [],
@@ -49,8 +53,49 @@ const revoke = (id: any) => {
     })
   }
 
+  const delInvoice = (id: any) => {
+    ElMessageBox.confirm('是否确认要删除发票?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+
+      invoice.del({ id }).then((res) => {
+        if(res.code === 0) {
+          ElMessage.success('删除成功')
+          getBoothDetail()
+        }else {
+          ElMessage.error(res.msg)
+        }
+        
+      })
+    }).catch(() => {
+    })
+  }
+
+  const delPayment = (id: any) => {
+    ElMessageBox.confirm('是否确认要删除付款记录?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+
+      payment.del({ id }).then((res) => {
+        if(res.code === 0) {
+          ElMessage.success('删除成功')
+          getBoothDetail()
+        }else {
+          ElMessage.error(res.msg)
+        }
+        
+      })
+    }).catch(() => {
+    })
+  }
+  
+
   // onMounted(() => {
-    getBoothDetail()
+  getBoothDetail()
   // })
 
 </script>
@@ -149,9 +194,12 @@ const revoke = (id: any) => {
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
-              <el-button link type="primary">编辑</el-button>
+              <el-button link type="primary" @click="() => { 
+                let d={...scope.row, account: scope.row.receiveAccount }; 
+                editPaymentRef.setEdit(d)
+               }">编辑</el-button>
               <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)">申请发票</el-button>
-              <el-button link type="primary">删除</el-button>
+              <el-button link type="primary" @click="delPayment(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -177,8 +225,10 @@ const revoke = (id: any) => {
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <UpInvoice :id="scope.row.id" @callback="getBoothDetail"></UpInvoice>
-              <el-button link type="primary">编辑</el-button>
-              <el-button link type="primary">删除</el-button>
+              <el-button link type="primary" @click="() => { 
+                let d={...scope.row, invoiceTitle: scope.row.title }; 
+                editInvoiceRef.setEdit(d) }">编辑</el-button>
+              <el-button link type="primary" @click="delInvoice(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -187,6 +237,8 @@ const revoke = (id: any) => {
     </div>
   </div>
   <ApplyInvoice ref="applyInvoiceRef" @callback="getBoothDetail"/>
+  <EditInvoice ref="editInvoiceRef" @callback="getBoothDetail" />
+  <EditPayment ref="editPaymentRef" @callback="getBoothDetail" />
 </template>
 <style scoped>
   .title {

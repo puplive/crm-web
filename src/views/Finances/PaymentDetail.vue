@@ -59,7 +59,10 @@
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
-              <el-button link type="primary">编辑</el-button>
+              <el-button link type="primary" @click="() => { 
+                let d={...scope.row, account: scope.row.receiveAccount }; 
+                editPaymentRef.setEdit(d)
+               }">编辑</el-button>
               <el-button link type="primary" @click="del1(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -68,7 +71,7 @@
 
       <div class="title">发票详情</div>
       <div class="table">
-        <el-table :data="[d.invoice]" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
+        <el-table :data="d.invoice" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
           <el-table-column prop="code" label="编号"></el-table-column>
           <el-table-column prop="invoiceTitle" label="发票抬头" min-width="120"></el-table-column>
           <el-table-column prop="socialCode" label="社会信用代码" min-width="120"></el-table-column>
@@ -96,6 +99,7 @@
   </div>
 
   <EditInvoice ref="editInvoiceRef" @callback="getData"></EditInvoice>
+  <EditPayment ref="editPaymentRef" @callback="getData" />
 </template>
 
 <script setup lang="ts">
@@ -106,6 +110,7 @@ import { uploadFile } from '@/api/common'
 import { useRouter, useRoute } from 'vue-router';
 import api from '@/api/Finances'
 import EditInvoice from './components/EditInvoice.vue'
+import EditPayment from '@/views/Finances/components/EditPayment.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -162,6 +167,7 @@ const del2 = (id: any) => {
   })
 }
 const editInvoiceRef: any = ref(null)
+const editPaymentRef: any = ref(null)
 
 getData()
 
