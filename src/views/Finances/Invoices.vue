@@ -244,12 +244,12 @@ const openInvoice: any = reactive({
               loading="lazy" />
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="200">
+        <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+            <el-button link type="primary" @click="openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
             <UpInvoice :id="scope.row.id" @callback="getList" />
-            <el-button link type="primary" size="small" @click="setEdit(scope.row)">编辑</el-button>
-            <el-button link type="primary" size="small" @click="Del([scope.row.id])">删除</el-button>
+            <el-button link type="primary" @click="setEdit(scope.row)">编辑</el-button>
+            <el-button link type="danger" @click="Del([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

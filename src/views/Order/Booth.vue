@@ -269,24 +269,24 @@
         </el-table-column>
         <el-table-column prop="clueUser" label="所属人" />
         <el-table-column prop="authUser" label="下单人" />
-        <el-table-column fixed="right" label="操作" width="220">
+        <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
+            <el-button link type="primary" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
             <template v-if="scope.row.orderStatus !== 0">
               <template v-if="scope.row.contractStatus === 0">
-                <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">签订合同</el-button>
-                <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+                <el-button link type="primary" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">签订合同</el-button>
+                <el-button link type="primary" @click="setContract(scope.row.id)">上传合同</el-button>
               </template>
               <template v-else>
-                <el-button link type="primary" size="small" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">更新合同</el-button>
-                <el-button link type="primary" size="small" @click="setContract(scope.row.id)">上传合同</el-button>
+                <el-button link type="primary" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">更新合同</el-button>
+                <el-button link type="primary" @click="setContract(scope.row.id)">上传合同</el-button>
               </template>
-              <!-- <el-button link type="primary" size="small" @click="Recording(scope.row.id)">录入到款</el-button> -->
-              <el-button link type="primary" size="small" @click="revoke(scope.row.id)">撤销</el-button>
+              <!-- <el-button link type="primary" @click="Recording(scope.row.id)">录入到款</el-button> -->
+              <el-button link type="primary" @click="revoke(scope.row.id)">撤销</el-button>
             </template>
             <template v-else>
-              <el-button link type="" size="small" disabled>已撤销</el-button>
-              <el-button link type="primary" size="small"  @click="del(scope.row.id)">删除</el-button>
+              <el-button link type="" disabled>已撤销</el-button>
+              <el-button link type="danger"  @click="del(scope.row.id)">删除</el-button>
             </template>
           </template>
         </el-table-column>

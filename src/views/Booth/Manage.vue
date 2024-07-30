@@ -318,10 +318,10 @@
         <el-table-column prop="remark" label="备注" />
         <el-table-column prop="exhibitor" label="参展商" />
         <el-table-column prop="createTime" label="创建时间" min-width="120" />
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column fixed="right" label="操作" width="150">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button link type="primary" size="small" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button link type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

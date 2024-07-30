@@ -128,9 +128,9 @@
         <el-table-column prop="num" label="参展次数" width="100" />
         <el-table-column fixed="right" label="操作" width="150">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="$router.push({name:'ExhibitorsDetail',query:{id:scope.row.id}})">详情</el-button>
-            <el-button link type="primary" size="small" @click="add.edit(scope.row)">编辑</el-button>
-            <el-button link type="primary" size="small" @click="Del(scope.row.id)">删除</el-button>
+            <el-button link type="primary" @click="$router.push({name:'ExhibitorsDetail',query:{id:scope.row.id}})">详情</el-button>
+            <el-button link type="primary" @click="add.edit(scope.row)">编辑</el-button>
+            <el-button link type="danger" @click="Del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

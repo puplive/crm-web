@@ -153,12 +153,12 @@
         <el-table-column prop="clueUser" label="持有人" />
         <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
-            <!-- <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">详情</el-button> -->
-            <!-- <el-button link type="primary" size="small" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.payStatus !== 0">申请发票</el-button> -->
-            <el-button link type="primary" size="small" @click="$router.push({ name: 'FinancesRecording', query: { id: scope.row.id } })">录入到款</el-button>
-            <el-button link type="primary" size="small" @click="revoke(scope.row.id)">撤销</el-button>
-            <!-- <el-button link type="primary" size="small" @click="">下推</el-button> -->
+            <el-button link type="primary" @click="$router.push({ name: 'OrderBoothDetail', query: { id: scope.row.id } })">详情</el-button>
+            <!-- <el-button link type="primary" @click="$router.push('/market/clues/edit/' + scope.row.id)">详情</el-button> -->
+            <!-- <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.payStatus !== 0">申请发票</el-button> -->
+            <el-button link type="primary" @click="$router.push({ name: 'FinancesRecording', query: { id: scope.row.id } })">录入到款</el-button>
+            <el-button link type="danger" @click="revoke(scope.row.id)">撤销</el-button>
+            <!-- <el-button link type="primary" @click="">下推</el-button> -->
           </template>
         </el-table-column>
       </el-table>

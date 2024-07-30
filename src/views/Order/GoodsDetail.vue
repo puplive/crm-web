@@ -145,7 +145,7 @@ const revoke = (id: any) => {
             <template #default="scope">
               <el-button link type="primary">编辑</el-button>
               <el-button link type="primary">申请发票</el-button>
-              <el-button link type="primary">删除</el-button>
+              <el-button link type="danger">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -172,7 +172,7 @@ const revoke = (id: any) => {
             <template #default="scope">
               <el-button link type="primary">上传发票</el-button>
               <el-button link type="primary">编辑</el-button>
-              <el-button link type="primary">删除</el-button>
+              <el-button link type="danger">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

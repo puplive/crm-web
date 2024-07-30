@@ -252,7 +252,7 @@ getCustomField()
           
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="willSet(scope.row)">
+            <el-button link type="primary" @click="willSet(scope.row)">
               转为意向客户
             </el-button>
           </template>

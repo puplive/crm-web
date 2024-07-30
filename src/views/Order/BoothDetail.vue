@@ -199,7 +199,7 @@ const revoke = (id: any) => {
                 editPaymentRef.setEdit(d)
                }">编辑</el-button>
               <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)">申请发票</el-button>
-              <el-button link type="primary" @click="delPayment(scope.row.id)">删除</el-button>
+              <el-button link type="danger" @click="delPayment(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -228,7 +228,7 @@ const revoke = (id: any) => {
               <el-button link type="primary" @click="() => { 
                 let d={...scope.row, invoiceTitle: scope.row.title }; 
                 editInvoiceRef.setEdit(d) }">编辑</el-button>
-              <el-button link type="primary" @click="delInvoice(scope.row.id)">删除</el-button>
+              <el-button link type="danger" @click="delInvoice(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

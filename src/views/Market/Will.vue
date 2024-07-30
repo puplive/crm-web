@@ -243,20 +243,20 @@ getList()
         </template>
         <el-table-column prop="authUser" label="持有人" />
         
-        <el-table-column fixed="right" label="操作" width="200">
+        <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
-            <!-- <el-button link type="primary" size="small" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
+            <!-- <el-button link type="primary" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
             <el-button 
-              link type="primary" size="small"
+              link type="primary" 
               @click="$router.push({ name: 'HallLayout', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId } })">
               {{scope.row.orderPositionStatus?'新增':''}}展位预定
             </el-button>
             <el-button
-              link type="primary" size="small"
+              link type="primary" 
               @click="$router.push({ name: 'GoodsReserve', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode, positionCode: scope.row.positionCode } })">
               {{scope.row.orderMaterialStatus?'新增':''}}物料预定
             </el-button>
-            <!-- <el-button link type="primary" size="small" @click="willSet(scope.row)">
+            <!-- <el-button link type="primary" @click="willSet(scope.row)">
               移除意向
             </el-button> -->
 

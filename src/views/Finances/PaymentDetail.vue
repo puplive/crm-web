@@ -63,7 +63,7 @@
                 let d={...scope.row, account: scope.row.receiveAccount }; 
                 editPaymentRef.setEdit(d)
                }">编辑</el-button>
-              <el-button link type="primary" @click="del1(scope.row.id)">删除</el-button>
+              <el-button link type="danger" @click="del1(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -90,7 +90,7 @@
             <template #default="scope">
               <!-- <UpInvoice :id="scope.row.id" @callback="getBoothDetail"></UpInvoice> -->
               <el-button link type="primary" @click="editInvoiceRef.setEdit(scope.row)">编辑</el-button>
-              <el-button link type="primary" @click="del2(scope.row.id)">删除</el-button>
+              <el-button link type="danger" @click="del2(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

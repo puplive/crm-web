@@ -96,8 +96,8 @@
                 </el-table-column>
                 <el-table-column label="操作" fixed="right" width="150">
                   <template #default="scope">
-                    <el-button type="text" size="small" @click="lxr.setEdit(scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="lxr.del(scope.row.id)">删除</el-button>
+                    <el-button link type="primary" @click="lxr.setEdit(scope.row)">编辑</el-button>
+                    <el-button link type="danger" @click="lxr.del(scope.row.id)">删除</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -119,7 +119,7 @@
                   <el-button link type="primary" v-if="scope.row.orderStatus === 1" @click="orderRevoke(scope.row.id, 1)">撤销</el-button>
                   <template v-else>
                     <el-button link type="info" disabled>已撤销</el-button>
-                    <el-button link type="primary" @click="orderDel(scope.row.id, 1)">删除</el-button>
+                    <el-button link type="danger" @click="orderDel(scope.row.id, 1)">删除</el-button>
                   </template>
                 </template>
               </el-table-column>
@@ -137,7 +137,7 @@
                   <el-button link type="primary" v-if="scope.row.orderStatus === 1" @click="orderRevoke(scope.row.id, 2)">撤销</el-button>
                   <template v-else>
                     <el-button link type="info" disabled>已撤销</el-button>
-                    <el-button link type="primary" @click="orderDel(scope.row.id, 2)">删除</el-button>
+                    <el-button link type="danger" @click="orderDel(scope.row.id, 2)">删除</el-button>
                   </template>
                 </template>
               </el-table-column>
@@ -177,7 +177,7 @@
                   <el-button link type="primary" v-if="scope.row.orderStatus === 1">撤销</el-button>
                   <template v-else>
                     <el-button link type="info" disabled>已撤销</el-button>
-                    <el-button link type="primary">删除</el-button>
+                    <el-button link type="danger">删除</el-button>
                   </template>
                 </template>
               </el-table-column>

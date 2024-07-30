@@ -117,9 +117,9 @@
         <el-table-column prop="clueUser" label="持有人" />
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="$router.push({name:'FinancesPaymentDetail',query:{id:scope.row.id}})">详情</el-button>
-            <el-button link type="primary" size="small" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.invoiceStatus === 0">申请发票</el-button>
-            <el-button link type="primary" size="small" @click="Del(scope.row.id)">删除</el-button>
+            <el-button link type="primary" @click="$router.push({name:'FinancesPaymentDetail',query:{id:scope.row.id}})">详情</el-button>
+            <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.invoiceStatus === 0">申请发票</el-button>
+            <el-button link type="danger" @click="Del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

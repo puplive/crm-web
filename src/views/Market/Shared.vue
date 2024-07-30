@@ -140,7 +140,7 @@ getCustomField()
         </template>
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click="GetClue([scope.row.id])">
+            <el-button link type="primary" @click="GetClue([scope.row.id])">
               领取
             </el-button>
           </template>
