@@ -6,6 +6,8 @@
   import { boothList, boothAdd, boothEdit , boothDelete, boothImport, boothExport } from '@/api/Booth/index'
   import { getExhibitor } from '@/api/Exhibitor/index'
   import { getHallInfo } from '@/api/Order/index'
+  import { genFileId } from 'element-plus'
+  import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 // import { uploadFile } from '@/api/common'
 
   
@@ -216,12 +218,32 @@
       zg.value = res.data
     }
   })
+
+  const uploadRef = ref<UploadInstance>()
+  const _import: any = reactive({
+    show: false,
+    loading: false,
+    set: () => {
+      // uploadRef.value!.clearFiles()
+      _import.show = true
+      console.log(uploadRef.value)
+
+    },
+    sub: () => {
+      _import.loading = true
+      uploadRef.value!.submit()
+    },
+    dowModel: () => {
+      window.open('https://crm-test-1256699835.cos.ap-shanghai.myqcloud.com/importTemplate/position.xlsx', '_self')
+    }
+  })
     
-  // const handleImport = () => {
-  //   boothImport().then(() => {
-  //     getData()
-  //   })
-  // }
+  const handleExceed: UploadProps['onExceed'] = (files) => {
+    uploadRef.value!.clearFiles()
+    const file = files[0] as UploadRawFile
+    file.uid = genFileId()
+    uploadRef.value!.handleStart(file)
+  }
 
   const handleExport = () => {
     boothExport({ exhibitionId: id }).then((res: any) => {
@@ -235,9 +257,9 @@
   }
 
   const beforeUpload = (file: any) => {
-    const isLt2M = file.size / 1024 / 1024 < 3
+    const isLt2M = file.size / 1024 / 1024 < 20
     if (!isLt2M) {
-      ElMessage.error('文件大小不能超过 3MB!')
+      ElMessage.error('文件大小不能超过 20MB!')
     }
     return isLt2M
   }
@@ -250,10 +272,15 @@
     boothImport(formData).then((res: any) => {
       if(res.code === 0) {
         ElMessage.success('导入成功')
+        _import.show = false
+        uploadRef.value!.clearFiles()
         getData()
       }else {
         ElMessage.error(res.msg)
       }
+      _import.loading = false
+    }).catch((err: any) => {
+      _import.loading = false
     })
   }
   
@@ -271,13 +298,8 @@
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
       <el-button size="small" @click="handleAdd">新增</el-button>
-      <el-upload
-        style="display: flex; margin-left: 10px; margin-right: 10px;" 
-        :show-file-list="false"
-        :before-upload="beforeUpload"
-        :http-request="uploadFile">
-        <el-button size="small" >导入</el-button>
-      </el-upload>
+      <el-button size="small" @click="_import.set()">导入</el-button>
+      
       <el-button size="small" @click="handleExport">导出</el-button>
       <el-button size="small" @click="deleteSelected">删除</el-button>
     </div>
@@ -362,6 +384,32 @@
         <el-button @click="addShow = false">取消</el-button>
         <el-button type="primary" @click="addSub">确定</el-button>
       </div>
+    </template>
+  </el-dialog>
+
+  <el-dialog 
+    v-model="_import.show" 
+    :title="`导入展位信息`" 
+    width="500" 
+    draggable
+    @close="() => { 
+      uploadRef!.clearFiles()
+    }">
+    <el-button type="" @click="_import.dowModel" style="margin-bottom: 20px;">下载导入模板</el-button>
+    <el-upload
+        ref="uploadRef"
+        :before-upload="beforeUpload"
+        :http-request="uploadFile"
+        accept=".xls,.xlsx"
+        :on-exceed="handleExceed"
+        limit="1"
+        :multiple="false"
+        :auto-upload="false">
+        <el-button type="primary" >选择文件</el-button>
+      </el-upload>
+    <template #footer>
+      <el-button @click="_import.show = false">取消</el-button>
+      <el-button type="primary" @click="_import.sub" :loading="_import.loading">确定</el-button>
     </template>
   </el-dialog>
 </template>

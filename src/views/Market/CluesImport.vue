@@ -16,7 +16,7 @@
   const type:any = ref(1)
 
   const loading = ref(false)
-  const uploadRef = ref(null)
+  const uploadRef: any = ref(null)
 
   const beforeUpload: any = (rawFile: any) => {
     // if (rawFile.type !== 'image/jpeg') {

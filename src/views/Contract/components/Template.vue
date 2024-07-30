@@ -79,7 +79,7 @@ const editContract = (templateId: any) => {
     payment: contract.value.payment
   }).then((res: any) => {
     if (res.code === 0) {
-      ElMessage.success('签订成功')
+      ElMessage.success('编辑成功')
     }else{
       ElMessage.error(res.msg)
     }
