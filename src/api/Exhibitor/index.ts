@@ -71,14 +71,6 @@ export const getDetail = (params: any): Promise<any> => {
   });
 }
 
-// export const boothExport = (data:any): Promise<any> => {
-//   return request({
-//     url: prefix + "/exhibition/position/export",
-//     method: "post",
-//     data,
-//   });
-// }
-
 export default {
   exhibitorList,
   getExhibitor,

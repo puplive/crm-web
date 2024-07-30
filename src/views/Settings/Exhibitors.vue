@@ -2,7 +2,7 @@
 <script lang="ts" setup>
   import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
-  import api, { add } from '@/api/Exhibitor'
+  import api from '@/api/Exhibitor'
 
   const page = reactive({
     page: 1,
@@ -87,6 +87,17 @@
     })
   }
 
+  const verify = (id: any, status: any) => {
+    api.verify({ id: id, status: status}).then((res: any) => {
+      if(res.code === 0) {
+        ElMessage.success(status === 1 ? '已通过' : '已拒绝')
+        getList()
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
+  }
+
   api.getSearchField().then((res) => {
     if(res.code === 0) {
       searchData.value = res.data
@@ -126,10 +137,14 @@
           </template>
         </el-table-column>
         <el-table-column prop="num" label="参展次数" width="100" />
-        <el-table-column fixed="right" label="操作" width="150">
+        <el-table-column fixed="right" label="操作" width="270">
           <template #default="scope">
             <el-button link type="primary" @click="$router.push({name:'ExhibitorsDetail',query:{id:scope.row.id}})">详情</el-button>
             <el-button link type="primary" @click="add.edit(scope.row)">编辑</el-button>
+            <template v-if="scope.row.status === 0">
+              <el-button link type="primary" @click="verify(scope.row.id, 1)">审核通过</el-button>
+              <el-button link type="danger" @click="verify(scope.row.id, 2)">不通过</el-button>
+            </template>
             <el-button link type="danger" @click="Del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>

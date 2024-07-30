@@ -96,7 +96,7 @@ import rules from "@/utils/rules";
 const router = useRouter()
 const route = useRoute()
 
-console.log(route)
+// console.log(route)
 
 // const activeName = ref('first')
 const formRef: any = ref(null)
@@ -202,6 +202,8 @@ const getCustomField = () => {
           [item.key]: customFieldTypes[item.type].value,
         })
       })
+
+      setEditData()
     }
   })
 }
@@ -209,35 +211,56 @@ const getCustomField = () => {
 getCountry()
 getCustomField()
 
-if(route.name === 'CluesEdit'){
-  api.getData({ id: route.query.id }).then((res: any) => {
-    if (res.code === 0) {
-      form.value = res.data
+const setEditData = () => {
+  if(route.name === 'CluesEdit'){
+    api.getData({ id: route.query.id }).then((res: any) => {
+      if (res.code === 0) {
+        let d = res.data
+        // form.value = res.data
+        for (let key in d) {
+          if (key === 'customField') {
+            
+            d[key].forEach((item: any) => {
+              let _k = Object.keys(item)[0]
+              let _v = Object.values(item)[0]
 
-      api.getCountry().then(res => {
-        if (res.code === 0) {
-          country.value = res.data
-          countryCode.value = country.value.find((i: any)=> { return i.name == form.value.country }).code
-          
-          api.getProvince({ countryCode: countryCode.value }).then(res => {
-            if (res.code === 0) {
-              province.value = res.data
-              provinceCode.value = province.value.find((i: any)=> { return i.name == form.value.province }).code
-              api.getCity({ provinceCode: provinceCode.value }).then(res => {
-                if (res.code === 0) {
-                  city.value = res.data
-                  cityCode.value = city.value.find((i: any)=> { return i.name == form.value.city }).code
-                  
-                }
-              })
-            }
-          })
+              let index = form.value.customField.findIndex((i: any) => { return Object.keys(i)[0] === _k })
+              if (index !== -1) {
+                form.value.customField[index][_k] = _v
+              }
+            })
+          }else if( key === 'customFieldTrans'){
+
+          } else {
+            form.value[key] = d[key]
+          }
         }
-      })
-    }else {
-      // console.log(res.msg)
-    }
-  })
+
+        api.getCountry().then(res => {
+          if (res.code === 0) {
+            country.value = res.data
+            countryCode.value = country.value.find((i: any)=> { return i.name == form.value.country }).code
+            
+            api.getProvince({ countryCode: countryCode.value }).then(res => {
+              if (res.code === 0) {
+                province.value = res.data
+                provinceCode.value = province.value.find((i: any)=> { return i.name == form.value.province }).code
+                api.getCity({ provinceCode: provinceCode.value }).then(res => {
+                  if (res.code === 0) {
+                    city.value = res.data
+                    cityCode.value = city.value.find((i: any)=> { return i.name == form.value.city }).code
+                    
+                  }
+                })
+              }
+            })
+          }
+        })
+      }else {
+        // console.log(res.msg)
+      }
+    })
+  }
 }
 
 
