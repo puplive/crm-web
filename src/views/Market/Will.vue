@@ -6,6 +6,7 @@ import Move from './components/Move.vue'
 import api from '@/api/Clues'
 import { exhibitionList } from '@/api/Exhibition'
 // import { getSponsorUser } from '@/api/user'
+import {downloadFile} from '@/utils/tool'
 
 
 const zh_name = ref('全部')
@@ -128,8 +129,15 @@ const Import = () => {
 }
 
 const Export = () => {
-  console.log('export')
-}
+    api.clueExport({status:2}).then((res: any) => {
+      if(res.code === 0) {
+        ElMessage.success('导出成功')
+        downloadFile(res.data.url, '线索列表.xlsx')
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
+  }
 
 api.getSearchField().then((res) => {
   if (res.code === 0) {
@@ -191,8 +199,8 @@ getList()
       <el-button size="small" @click="merge.set">合并</el-button>
       <el-button size="small" @click="Export">导出</el-button>
       <el-button size="small" @click="Del">删除</el-button>
-      <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
-      <el-button size="small" @click="Import">导入线索</el-button>
+      <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button> -->
+      <!-- <el-button size="small" @click="Import">导入线索</el-button> -->
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%"

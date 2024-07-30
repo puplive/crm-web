@@ -7,6 +7,7 @@
   import {getSponsorUser} from '@/api/user'
   // import { customFieldTypes } from "@/api/Custom";
   import { useRouter, useRoute } from 'vue-router'
+  import {downloadFile} from '@/utils/tool'
 
   const router = useRouter()
   const route = useRoute()
@@ -158,7 +159,14 @@
   }
 
   const Export = () => {
-    console.log('export')
+    api.clueExport({status:1}).then((res: any) => {
+      if(res.code === 0) {
+        ElMessage.success('导出成功')
+        downloadFile(res.data.url, '线索列表.xlsx')
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
   }
 
   api.getSearchField().then((res) => {
@@ -206,7 +214,7 @@ getCustomField()
   <div class="s-flex-col" style="height: 100%;">
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
-      <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button>
+      <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
       <el-button size="small" @click="Import">导入</el-button>
       <el-button size="small" @click="Export">导出</el-button>
       <el-button size="small" @click="Move">转移给他人</el-button>

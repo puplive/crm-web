@@ -1,5 +1,12 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
+  import {downloadFile} from '@/utils/tool'
+  import { clueImport } from '@/api/Clues';
+  import { useRouter } from 'vue-router';
+ 
+
+  const router = useRouter()
+
 
   const active = ref(0)
   const fileList: any = ref([])
@@ -7,6 +14,47 @@
     // file.value = event.target.files[0]
   }
   const handleDuplicate = ref('忽略')
+
+  const loading = ref(false)
+  const uploadRef = ref(null)
+
+  const beforeUpload: any = (rawFile: any) => {
+    // if (rawFile.type !== 'image/jpeg') {
+    //   ElMessage.error('Avatar picture must be JPG format!')
+    //   // return false
+    // } else 
+    if (rawFile.size / 1024 / 1024 > 20) {
+      ElMessage.error('文件大小不能超过 20MB!')
+      return false
+    }
+    return true
+  }
+
+  const uploadImg = (fileObj: any) => {
+    loading.value = true
+    let formData = new FormData()
+    formData.append('file', fileObj.file)
+    return new Promise((resolve, reject) => {
+      clueImport(formData).then((res: any) => {
+        if(res.code === 0){
+          ElMessage.success('上传成功');
+
+          resolve(res.data)
+          router.back()
+        }else{
+          reject(res)
+          ElMessage.error('上传失败');
+          uploadRef.value.clearFiles()
+        }
+        loading.value = false
+      }).catch((err: any) => {
+        reject(err)
+        ElMessage.error('上传失败'); 
+        uploadRef.value.clearFiles()
+        loading.value = false
+      })
+    })
+  }
 </script>
 <template>
   <div>
@@ -24,7 +72,9 @@
           <dl>
             <dt>一、请按最新的数据模版格式导入最新的数据</dt>
             <dd>
-              <el-button type="primary">下载数据模板</el-button>
+              <el-button type="primary" @click="()=>{
+                downloadFile('https://crm-test-1256699835.cos.ap-shanghai.myqcloud.com/importTemplate/clue.xlsx', '线索导入模板.xlsx')
+                }">下载数据模板</el-button>
             </dd>
           </dl>
           <dl>
@@ -41,9 +91,9 @@
             <dt>三、上传需要导入的Xls 文件</dt>
             <dd>
               <el-upload
-                name="file"
-                :before-upload="handleFileChange"
-                v-model:file-list="fileList"
+                ref="uploadRef"
+                :before-upload="beforeUpload"
+                :http-request="uploadImg"
                 type="drag"
                 accept=".xls,.xlsx"
               >
@@ -62,7 +112,7 @@
         </el-col>
       </el-row>
       <div style="text-align: center;">
-        <el-button type="primary">保存</el-button>
+        <!-- <el-button type="primary">保存</el-button> -->
       </div>
     </div>
   </div>

@@ -23,7 +23,7 @@
   })
 </script>
 <template>
-  <el-dialog title="订单详情" v-model="detail.show" width="700">
+  <el-dialog title="订单详情" v-model="detail.show" width="700" draggable>
     <div>
       <el-form>
         <el-form-item label="展会名称" style="margin-bottom: 0;">{{ detail.data.exhibitionName }}</el-form-item>

@@ -48,7 +48,7 @@
     <el-tab-pane label="会员"></el-tab-pane> -->
   </el-tabs>
 
-  <el-dialog :title="addformTitle" v-model="addformShow" style="width: 400px;">
+  <el-dialog :title="addformTitle" v-model="addformShow" style="width: 400px;" draggable>
     <el-form ref="addformRef" :model="addform" label-width="100px">
       <el-form-item label="类型" prop="type">
         <el-select v-model="addform.type">

@@ -194,7 +194,7 @@
     </div>
   </div>
 
-  <el-dialog :title="lxr.isEdit?'编辑': '添加联系人'" v-model="lxr.show" width="500px">
+  <el-dialog :title="lxr.isEdit?'编辑': '添加联系人'" v-model="lxr.show" width="500px" draggable>
     <el-form :model="lxr.form" label-width="auto">
       <el-form-item label="姓名">
         <el-input v-model="lxr.form.name"></el-input>

@@ -136,6 +136,22 @@ export const exitExhibition = (data: any): Promise<any> => {
   });
 }
 
+export const clueExport = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/sales/clue/export",
+    method: "post",
+    data
+  });
+}
+
+export const clueImport = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/sales/clue/import",
+    method: "post",
+    data
+  });
+}
+
 export const contact = {
   getList: (params: any): Promise<any> => {
     return request({
@@ -203,6 +219,8 @@ export default {
   merge,
   editNew,
   exitExhibition,
+  clueExport,
+  clueImport,
   contact,
   clueRecord
 };

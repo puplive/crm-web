@@ -160,6 +160,7 @@
     },
     set: (d?: any) => {
       // console.log(d)
+      
       addAccount.show = true
       if(d) {
         addAccount.isEdit = true
@@ -167,7 +168,7 @@
           id: d.id,
           account: d.account,
           password: d.password,
-          departmentId: [d.departmentId],
+          departmentId: getDepartmentIds(d.departmentId),
           roleId: d.roleId,
           phone: d.phone,
           email: d.email
@@ -188,7 +189,7 @@
     sub: () => {
       let _api = addAccount.isEdit? sponsorAccount.edit : sponsorAccount.add
       let _data = {...addAccount.data }
-      _data.departmentId = _data.departmentId.pop()
+      _data.departmentId = _data.departmentId[_data.departmentId.length - 1]
       _api(_data).then((res: any) => {
         if(res.code === 0) {
           ElMessage.success(addAccount.isEdit?'修改成功':'新增成功')
@@ -201,10 +202,37 @@
     }
   })
 
+  const getDepartmentIds = (id: any) => {
+    let ids:any = [],
+        list = departmentList.value;
+    let _a: any = []
+    const rec = (l: any, s: any) => {
+      // s++
+      for (let i  = 0; i  < l.length; i ++) {
+        let _d = l[i]
+        let _id = l[i].id
+        ids[s]=_id
+        if(id === _id) {
+          _a = ids.slice(0, s+1)
+          return ids
+        }
+        if(_d.child.length > 0) {
+          rec(_d.child, s+1)
+        }else{
+          
+        }
+      }
+    } 
+
+    rec(list, 0)
+    return _a
+  }
+
+
   watch(departmentId, () => {
     getData()
   })
-  
+  // getData()
 
 
   getList()
@@ -278,7 +306,7 @@
     </div>
   </div>
 
-  <el-dialog title="新增员工" v-model="addAccount.show" width="500">
+  <el-dialog title="新增员工" v-model="addAccount.show" width="500" draggable>
     <el-form :model="addAccount.data" label-width="auto">
       <el-form-item label="登录名">
         <el-input v-model="addAccount.data.account" placeholder="请输入登录名"></el-input>

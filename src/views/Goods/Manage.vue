@@ -458,7 +458,7 @@ subGetGoodsListSetting()
       </div>
     </div>
   </div>
-  <el-dialog v-model="addGoodsForm.show" :title="addGoodsForm.title" width="400">
+  <el-dialog v-model="addGoodsForm.show" :title="addGoodsForm.title" width="400" draggable>
     <el-form ref="addFormRef" :model="addGoodsForm">
       <el-form-item label="" prop="name" :rules="[{ required: true, message: '必填' }]">
         <el-input v-model="addGoodsForm.name"></el-input>
@@ -470,7 +470,7 @@ subGetGoodsListSetting()
     </el-form>
   </el-dialog>
 
-  <el-dialog v-model="editSettingShow" title="编辑物料" width="400">
+  <el-dialog v-model="editSettingShow" title="编辑物料" width="400" draggable>
     <el-form ref="editSettingFormRef" :model="editSettingForm" label-width="auto">
       <el-form-item label="服务项目" style="margin-bottom: 0;">
         {{ editSettingForm.project }}

@@ -302,7 +302,7 @@
     </div>
   </div>
 
-  <el-dialog v-model="uploadContract.show" title="上传合同" width="400">
+  <el-dialog v-model="uploadContract.show" title="上传合同" width="400" draggable>
     <el-radio-group v-model="uploadContract.type">
       <el-radio :value="1">电子合同</el-radio>
       <el-radio :value="2">纸质合同</el-radio>

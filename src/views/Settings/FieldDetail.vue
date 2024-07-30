@@ -25,7 +25,7 @@
     </el-table>
   </div>
 
-  <el-dialog :title="addformTitle" v-model="addformShow" style="width: 400px;">
+  <el-dialog :title="addformTitle" v-model="addformShow" style="width: 400px;" draggable>
     <el-form ref="addformRef" :model="addform" label-width="atuo">
       <el-form-item label="" prop="name">
         <el-input v-model="addform.name" />
