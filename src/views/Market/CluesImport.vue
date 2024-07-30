@@ -13,7 +13,7 @@
   const handleFileChange = (event: any) => {
     // file.value = event.target.files[0]
   }
-  const handleDuplicate = ref('忽略')
+  const type:any = ref(1)
 
   const loading = ref(false)
   const uploadRef = ref(null)
@@ -34,6 +34,7 @@
     loading.value = true
     let formData = new FormData()
     formData.append('file', fileObj.file)
+    formData.append('type', type.value)
     return new Promise((resolve, reject) => {
       clueImport(formData).then((res: any) => {
         if(res.code === 0){
@@ -80,10 +81,10 @@
           <dl>
             <dt>二、请选择数据重复时的处理方式</dt>
             <dd>
-              <el-radio-group v-model="handleDuplicate">
-                <el-radio label="忽略" style="width: 100%;">导入新数据，跳过重复数据</el-radio>
-                <el-radio label="覆盖" style="width: 100%;">去重</el-radio>
-                <el-radio label="新增" style="width: 100%;">覆盖数据库已存在的数据</el-radio>
+              <el-radio-group v-model="type">
+                <el-radio label="忽略" :value="1" style="width: 100%;">导入新数据，跳过重复数据</el-radio>
+                <el-radio label="覆盖" :value="2" style="width: 100%;">去重</el-radio>
+                <el-radio label="新增" :value="3" style="width: 100%;">覆盖数据库已存在的数据</el-radio>
               </el-radio-group>
             </dd>
           </dl>
