@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, toRef } from 'vue'
+import { ref, toRefs, defineProps, defineExpose } from 'vue'
 import { getContractData, create, edit } from '@/api/Contract'
 // import { booth } from '@/api/Order'
 const contract: any = ref({
@@ -64,7 +64,6 @@ const createContract = (templateId: any) => {
 }
 
 const editContract = (templateId: any) => {
-  // console.log(contract.value)
   edit({
     orderId: orderId.value,
     templateId: templateId,
@@ -86,7 +85,21 @@ const editContract = (templateId: any) => {
   })
 }
 
-
+// defineProps({
+//   contract: {
+//     type: Object,
+//     required: true
+//   },
+//   id: {
+//     type: String,
+//     required: true
+//   },
+//   templateId: {
+//     type: String,
+//     required: true
+//   }
+// })
+const _ratio = (n: number)=>{return n*100}
 defineExpose({
   setData,
   createContract,
@@ -98,7 +111,8 @@ defineExpose({
     <h3 class="title">中国特许加盟展参展协议</h3>
     <div class="d1">
       <div><b>甲方：北京智霖博雅展览有限公司</b></div>
-      <div><b class="s-flex-row">乙方：<input class="input s-flex-grow" :value="contract.exhibitorName"></b></div>
+      <div><b class="s-flex-row">乙方：{{contract.exhibitorName}}</b></div>
+      <!-- <div><b class="s-flex-row">乙方：<input class="input s-flex-grow" v-model="contract.exhibitorName"></b></div> -->
     </div>
     <p>根据《中华人民共和国民法典》《中华人民共和国广告法》及相关规定，甲乙双方本着诚实信用、平等互利的原则，就甲方为乙方提供服务事宜签订本合同。</p>
     <p><b>第一条 合作细则</b></p>
@@ -128,12 +142,12 @@ defineExpose({
       </thead>
       <tbody>
         <tr>
-          <td><input :value="contract.positionCode"/></td>
-          <td>{{ { 1: '标准', 2: '特装' }[contract.positionType] }}</td>
-          <td><input :value="contract.positionUnitPrice"/></td>
-          <td><input :value="contract.positionArea"/></td>
-          <td><input :value="contract.discountRatio"/></td>
-          <td><input :value="contract.finalPrice"/></td>
+          <td><input v-model="contract.positionCode"/></td>
+          <td>{{ { 1: '标准', 2: '特装' }[contract.positionType as number] }}</td>
+          <td><input v-model="contract.positionUnitPrice"/></td>
+          <td><input v-model="contract.positionArea"/></td>
+          <td><input v-model="contract.discountRatio"/></td>
+          <td><input v-model="contract.finalPrice"/></td>
         </tr>
       </tbody>
     </table>
@@ -151,10 +165,10 @@ defineExpose({
       </thead>
       <tbody>
         <tr v-for="(item, index) in contract.payment" :key="index">
-          <td><input :value="item.name"/></td>
-          <td><input :value="item.ratio * 100"/></td>
-          <td><input :value="item.price"/></td>
-          <td><input :value="item.time"/></td>
+          <td><input v-model="item.name"/></td>
+          <td><input v-model="item.ratio"/></td>
+          <td><input v-model="item.price"/></td>
+          <td><input v-model="item.time"/></td>
         </tr>
       </tbody>
     </table>
@@ -234,7 +248,8 @@ defineExpose({
         <div>日期：2024-04-09 </div>
       </div>
       <div>
-        <div>乙方：<input class="input s-flex-grow" :value="contract.exhibitorName"></div>
+        <!-- <div>乙方：<input class="input s-flex-grow" :value="contract.exhibitorName"></div> -->
+        <div>乙方：{{contract.exhibitorName}}</div>
         <div>代表（签字盖章）</div>
         <div>日期：<input class="input s-flex-grow" :value="_date"></div>
       </div>

@@ -25,7 +25,8 @@
     contractRef.value.exportContract()
   }
   const edit = () => {
-    contractRef.value.editContract()
+    console.log(contractRef.value.contract)
+    contractRef.value.editContract(templateId, contractRef.value.contract)
     // edit(orderId, contractRef.value.getData())
   }
   // const html2Pdf:any = ref(null);
