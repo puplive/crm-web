@@ -2,6 +2,7 @@
 import { reactive, ref, computed } from 'vue'
 import type { FormInstance } from 'element-plus'
 import {types, invoiceTypes} from '@/api/types'
+import { delNullProperty } from '@/utils/tool'
 
 const refForm = ref<FormInstance>()
 interface DataItem {
@@ -19,9 +20,9 @@ const emit = defineEmits(['search'])
 
 const formData:any = reactive({})
 
-props.data.forEach((item: any) => {
-  formData[item.field] = ''
-})
+// props.data.forEach((item: any) => {
+//   formData[item.field] = ''
+// })
 
 const options = computed(() => {
   return (field: string)=>{
@@ -37,6 +38,11 @@ const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields()
   emit('search', formData)
 }
+const _search = () =>{
+  delNullProperty(formData)
+  // console.log(formData)
+  emit('search', formData)
+}
 </script>
 <template>
   <div>
@@ -44,7 +50,8 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
       <el-form-item v-for="(item, index ) in data" :key="index" :label="item.text" :prop="item.field">
         <template v-if="types[item.field]">
-          <el-select v-if="types[item.field].type === 3" v-model="formData[item.field]" placeholder="请选择">
+          <el-select v-if="types[item.field].type === 3" v-model="formData[item.field]" placeholder="请选择" clearable>
+            <!-- <el-option label="全部" value=""></el-option> -->
             <el-option v-for="(option, index) in options(item.field)" :key="index" :label="option.label" :value="option.value"></el-option>
           </el-select>
           <!-- <el-checkbox-group v-else-if="item.type === 'checkbox'" v-model="formData[item.field]">
@@ -64,7 +71,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
       </el-form-item>
       
       <el-form-item>
-        <el-button type="primary" @click="emit('search', formData)">搜索</el-button>
+        <el-button type="primary" @click="_search">搜索</el-button>
         <el-button v-if="data.length > 0" type="primary" @click="resetForm(refForm)">重置</el-button>
       </el-form-item>
     </el-form>
