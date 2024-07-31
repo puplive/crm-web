@@ -212,7 +212,7 @@ getList()
         <el-table-column type="index" label="序号" width="60"/>
         <el-table-column prop="companyName" label="企业名称" width="180">
           <template #default="scope"> 
-            <el-link :href="'/market/clues/info?type=1&id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
+            <el-link :href="'/market/clues/info?type=2&id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="exhibitionName" label="展会名称" width="180" />

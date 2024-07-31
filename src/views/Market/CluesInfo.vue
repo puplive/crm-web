@@ -171,7 +171,7 @@
                   {{ {0: '撤销', 1: '已完成'}[scope.row.contractStatus as number] }}
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="150" fixed="right">
+              <el-table-column label="操作" width="200" fixed="right">
                 <template #default="scope"> 
                   <el-button link type="primary">详情</el-button>
                   <el-button link type="primary" v-if="scope.row.orderStatus === 1">撤销</el-button>
