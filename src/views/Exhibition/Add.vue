@@ -286,7 +286,7 @@ if(id){
     if(res.code === 0 && res.data){
       let data = res.data
       form.exhibitionName = data.exhibitionName
-      form.cityId = data.cityId
+      form.cityId = data.cityId+''
       form.cityName = data.cityName
       form.hallId = data.hallId
       form.hallName = data.hallName      

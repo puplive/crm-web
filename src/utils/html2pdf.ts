@@ -7,6 +7,25 @@ export const htmlToPDF = async (htmlId: string, title: string = "合同", bgColo
   pdfDom.style.padding = '0 10px !important'
   const A4Width = 595.28;
   const A4Height = 841.89;
+
+  let domHeight = pdfDom.offsetWidth / A4Width * A4Height;
+  let paging = pdfDom.querySelectorAll('.page-break');
+  for (let i = 0; i < paging.length; i++) {
+    const topPageNum = Math.ceil((paging[i].offsetTop + 40) / domHeight);
+    const bottomPageNum = Math.ceil((paging[i].offsetTop + paging[i].offsetHeight + 40) / domHeight);
+
+
+    if (topPageNum !== bottomPageNum) {
+      let divParent: any = paging[i].parentNode
+      let newBlock = document.createElement('div');
+      let _h = topPageNum * domHeight - paging[i].offsetTop;
+      newBlock.style.height = _h + 40 + 'px';
+
+      divParent.insertBefore(newBlock, paging[i]);
+      console.log(topPageNum, bottomPageNum, _h)
+    }
+  }
+
   let canvas = await html2canvas(pdfDom, {
     scale: 2,
     useCORS: true,

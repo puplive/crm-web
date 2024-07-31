@@ -7,7 +7,7 @@
   
 
   // import VueHtml2pdf from 'vue-html2pdf'
-
+  const isEdit = ref(false)
   const route = useRoute();
   const orderId = route.query.orderId;
   const templateId = route.query.id
@@ -25,8 +25,7 @@
     contractRef.value.exportContract()
   }
   const edit = () => {
-    console.log(contractRef.value.contract)
-    contractRef.value.editContract(templateId, contractRef.value.contract)
+    contractRef.value.editContract(templateId)
     // edit(orderId, contractRef.value.getData())
   }
   // const html2Pdf:any = ref(null);
@@ -42,12 +41,17 @@
         <el-button type="" @click="$router.back()">返回</el-button>
       </div>
       <div class="p1" v-else >
-        <el-button type="primary" @click="createContract">签订合同</el-button>
-        <!-- <el-button type="primary" @click="() => htmlToPdfmake.pdf.download()">打印</el-button> -->
-        <el-button type="primary" @click="() => htmlToPDF('pdf-content','test pdf')">导出</el-button>
-        <el-button type="primary" @click="edit">编辑</el-button>
-        <!-- <el-button type="primary" @click="">保存</el-button> -->
-        <el-button type="" @click="$router.back()">取消</el-button>
+        <template v-if="!isEdit">
+          <el-button type="primary" @click="createContract">签订合同</el-button>
+          <!-- <el-button type="primary" @click="() => htmlToPdfmake.pdf.download()">打印</el-button> -->
+          <el-button type="primary" @click="() => htmlToPDF('pdf-content','test pdf')">导出</el-button>
+          <el-button type="primary" @click="isEdit = true">编辑</el-button>
+          <el-button type="" @click="$router.back()">取消</el-button>
+        </template>
+        <template v-else>
+          <el-button type="primary" @click="edit">保存</el-button>
+          <el-button type="" @click="isEdit = false">取消</el-button>
+        </template>
       </div>
       <div class="p2">
         <el-scrollbar>
@@ -71,7 +75,7 @@
           >
             <section slot="pdf-content"> -->
               <div id="pdf-content">
-              <vTemplate ref="contractRef"></vTemplate>
+              <vTemplate ref="contractRef" v-model:isEdit="isEdit"></vTemplate>
               </div>
             <!-- </section>
           </vue-html2pdf> -->
