@@ -3,7 +3,7 @@
     <span>{{route.name === 'CluesEdit'? '编辑' : '新建'}}销售线索</span>
   </div>
   <div style="width: 500px;">
-    <el-form ref="formRef" :model="form" label-width="auto">
+    <el-form ref="formRef" :model="form" label-width="auto" label-position="left">
       <el-form-item label="企业名称" prop="companyName" :rules="rules.required">
         <el-input v-model="form.companyName"></el-input>
       </el-form-item>

@@ -102,7 +102,7 @@
 </script>
 <template>
   <el-dialog v-model="edit.show" title="编辑付款信息" width="500" draggable>
-    <el-form ref="willFormRef" :model="edit.form" label-width="auto">
+    <el-form ref="willFormRef" :model="edit.form" label-width="auto" label-position="left">
       <!-- <el-form-item label="订单类型">
         <el-radio-group v-model="item.orderType">
           <el-radio :value="1">展位</el-radio>

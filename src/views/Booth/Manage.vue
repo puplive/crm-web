@@ -332,7 +332,7 @@
   </div>
 
   <el-dialog v-model="addShow" :title="isEdit?'编辑':'新增展位信息'" width="500" draggable>
-    <el-form ref="formRef" :model="addForm" :rules="rules" label-width="auto">
+    <el-form ref="formRef" :model="addForm" :rules="rules" label-width="auto" label-position="left">
       <el-form-item label="展馆号" prop="hallCode">
         <!-- <el-input v-model="addForm.hallCode" autocomplete="off" /> -->
         <el-select v-model="addForm.hallCode" placeholder="请选择">

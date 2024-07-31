@@ -133,7 +133,7 @@
         </el-table-column>
         <el-table-column prop="contractReceipt" label="合同附件" min-width="120">
           <template #default="scope">
-            <el-link :href="scope.row.contractReceipt" target="_blank">{{ scope.row.contractReceipt }}</el-link>
+            <el-link v-if="scope.row.contractReceipt" :href="scope.row.contractReceipt" type="primary">下载</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="deposit" label="定金" />

@@ -88,7 +88,8 @@
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
-              <!-- <UpInvoice :id="scope.row.id" @callback="getBoothDetail"></UpInvoice> -->
+              <el-button v-if="scope.row.invoiceStatus === 0" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+              <UpInvoice :id="scope.row.id" @callback="getData" />
               <el-button link type="primary" @click="editInvoiceRef.setEdit(scope.row)">编辑</el-button>
               <el-button link type="danger" @click="del2(scope.row.id)">删除</el-button>
             </template>
@@ -100,6 +101,7 @@
 
   <EditInvoice ref="editInvoiceRef" @callback="getData"></EditInvoice>
   <EditPayment ref="editPaymentRef" @callback="getData" />
+  <Invoicing ref="invoicingRef" @callback="getData" />
 </template>
 
 <script setup lang="ts">
@@ -108,6 +110,8 @@ import { useRouter, useRoute } from 'vue-router';
 import api from '@/api/Finances'
 import EditInvoice from './components/EditInvoice.vue'
 import EditPayment from '@/views/Finances/components/EditPayment.vue'
+import UpInvoice from './components/UpInvoice.vue'
+import Invoicing from './components/Invoicing.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -165,6 +169,7 @@ const del2 = (id: any) => {
 }
 const editInvoiceRef: any = ref(null)
 const editPaymentRef: any = ref(null)
+const invoicingRef: any = ref(null)
 
 getData()
 

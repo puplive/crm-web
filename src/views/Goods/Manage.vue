@@ -390,7 +390,7 @@ subGetGoodsListSetting()
           </ul>
 
           <el-form v-if="selectGoods3.id" ref="settingFormRef" :model="settingData" style="margin-top: 20px"
-            label-width="auto">
+            label-width="auto" label-position="left">
             <el-form-item label="单价" prop="price"
               :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">
               <el-input-number
@@ -481,7 +481,7 @@ subGetGoodsListSetting()
   </el-dialog>
 
   <el-dialog v-model="editSettingShow" title="编辑物料" width="400" draggable>
-    <el-form ref="editSettingFormRef" :model="editSettingForm" label-width="auto">
+    <el-form ref="editSettingFormRef" :model="editSettingForm" label-width="auto" label-position="left">
       <el-form-item label="服务项目" style="margin-bottom: 0;">
         {{ editSettingForm.project }}
       </el-form-item>

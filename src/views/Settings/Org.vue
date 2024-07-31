@@ -307,7 +307,7 @@
   </div>
 
   <el-dialog title="新增员工" v-model="addAccount.show" width="500" draggable>
-    <el-form :model="addAccount.data" label-width="auto">
+    <el-form :model="addAccount.data" label-width="auto" label-position="left">
       <el-form-item label="登录名">
         <el-input v-model="addAccount.data.account" placeholder="请输入登录名"></el-input>
       </el-form-item>

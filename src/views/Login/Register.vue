@@ -15,6 +15,7 @@
             label-width="auto"
             class="demo-ruleForm"
             status-icon
+            label-position="left"
           > 
             <el-row  :gutter="20">
               <el-col :span="12">

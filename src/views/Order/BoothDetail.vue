@@ -7,12 +7,14 @@ import UpInvoice from '@/views/Finances/components/UpInvoice.vue'
 import ApplyInvoice from '@/views/Finances/components/ApplyInvoice.vue'
 import EditInvoice from '@/views/Finances/components/EditInvoice.vue'
 import EditPayment from '@/views/Finances/components/EditPayment.vue'
+import Invoicing from '@/views/Finances/components/Invoicing.vue'
 
 const route = useRoute()
 const id = ref(route.query.id)
 const applyInvoiceRef: any = ref(null)
 const editInvoiceRef: any = ref(null)
 const editPaymentRef: any = ref(null)
+const invoicingRef: any = ref(null)
 const d:any = ref({
   brand: [],
   payment: [],
@@ -126,10 +128,11 @@ const revoke = (id: any) => {
           <el-table-column prop="num" label="展位数量" min-width="120"></el-table-column>
           <el-table-column prop="product" label="产品名称" min-width="120"></el-table-column>
           <el-table-column prop="unitPrice" label="单价"></el-table-column>
-          <el-table-column prop="orderPrice" label="订单原价" min-width="120"></el-table-column>
-          <el-table-column prop="orderPrice" label="优惠(折扣)金额" min-width="120"></el-table-column>
-          <el-table-column prop="orderPrice" label="加收金额" min-width="120"></el-table-column>
           <el-table-column prop="orderPrice" label="最终金额" min-width="120"></el-table-column>
+          <el-table-column prop="costPrice" label="订单原价" min-width="120"></el-table-column>
+          <el-table-column prop="discountPrice" label="优惠(折扣)金额" min-width="120"></el-table-column>
+          <el-table-column prop="addPrice" label="加收金额" min-width="120"></el-table-column>
+          <el-table-column prop="pendingPrice" label="待支付金额" min-width="120"></el-table-column>
           <el-table-column prop="contractStatus" label="合同状态" min-width="120">
             <template #default="scope">{{ ['未签约', '已签约', '已回执'][scope.row.contractStatus] }}</template>
           </el-table-column>
@@ -137,7 +140,7 @@ const revoke = (id: any) => {
             <template #default="scope">{{ ['未付款', '部分付款', '已付款'][scope.row.payStatus] }}</template>
           </el-table-column>
           <el-table-column prop="receivedPrice" label="到款金额" min-width="120"></el-table-column>
-          <el-table-column prop="notReceivedPrice" label="待支付金额" min-width="120"></el-table-column>
+          <el-table-column prop="notReceivedPrice" label="未到款金额" min-width="120"></el-table-column>
           <el-table-column prop="invoiceStatus" label="发票状态" min-width="120">
             <template #default="scope">{{ ['未申请', '待开票', '部分开票', '已开票'][scope.row.invoiceStatus] }}</template>
           </el-table-column>
@@ -221,12 +224,13 @@ const revoke = (id: any) => {
           <el-table-column prop="contact" label="联系人"></el-table-column>
           <el-table-column prop="email" label="发送邮箱" min-width="120"></el-table-column>
           <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
-            <template #default="scope">{{ {0:'未申请',1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}</template>
+            <template #default="scope">{{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="invoiceCode" label="发票号"></el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200" v-if="d.orderStatus === 1">
             <template #default="scope">
+              <el-button v-if="scope.row.invoiceStatus === 0" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
               <UpInvoice :id="scope.row.id" @callback="getBoothDetail"></UpInvoice>
               <el-button link type="primary" @click="() => { 
                 let d={...scope.row, invoiceTitle: scope.row.title }; 
@@ -242,6 +246,7 @@ const revoke = (id: any) => {
   <ApplyInvoice ref="applyInvoiceRef" @callback="getBoothDetail"/>
   <EditInvoice ref="editInvoiceRef" @callback="getBoothDetail" />
   <EditPayment ref="editPaymentRef" @callback="getBoothDetail" />
+  <Invoicing ref="invoicingRef" @callback="getBoothDetail" />
 </template>
 <style scoped>
   .title {

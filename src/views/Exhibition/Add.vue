@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" label-width="auto">
+  <el-form :model="form" label-width="auto" label-position="left">
     <el-divider content-position="left"><span class="title">基本信息</span></el-divider>
     <el-col :md="16" :lg="10" :offset="1">
       <el-form-item label="展会名称">

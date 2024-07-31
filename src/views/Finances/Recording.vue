@@ -10,7 +10,7 @@
       <el-button link type="primary" @click="$router.push({name: 'ContractDetail', query: {orderId: orderId}})">查看合同</el-button>
     </div>
     <div>
-      <el-form :data="formData" label-width="auto">
+      <el-form :data="formData" label-width="auto" label-position="left">
         <div v-for="(item, index) in formData" :key="index" class="item">
           <el-row :gutter="20">
             <el-col :md="12" >

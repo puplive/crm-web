@@ -42,11 +42,10 @@ export const setStatus = (data: any): Promise<any> => {
   });
 }
 
-export const exhibitionList = (params: any): Promise<any> => {
+export const exhibitionList = (): Promise<any> => {
   return request({
     url: prefix + "/exhibition/info/getList",
     method: "get",
-    params,
   });
 }
 export const hallData = (params: any): Promise<any> => {

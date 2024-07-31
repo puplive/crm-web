@@ -4,7 +4,7 @@
   import { uploadFile } from '@/api/common'
   
   const loading = ref(false)
-  const uploadRef = ref(null)
+  const uploadRef: any = ref(null)
   const apply: any = reactive({
     show: false,
     form: {
@@ -88,7 +88,7 @@
 </script>
 <template>
   <el-dialog v-model="apply.show" title="申请发票" width="500" draggable>
-    <el-form ref="willFormRef" :model="apply.form" label-width="auto">
+    <el-form ref="willFormRef" :model="apply.form" label-width="auto" label-position="left">
       <!-- <el-form-item label=" " style="margin-bottom: 0;">
         <span style="font-size: 16px; font-weight: bold;">{{ willForm.name }}</span>
       </el-form-item> -->

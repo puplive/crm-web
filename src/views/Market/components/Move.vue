@@ -51,7 +51,7 @@
 </script>
 <template>
   <el-dialog v-model="moveShow" title="转移销售线索" width="500" draggable>
-    <el-form ref="moveFormRef" :model="moveForm" label-width="auto">
+    <el-form ref="moveFormRef" :model="moveForm" label-width="auto" label-position="left">
       <el-form-item label="">是否将选中的销售线索转移？</el-form-item>
       <el-form-item label="销售线索所有人" prop="userId" :rules="[{ required: true, message: '请选择销售线索所有人' }]">
         <el-select v-model="moveForm.userId" placeholder="">

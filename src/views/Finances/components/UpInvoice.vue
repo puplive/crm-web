@@ -1,7 +1,7 @@
 <template>
   <el-upload
     ref="uploadRef"
-    style="display: inline-block; margin-right: 5px;"
+    style="display: inline-block; margin-right: 5px; vertical-align: bottom;"
     :show-file-list="false"
     :on-success="(response:any, file:any, fileList:any) => { uploadInvoice(response.url) }"
     :before-upload="beforeUpload"
@@ -17,9 +17,7 @@
 
   const props = defineProps(['id'])
   const loading = ref(false)
-  const uploadRef = ref(null)
-
-  console.log(props.id)
+  const uploadRef: any = ref(null)
 
 const beforeUpload: any = (rawFile: any) => {
   // if (rawFile.type !== 'image/jpeg') {

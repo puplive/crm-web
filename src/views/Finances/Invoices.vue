@@ -3,6 +3,8 @@
   import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
   import UpInvoice from './components/UpInvoice.vue'
+  import Invoicing from './components/Invoicing.vue'
+  import EditInvoice from './components/EditInvoice.vue'
   import api from '@/api/Finances'
 
   const page = reactive({
@@ -65,81 +67,14 @@
     })
   }
 
-  const edit: any = reactive({
-    show: false,
-    form: {
-      id: '',
-      title: '', // 发票抬头
-      socialCode: '', // 社会信用代码,
-      contact: '', // 联系人,
-      phone: '', // 手机号,
-      email: '', // 邮箱,
-      // type: '', // 1,
-      // status: '', // 1,
-      // invoiceCode: '', // 发票号,
-      // img: '', // 发票附件,
-    },
-  })
-
-  const editSub = () => {
-    api.invoice.edit(edit.form).then((res: any) => {
-      if(res.code === 0) {
-        ElMessage.success('修改成功')
-        edit.show = false
-        getList()
-      }else {
-        ElMessage.error(res.msg)
-      }
-    })
-  }
-  const setEdit = (row: any) => {
-    edit.show = true
-    edit.form.id = row.id
-    edit.form.title = row.invoiceTitle
-    edit.form.socialCode = row.socialCode
-    edit.form.contact = row.contact
-    edit.form.phone = row.phone
-    edit.form.email = row.email
-    // edit.form.type = row.type
-    // edit.form.status = row.status
-    // edit.form.invoiceCode = row.invoiceCode
-    // edit.form.img = row.img
-  }
-
-const openInvoice: any = reactive({
-    show: false,
-    form: {
-      id: '',
-      cose: '',
-      type: 1,
-    },
-  })
-
-  const openInvoiceSub = () => {
-    api.invoice.openInvoice(openInvoice.form).then((res: any) => {
-      if(res.code === 0) {
-        ElMessage.success('成功')
-        openInvoice.show = false
-        getList()
-      }else {
-        ElMessage.error(res.msg)
-      }
-    })
-  }
-  const openInvoiceSet = (row: any) => {
-    openInvoice.show = true
-    openInvoice.form.id = row.id
-    openInvoice.form.code = ''
-    openInvoice.form.type = 1
-  }
-
   api.invoice.getSearchField().then((res) => {
     if(res.code === 0) {
       searchData.value = res.data
     }
   })
   
-
+  const invoicingRef: any = ref(null)
+  const editInvoiceRef: any = ref(null)
   getList()
   
 </script>
@@ -207,7 +142,7 @@ const openInvoice: any = reactive({
         <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
           <template #default="scope">
             <!-- {{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }} -->
-            {{ {0:'未申请',1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}
+            {{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}
           </template>
         </el-table-column>
         <el-table-column prop="payImg" label="付款凭证" min-width="120">
@@ -218,7 +153,7 @@ const openInvoice: any = reactive({
               :src="scope.row.payImg" 
               fit="contain" 
               :preview-src-list="[scope.row.payImg]" 
-              preview-teleported="true"
+              :preview-teleported="true"
               loading="lazy" />
           </template>
         </el-table-column>
@@ -229,7 +164,7 @@ const openInvoice: any = reactive({
               :src="scope.row.receiveImg" 
               fit="contain" 
               :preview-src-list="[scope.row.receiveImg]" 
-              preview-teleported="true"
+              :preview-teleported="true"
               loading="lazy" />
           </template>
         </el-table-column>
@@ -240,15 +175,15 @@ const openInvoice: any = reactive({
               :src="scope.row.invoiceImg" 
               fit="contain" 
               :preview-src-list="[scope.row.invoiceImg]" 
-              preview-teleported="true"
+              :preview-teleported="true"
               loading="lazy" />
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button link type="primary" @click="openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+            <el-button v-if="scope.row.invoiceStatus === 0" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
             <UpInvoice :id="scope.row.id" @callback="getList" />
-            <el-button link type="primary" @click="setEdit(scope.row)">编辑</el-button>
+            <el-button link type="primary" @click="editInvoiceRef.setEdit(scope.row)">编辑</el-button>
             <el-button link type="danger" @click="Del([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
@@ -264,50 +199,7 @@ const openInvoice: any = reactive({
     </div>
   </div>
 
-  <el-dialog v-model="edit.show" title="编辑发票" width="500" draggable>
-    <el-form ref="willFormRef" :model="edit.form" label-width="auto">
-      <el-form-item label="发票抬头" >
-        <el-input v-model="edit.form.title" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="社会信用代码" >
-        <el-input v-model="edit.form.socialCode" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="联系人" >
-        <el-input v-model="edit.form.contact" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="手机号" >
-        <el-input v-model="edit.form.phone" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="邮箱" >
-        <el-input v-model="edit.form.email" autocomplete="off" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="edit.show = false">取消</el-button>
-        <el-button type="primary" @click="editSub">确定</el-button>
-      </div>
-    </template>
-  </el-dialog>
-
-  <el-dialog v-model="openInvoice.show" title="开票" width="500" draggable>
-    <el-form ref="willFormRef" :model="edit.form" label-width="auto">
-      <el-form-item label="发票类型" >
-        <el-radio-group v-model="openInvoice.form.type">
-          <el-radio :value="1">电子专票</el-radio>
-          <el-radio :value="2">电子普票</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="发票号" >
-        <el-input v-model="openInvoice.form.code" autocomplete="off" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="edit.show = false">取消</el-button>
-        <el-button type="primary" @click="openInvoiceSub">确定</el-button>
-      </div>
-    </template>
-  </el-dialog>
+  <EditInvoice ref="editInvoiceRef" @callback="getList" />
+  <Invoicing ref="invoicingRef" @callback="getList" />
 
 </template>

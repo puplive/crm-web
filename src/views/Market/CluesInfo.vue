@@ -28,7 +28,7 @@
         <el-tabs v-model="tab.activeName" @tab-change="tab.change" type="border-card" class="demo-tabs" style="height: 100%;" >
           <el-tab-pane label="资料" :name="1">
             <div style="">
-            <el-form ref="form" label-width="auto">
+            <el-form ref="form" label-width="auto" label-position="left">
               <div class="title-bar">
                 <label for="">公司信息</label>
                 <el-button type="default" @click="$router.push({name: 'CluesEdit', query: {id: id}})" size="small">编辑</el-button>
@@ -65,8 +65,8 @@
 
               <template v-for="(item, index ) in customFieldTrans" :key="item.key">
                 <el-form-item :label="item.name">
-                  <span v-if="item.type === 5">{{ item.value.join('，') }}</span>
-                  <span v-else-if="item.type === 7">{{ item.value.join('，') }}</span>
+                  <span v-if="item.type === 5">{{ item.value instanceof Array ? item.value.join('，') : item.value }}</span>
+                  <span v-else-if="item.type === 7">{{ item.value instanceof Array ? item.value.join('，') : item.value }}</span>
                   <span v-else>{{ item.value }}</span>
                 </el-form-item>
               </template>
@@ -174,7 +174,7 @@
               <el-table-column label="操作" width="200" fixed="right">
                 <template #default="scope"> 
                   <el-button link type="primary">详情</el-button>
-                  <el-button link type="primary" v-if="scope.row.orderStatus === 1">撤销</el-button>
+                  <el-button link type="primary" v-if="scope.row.contractStatus === 1">撤销</el-button>
                   <template v-else>
                     <el-button link type="info" disabled>已撤销</el-button>
                     <el-button link type="danger">删除</el-button>
@@ -195,7 +195,7 @@
   </div>
 
   <el-dialog :title="lxr.isEdit?'编辑': '添加联系人'" v-model="lxr.show" width="500px" draggable>
-    <el-form ref="lxrRef" :model="lxr.form" label-width="auto">
+    <el-form ref="lxrRef" :model="lxr.form" label-width="auto" label-position="left">
       <el-form-item label="姓名" prop="name" :rules="[ { required: true, message: '请输入姓名' } ]">
         <el-input v-model="lxr.form.name"></el-input>
       </el-form-item>
@@ -302,6 +302,7 @@ const customFieldTrans = computed(() => {
       name: d? d.name : '',
     })
   }
+  console.log(list)
   return list
 })
 

@@ -275,7 +275,7 @@
       <div class="form-box">
         <el-scrollbar height="100%">
           
-          <el-form ref="formRef" :model="form" label-width="auto" class="form">
+          <el-form ref="formRef" :model="form" label-width="auto" class="form" label-position="left">
             <div>预定展位</div>
             <el-form-item label="企业名称">
               {{ companyName }}
@@ -367,7 +367,7 @@
   </div>
 
   <el-dialog v-model="gg.show" title="添加规格" width="500" draggable @close="()=>{ggFormRef.resetFields()}">
-    <el-form ref="ggFormRef" :model="gg.form" label-width="auto">
+    <el-form ref="ggFormRef" :model="gg.form" label-width="auto" label-position="left">
       <el-form-item label="产品名称" prop="product" :rules="rules.required">
         <el-select v-model="gg.form.product" placeholder="" @change="ggChange">
           <el-option v-for="item in gg_list" :key="item.id" :label="item.text+ ' ' + item.price + '/'+ item.num + '/㎡'" :value="item" />

@@ -88,7 +88,7 @@
 </script>
 <template>
   <el-dialog v-model="edit.show" title="编辑发票" width="500" draggable>
-    <el-form ref="willFormRef" :model="edit.form" label-width="auto">
+    <el-form ref="willFormRef" :model="edit.form" label-width="auto" label-position="left">
       <el-form-item label="发票抬头" >
         <el-input v-model="edit.form.title" autocomplete="off" />
       </el-form-item>

@@ -29,7 +29,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 </script>
 <template>
   <div>
-    <el-form ref="refForm"  :inline="true" :model="formData" class="table-search-form" label-width="auto">
+    <el-form ref="refForm"  :inline="true" :model="formData" class="table-search-form" label-width="auto" label-position="left">
 
       <el-form-item v-for="(item, index ) in data" :key="index" :label="item.text" :prop="item.field">
 

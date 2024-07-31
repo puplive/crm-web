@@ -161,7 +161,7 @@
   </div>
 
   <el-dialog :title="add.isEdit ? '编辑' : '新增'" v-model="add.show" width="500px" draggable>
-    <el-form :model="add.data" ref="addForm" label-width="auto">
+    <el-form :model="add.data" ref="addForm" label-width="auto" label-position="left">
       <el-form-item label="用户名" prop="account">
         <el-input v-model="add.data.account" placeholder="请输入用户名"></el-input>
       </el-form-item>
