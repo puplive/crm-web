@@ -71,7 +71,7 @@
 
       <div class="title">发票详情</div>
       <div class="table">
-        <el-table :data="d.invoice" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
+        <el-table :data="[d.invoice]" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
           <el-table-column prop="code" label="编号"></el-table-column>
           <el-table-column prop="invoiceTitle" label="发票抬头" min-width="120"></el-table-column>
           <el-table-column prop="socialCode" label="社会信用代码" min-width="120"></el-table-column>
@@ -103,10 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { invoice } from '@/api/Finances';
 import { ref, reactive } from 'vue'
-import { uploadFile } from '@/api/common'
-// import { payment } from '@/api/Finances'
 import { useRouter, useRoute } from 'vue-router';
 import api from '@/api/Finances'
 import EditInvoice from './components/EditInvoice.vue'

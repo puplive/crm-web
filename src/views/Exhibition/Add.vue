@@ -105,6 +105,7 @@
             :on-success="(response:any, file:any, fileList:any) => { form.position[index].img = response.url; }"
             :before-upload="beforeUpload"
             :http-request="uploadImg"
+            accept="image/*"
           >
             <el-button link type="primary">上传图片</el-button>
           </el-upload>
@@ -303,7 +304,7 @@ if(id){
       form.payFinal = data.payFinal
       form.position = data.position
       form.cate = data.cate.length? data.cate : [{name: '', rgb: ''}]
-      form.unitPrice = data.unitPrice
+      form.unitPrice = data.unitPrice.length ? data.unitPrice : [{text: '', price: 0, num: 0}]
 
       let changeType_1 = 0, changeType_2 = 0
       form.attachPrice = data.add.map((item: any) => {

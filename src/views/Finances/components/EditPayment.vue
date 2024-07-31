@@ -165,6 +165,7 @@
                 :on-success="(response:any, file:any, fileList:any) => { edit.form.payImg = response.url; }"
                 :before-upload="beforeUpload"
                 :http-request="(fileObj:any)=>uploadImg(fileObj, 1)"
+                accept="image/*"
               >
                 <el-button type="primary" size="small" :loading="loading1">上传文件</el-button>
               </el-upload>
@@ -191,6 +192,7 @@
                 :on-success="(response:any, file:any, fileList:any) => { edit.form.receiveImg = response.url; }"
                 :before-upload="beforeUpload"
                 :http-request="(fileObj:any)=>uploadImg(fileObj, 2)"
+                accept="image/*"
               >
                 <el-button type="primary" size="small" :loading="loading2">上传文件</el-button>
               </el-upload>

@@ -392,22 +392,32 @@ subGetGoodsListSetting()
           <el-form v-if="selectGoods3.id" ref="settingFormRef" :model="settingData" style="margin-top: 20px"
             label-width="auto">
             <el-form-item label="单价" prop="price"
-              :rules="[{ required: true, message: '请输入', trigger: 'blur' }, ..._rules.positive]">
-              <el-input v-model="settingData.price" type="number" placeholder="">
+              :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">
+              <el-input-number
+                class="s-number-input"
+                v-model="settingData.price" 
+                :min="0" 
+                :controls="false">
                 <template #append>元</template>
-              </el-input>
+              </el-input-number>
             </el-form-item>
             <el-form-item label="单位" prop="unit" :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">
-              <el-input v-model="settingData.unit" placeholder=""></el-input>
+              <el-input v-model="settingData.unit" placeholder=""/>
             </el-form-item>
             <el-form-item label="上架数量" prop="num"
-              :rules="[{ required: true, message: '请输入', trigger: 'blur' }, ..._rules.positive]">
-              <el-input v-model="settingData.num" type="number" placeholder=""></el-input>
+              :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">
+              <el-input-number
+                class="s-number-input"
+                v-model="settingData.num"
+                :min="0" 
+                :controls="false"/>
             </el-form-item>
             <el-form-item label="" prop="img" :rules="[{ required: true, message: '请上传图片' }]">
               <el-upload class="img-uploader" :show-file-list="false"
                 :on-success="(response: any, file: any, fileList: any) => { settingData.img = response.url; }"
-                :before-upload="beforeUpload" :http-request="uploadImg">
+                :before-upload="beforeUpload" 
+                :http-request="uploadImg"
+                accept="image/*">
                 <el-image v-if="settingData.img" :src="settingData.img" class="img">
                 </el-image>
                 <el-icon v-else class="img-uploader-icon">
@@ -482,15 +492,15 @@ subGetGoodsListSetting()
         {{ editSettingForm.size }}
       </el-form-item>
       <el-form-item label="单价" prop="price"
-        :rules="[{ required: true, message: '请输入', trigger: 'blur' }, ..._rules.positive]">
-        <el-input v-model="editSettingForm.price"></el-input>
+        :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">
+        <el-input-number v-model="editSettingForm.price" :min="0" :controls="false" class="s-number-input"/>
       </el-form-item>
       <el-form-item label="单位" prop="unit" :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">
         <el-input v-model="editSettingForm.unit"></el-input>
       </el-form-item>
       <el-form-item label="上架数量" prop="num"
-        :rules="[{ required: true, message: '请输入', trigger: 'blur' }, ..._rules.positive]">
-        <el-input v-model="editSettingForm.num"></el-input>
+        :rules="[{ required: true, message: '请输入', trigger: 'blur' }]">
+        <el-input-number v-model="editSettingForm.num" :min="0" :controls="false" class="s-number-input"/>
       </el-form-item>
       <el-form-item label="已购数量" style="margin-bottom: 0;">
         {{ editSettingForm.buy }}
@@ -508,6 +518,7 @@ subGetGoodsListSetting()
 </template>
 
 <style scoped>
+
 .goods-index {
   height: 100%;
   display: flex;

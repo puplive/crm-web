@@ -17,6 +17,7 @@ ul,li{
   margin: 0;
   padding: 0;
 }
+
 .s-flex-row {
   display: flex;
   flex-flow: row nowrap;
@@ -78,6 +79,12 @@ ul,li{
   border-top: none;
 }
 
+.s-number-input{
+  flex: 1;
+}
+.s-number-input.el-input-number .el-input__inner{
+  text-align: left;
+}
 @media (hover: hover) {
   a:hover {
     /* background-color: hsla(160, 100%, 37%, 0.2); */

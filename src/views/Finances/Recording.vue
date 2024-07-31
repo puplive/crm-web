@@ -76,6 +76,7 @@
                         :on-success="(response:any, file:any, fileList:any) => { item.payImg = response.url; }"
                         :before-upload="beforeUpload"
                         :http-request="uploadImg"
+                        accept="image/*"
                       >
                         <el-button type="primary" size="small">上传文件</el-button>
                       </el-upload>
@@ -102,6 +103,7 @@
                         :on-success="(response:any, file:any, fileList:any) => { item.receiveImg = response.url; }"
                         :before-upload="beforeUpload"
                         :http-request="uploadImg"
+                        accept="image/*"
                       >
                         <el-button type="primary" size="small">上传文件</el-button>
                       </el-upload>

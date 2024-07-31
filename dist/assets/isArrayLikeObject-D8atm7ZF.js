@@ -1,1 +1,0 @@
-import{s as i,r as s,n as e}from"./use-form-item-BXJm_uA7.js";import{t as o}from"./_initCloneObject-DbOGMf5u.js";import{bi as a}from"./index-Bi2PROgv.js";function f(r,t){return i(s(r,t,e),r+"")}function p(r){return a(r)&&o(r)}export{f as b,p as i};

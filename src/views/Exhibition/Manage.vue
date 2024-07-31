@@ -1,13 +1,29 @@
 <!-- 展会管理 -->
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import TableSearch from '@/components/TableSearch/index.vue'
-import { exhibitionList, setStatus, exhibitionDelete } from "@/api/Exhibition"; 
+import { exhibitionList, setStatus, exhibitionDelete, getSearchField } from "@/api/Exhibition"; 
 // const Edit = ref()  
+const searchForm = ref({})
+const searchData = ref([])
   const list = ref([])  
-  exhibitionList().then(res => {
-    if (res.code === 0) {
-      list.value = res.data
+  const getList = () => {
+    exhibitionList({...searchForm.value}).then(res => {
+      if (res.code === 0) {
+        list.value = res.data
+      }
+    })
+  }
+  getList()
+  const search = (d: any) => {
+    searchForm.value = d
+    // page.page = 1
+    // console.log({...page, ...searchForm.value})
+    getList()
+  }
+  getSearchField().then((res) => {
+    if(res.code === 0) {
+      searchData.value = res.data
     }
   })
 
@@ -44,7 +60,7 @@ import { exhibitionList, setStatus, exhibitionDelete } from "@/api/Exhibition";
 </script>
 <template>
   <div>
-    <TableSearch :data="[]"/>
+    <TableSearch :data="searchData" @search="search"/>
   </div>
 
   <el-row :gutter="20">

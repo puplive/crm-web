@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, toRefs, defineProps, defineExpose } from 'vue'
+import { ref, toRefs, defineProps, defineExpose, computed } from 'vue'
 import { getContractData, create, edit } from '@/api/Contract'
 // import { booth } from '@/api/Order'
 const contract: any = ref({
@@ -99,7 +99,16 @@ const editContract = (templateId: any) => {
 //     required: true
 //   }
 // })
+// const _ratio = computed(() => {
+//   (n:number)=>{return n*100}
+
+// }) //
 const _ratio = (n: number)=>{return n*100}
+const input_ratio = (event: any, item: any) => {
+    if (event.target) {
+      item.ratio = event.target.value / 100;
+    }
+  }
 defineExpose({
   setData,
   createContract,
@@ -167,6 +176,11 @@ defineExpose({
         <tr v-for="(item, index) in contract.payment" :key="index">
           <td><input v-model="item.name"/></td>
           <td><input v-model="item.ratio"/></td>
+          <!-- <td><input :value="_ratio(item.ratio)" @input="(ev:any)=>{
+            if (ev.target) {
+              item.ratio = ev.target.value / 100;
+            }
+          }"/></td> -->
           <td><input v-model="item.price"/></td>
           <td><input v-model="item.time"/></td>
         </tr>

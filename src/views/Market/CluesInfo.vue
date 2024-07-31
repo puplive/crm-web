@@ -195,11 +195,11 @@
   </div>
 
   <el-dialog :title="lxr.isEdit?'编辑': '添加联系人'" v-model="lxr.show" width="500px" draggable>
-    <el-form :model="lxr.form" label-width="auto">
-      <el-form-item label="姓名">
+    <el-form ref="lxrRef" :model="lxr.form" label-width="auto">
+      <el-form-item label="姓名" prop="name" :rules="[ { required: true, message: '请输入姓名' } ]">
         <el-input v-model="lxr.form.name"></el-input>
       </el-form-item>
-      <el-form-item label="职务">
+      <el-form-item label="职务" prop="duties" :rules="[ { required: true, message: '请输入职务' } ]">
         <el-input v-model="lxr.form.duties"></el-input>
       </el-form-item>
       <el-form-item label="类别">
@@ -212,7 +212,7 @@
           <el-option label="现场" :value="4"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="手机号">
+      <el-form-item label="手机号" prop="mobile" :rules="rules.phone">
         <el-input v-model="lxr.form.mobile"></el-input>
       </el-form-item>
       <el-form-item label="电话">
@@ -227,7 +227,7 @@
         <el-input v-model="lxr.form.wechat"></el-input>
       </el-form-item>
 
-      <el-form-item label="在职状态">
+      <el-form-item label="在职状态" prop="status" :rules="[ { required: true, message: '请选择在职状态' } ]" >
         <el-select v-model="lxr.form.status">
           <el-option label="在职" :value="1"></el-option>
           <el-option label="离职" :value="2"></el-option>
@@ -235,7 +235,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="展会联系人" v-if="lxr.isEdit">
+      <el-form-item label="展会联系人" prop="isExhibitionContact" :rules="[ { required: true, message: '请选择展会联系人' } ]">
         <el-radio-group v-model="lxr.form.isExhibitionContact" class="ml-4">
           <el-radio :value="1">是</el-radio>
           <el-radio :value="0">否</el-radio>
@@ -245,8 +245,8 @@
     </el-form>
     <template #footer>
       <el-button type="default" @click="lxr.show = false">取消</el-button>
-      <el-button v-if="lxr.isEdit" type="primary" @click="lxr.edit">修改</el-button>
-      <el-button v-else type="primary" @click="lxr.add">添加</el-button>
+      <el-button v-if="lxr.isEdit" type="primary" @click="()=>lxr.edit()">修改</el-button>
+      <el-button v-else type="primary" @click="()=>lxr.add()">添加</el-button>
     </template>
   </el-dialog>
 
@@ -262,6 +262,7 @@ import Move from './components/Move.vue'
 import GoodsOrderDetail from '@/views/Order/components/GoodsOrderDetail.vue'
 import {getData, contact, getCustomField, del, editNew, exitExhibition } from '@/api/Clues'
 import { booth as boothApi, goods as goodsApi } from '@/api/Order/index'
+import rules from '@/utils/rules'
 
 const router = useRouter()
 const route = useRoute()
@@ -356,6 +357,7 @@ const contactList = ()=>{
   })
 }
 
+const lxrRef: any = ref(null)
 const lxr: any = reactive({
   show: false,
   isEdit: false,
@@ -370,7 +372,7 @@ const lxr: any = reactive({
     email: '',
     wechat: '',
     status: 1,
-    // isExhibitionContact: false,
+    isExhibitionContact: 1,
   },
   setAdd: ()=>{
     lxr.show = true
@@ -385,7 +387,7 @@ const lxr: any = reactive({
       email: '',
       wechat: '',
       status: 1,
-      // isExhibitionContact: false,
+      isExhibitionContact: 1,
     }
   },
   setEdit: (d: any)=>{
@@ -395,29 +397,39 @@ const lxr: any = reactive({
     lxr.form.clueId = id
   },
   add: ()=>{
-    contact.add(lxr.form).then(res => {
-      if (res.code === 0) {
-        ElMessage.success('添加成功')
-        lxr.show = false
-        contactList()
-        followUp.value.getContactList()
-      }else {
-        ElMessage.error(res.msg)
+    lxrRef.value.validate().then((valid: any) => {
+      if (!valid) {
+        return false
       }
-    })
+      contact.add(lxr.form).then(res => {
+        if (res.code === 0) {
+          ElMessage.success('添加成功')
+          lxr.show = false
+          contactList()
+          followUp.value.getContactList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }).catch(() => {})
   },
   edit: ()=>{
-    contact.edit(lxr.form).then(res => {
-      if (res.code === 0) {
-        ElMessage.success('修改成功')
-        lxr.show = false
-        contactList()
-        followUp.value.getContactList()
-      }else {
-        ElMessage.error(res.msg)
-        contactList()
+    lxrRef.value.validate().then((valid: any) => {
+      if (!valid) {
+        return false
       }
-    })
+      contact.edit(lxr.form).then(res => {
+        if (res.code === 0) {
+          ElMessage.success('修改成功')
+          lxr.show = false
+          contactList()
+          followUp.value.getContactList()
+        }else {
+          ElMessage.error(res.msg)
+          contactList()
+        }
+      })
+    }).catch(() => {})
   },
   del: (id: any)=>{
     ElMessageBox.confirm('确定删除？', '提示', {

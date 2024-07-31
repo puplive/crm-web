@@ -126,7 +126,10 @@ const revoke = (id: any) => {
           <el-table-column prop="num" label="展位数量" min-width="120"></el-table-column>
           <el-table-column prop="product" label="产品名称" min-width="120"></el-table-column>
           <el-table-column prop="unitPrice" label="单价"></el-table-column>
-          <el-table-column prop="orderPrice" label="订单金额" min-width="120"></el-table-column>
+          <el-table-column prop="orderPrice" label="订单原价" min-width="120"></el-table-column>
+          <el-table-column prop="orderPrice" label="优惠(折扣)金额" min-width="120"></el-table-column>
+          <el-table-column prop="orderPrice" label="加收金额" min-width="120"></el-table-column>
+          <el-table-column prop="orderPrice" label="最终金额" min-width="120"></el-table-column>
           <el-table-column prop="contractStatus" label="合同状态" min-width="120">
             <template #default="scope">{{ ['未签约', '已签约', '已回执'][scope.row.contractStatus] }}</template>
           </el-table-column>
@@ -134,7 +137,7 @@ const revoke = (id: any) => {
             <template #default="scope">{{ ['未付款', '部分付款', '已付款'][scope.row.payStatus] }}</template>
           </el-table-column>
           <el-table-column prop="receivedPrice" label="到款金额" min-width="120"></el-table-column>
-          <el-table-column prop="notReceivedPrice" label="未到金额" min-width="120"></el-table-column>
+          <el-table-column prop="notReceivedPrice" label="待支付金额" min-width="120"></el-table-column>
           <el-table-column prop="invoiceStatus" label="发票状态" min-width="120">
             <template #default="scope">{{ ['未申请', '待开票', '部分开票', '已开票'][scope.row.invoiceStatus] }}</template>
           </el-table-column>
@@ -142,7 +145,7 @@ const revoke = (id: any) => {
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <!-- <el-button link type="primary">订单详情</el-button> -->
-              <el-button link type="primary" v-if="d.orderStatus === 1" @click="revoke(d.id)">撤销</el-button>
+              <el-button link type="danger" v-if="d.orderStatus === 1" @click="revoke(d.id)">撤销</el-button>
               <el-button link type="" v-else-if="d.orderStatus === 0" disabled>已撤销</el-button>
             </template>
           </el-table-column>
@@ -192,13 +195,13 @@ const revoke = (id: any) => {
             <template #default="scope">{{ {0:'未申请',1:'待开票',2:'部分开票',3:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="200">
+          <el-table-column fixed="right" label="操作" width="200" v-if="d.orderStatus === 1">
             <template #default="scope">
               <el-button link type="primary" @click="() => { 
                 let d={...scope.row, account: scope.row.receiveAccount }; 
                 editPaymentRef.setEdit(d)
                }">编辑</el-button>
-              <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)">申请发票</el-button>
+              <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.invoiceStatus === 0">申请发票</el-button>
               <el-button link type="danger" @click="delPayment(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -222,7 +225,7 @@ const revoke = (id: any) => {
           </el-table-column>
           <el-table-column prop="invoiceCode" label="发票号"></el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="200">
+          <el-table-column fixed="right" label="操作" width="200" v-if="d.orderStatus === 1">
             <template #default="scope">
               <UpInvoice :id="scope.row.id" @callback="getBoothDetail"></UpInvoice>
               <el-button link type="primary" @click="() => { 

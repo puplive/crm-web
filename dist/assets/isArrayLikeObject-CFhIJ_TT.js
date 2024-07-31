@@ -1,0 +1,1 @@
+import{s as i,r as s,n as e}from"./use-form-item-B8Qj3pZg.js";import{t as o}from"./_initCloneObject-CSlZU8KL.js";import{bi as a}from"./index-CXHZvf4q.js";function f(r,t){return i(s(r,t,e),r+"")}function p(r){return a(r)&&o(r)}export{f as b,p as i};

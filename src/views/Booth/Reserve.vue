@@ -3,6 +3,7 @@
   import { booth as boothApi, getExhibitionInfo } from '@/api/Order/index'
   import { getPosition  } from '@/api/Booth/index'
   import { useRouter, useRoute } from 'vue-router';
+  import rules from "@/utils/rules";
 
   const router = useRouter();
   const route = useRoute();
@@ -64,6 +65,7 @@
   })
 
   const gg_select:any = ref({})
+  const ggFormRef: any = ref(null)
   const gg: any = reactive({
     show: false,
     index: 0,
@@ -88,6 +90,7 @@
     }
   })
 
+  
   const Add = () => {
     let n = form.position.length
     set_booth_list(hallCode.value, n)
@@ -120,43 +123,56 @@
   }
   set_booth_list(hallCode.value, 0)
 
+
+  const formRef: any = ref(null)
   const Sub = () => {
     // console.log({...route.query, data: form})
-    router.push({
-      name: 'BoothCreateOrder',
-      query: {...route.query, companyName: companyName.value, data: JSON.stringify(form)}
-    })
-    // boothApi.create(form).then(res => {
-    //   console.log(res)
-    // })
+    formRef.value.validate().then((valid: any) => {
+      if (!valid) {
+        return
+      }
+      router.push({
+        name: 'BoothCreateOrder',
+        query: {...route.query, companyName: companyName.value, data: JSON.stringify(form)}
+      })
+    }).catch(() => {})
   }
 
   const addGg = (i: number) => {
-    gg.show = true
+    
     gg.index = i
     gg.form.product = ''
     gg.form.unitPrice = ''
-    gg.form.length = ''
-    gg.form.width = ''
+    gg.form.length = 0
+    gg.form.width = 0
     gg.form.num = 1
+
+    gg.show = true
   }
 
   const ggSub = () => {
-    gg.show = false
-    let _area = gg.form.length * gg.form.width,
-        _costPrice = _area*gg.form.unitPrice/gg.form.num,
-        _addPrice = addPrice(_costPrice),
-        _discountPrice = discountPrice(_costPrice)
+    ggFormRef.value.validate().then((valid: any) => {
+      if (!valid) {
+        return
+      }
+      gg.show = false
+      let _area = gg.form.length * gg.form.width,
+          _costPrice = _area*gg.form.unitPrice/gg.form.num,
+          _addPrice = addPrice(_costPrice),
+          _discountPrice = discountPrice(_costPrice)
 
-    form.position[gg.index].product = gg.form.product
-    form.position[gg.index].unitPrice = gg.form.unitPrice
-    form.position[gg.index].length = gg.form.length
-    form.position[gg.index].width = gg.form.width
-    form.position[gg.index].area = _area
-    form.position[gg.index].costPrice = Number(_costPrice.toFixed(2))
-    form.position[gg.index].addPrice = Number(_addPrice.toFixed(2))
-    form.position[gg.index].discountPrice = Number(_discountPrice.toFixed(2))
-    form.position[gg.index].finalPrice = Number((_costPrice+_addPrice-_discountPrice).toFixed(2))
+      form.position[gg.index].product = gg.form.product
+      form.position[gg.index].unitPrice = gg.form.unitPrice
+      form.position[gg.index].length = gg.form.length
+      form.position[gg.index].width = gg.form.width
+      form.position[gg.index].area = _area
+      form.position[gg.index].costPrice = Number(_costPrice.toFixed(2))
+      form.position[gg.index].addPrice = Number(_addPrice.toFixed(2))
+      form.position[gg.index].discountPrice = Number(_discountPrice.toFixed(2))
+      form.position[gg.index].finalPrice = Number((_costPrice+_addPrice-_discountPrice).toFixed(2))
+      // clearValidate
+      formRef.value.clearValidate(['position['+gg.index+'].product'])
+    }).catch(() => {})
   }
 
   const addPrice = (price: number) => {
@@ -259,7 +275,7 @@
       <div class="form-box">
         <el-scrollbar height="100%">
           
-          <el-form :model="form" label-width="auto" class="form">
+          <el-form ref="formRef" :model="form" label-width="auto" class="form">
             <div>预定展位</div>
             <el-form-item label="企业名称">
               {{ companyName }}
@@ -284,16 +300,21 @@
               <el-button icon="Plus" @click="Add">添加展位</el-button>
             </el-form-item>
             <div class="item" v-for="(item, index) in form.position" :key="index">
-              <el-form-item label="展馆号">
+              <el-form-item label="展馆号" :prop="`position[${index}].hallCode`" :rules="rules.required">
                 <!-- <el-input v-model="form.position[index].hallCode" disabled /> -->
-                <el-select v-model="form.position[index].hallCode" placeholder="请选择" @change="set_booth_list(item.hallCode, index); hallCode=item.hallCode">
+                <el-select 
+                  v-model="form.position[index].hallCode" 
+                  placeholder="请选择" 
+                  @change="() => {
+                    set_booth_list(item.hallCode, index); 
+                    hallCode=item.hallCode
+                  }">
                   <el-option v-for="(item,i) in hall_list" :key="i" :label="item.code" :value="item.code" />
                 </el-select>
               </el-form-item>
-              <el-form-item label="展位号">
+              <el-form-item label="展位号" :prop="`position[${index}].positionCode`" :rules="rules.required">
                 <el-select 
                   v-model="form.position[index].positionCode"
-                  
                   filterable
                   allow-create
                   default-first-option 
@@ -313,7 +334,7 @@
                   <el-radio :value="2">特装</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label="展位规格">
+              <el-form-item label="展位规格" :prop="`position[${index}].product`" :rules="rules.required">
                 <el-button size="small" @click="addGg(index)" >添加</el-button>
               </el-form-item>
               <el-form-item label=" " v-if="form.position[index].product">
@@ -329,8 +350,8 @@
                 <el-input :model-value="form.position[index].discountPrice" disabled />
                 <!-- <el-input :model-value="setFinalPrice(index)" disabled /> -->
               </el-form-item>
-              <el-form-item label="最终金额">
-                <el-input v-model="form.position[index].finalPrice" />
+              <el-form-item label="最终金额" :prop="`position[${index}].finalPrice`" :rules="rules.required">
+                <el-input-number v-model="form.position[index].finalPrice" :min="0" :controls="false" class="s-number-input" />
               </el-form-item>
               <div style="text-align: center;">
                 <el-button link type="danger" @click="form.position.splice(index, 1); booth_list.splice(index, 1)"><el-icon><DeleteFilled /></el-icon></el-button>
@@ -345,9 +366,9 @@
     </div>
   </div>
 
-  <el-dialog v-model="gg.show" title="添加规格" width="500" draggable>
+  <el-dialog v-model="gg.show" title="添加规格" width="500" draggable @close="()=>{ggFormRef.resetFields()}">
     <el-form ref="ggFormRef" :model="gg.form" label-width="auto">
-      <el-form-item label="产品名称" prop="product">
+      <el-form-item label="产品名称" prop="product" :rules="rules.required">
         <el-select v-model="gg.form.product" placeholder="" @change="ggChange">
           <el-option v-for="item in gg_list" :key="item.id" :label="item.text+ ' ' + item.price + '/'+ item.num + '/㎡'" :value="item" />
         </el-select>
@@ -360,13 +381,18 @@
       </el-form-item>
       <el-form-item label="尺寸">
         <el-col :span="11">
-          <el-input v-model="gg.form.length" autocomplete="off" />
+          <el-form-item label="" prop="length" :rules="rules.required"> 
+            <el-input-number v-model="gg.form.length" :min="0" :controls="false" style="flex: 1;" />
+          </el-form-item>
         </el-col>
         <el-col :span="2" style="display: flex; align-items: center; justify-content: center; font-size: 20px;">
           <el-icon><Close /></el-icon>
         </el-col>
         <el-col :span="11">
-          <el-input v-model="gg.form.width" autocomplete="off" />
+          <el-form-item label="" prop="width" :rules="rules.required">
+            <el-input-number v-model="gg.form.width" :min="0" :controls="false" style="flex: 1;" />
+            <!-- <el-input v-model="gg.form.width" autocomplete="off" /> -->
+          </el-form-item>
         </el-col>
       </el-form-item>
       <el-form-item label="面积" >
@@ -416,7 +442,7 @@
         .form{
           padding: 15px;
           .el-form-item{
-            margin-bottom: 5px;
+            /* margin-bottom: 5px; */
           }
         }
       }
