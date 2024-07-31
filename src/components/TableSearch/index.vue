@@ -12,7 +12,7 @@ interface DataItem {
 }
 const props = defineProps<{
   data: DataItem[],
-  type: string
+  type?: string
 }>()
 
 const emit = defineEmits(['search'])
