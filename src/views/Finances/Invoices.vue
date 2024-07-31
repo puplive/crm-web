@@ -81,7 +81,7 @@
 <template>
   <div class="s-flex-col" style="height: 100%;">
     <div></div>
-    <TableSearch :data="searchData" @search="search"/>
+    <TableSearch :data="searchData" @search="search" :type="'invoice'"/>
     <!-- <div class="s-table-operations"> -->
       <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button> -->
       <!-- <el-button size="small" @click="Import">导入</el-button> -->
@@ -108,8 +108,7 @@
         <el-table-column prop="orderPrice" label="订单金额" min-width="120" />
         <el-table-column prop="payType" label="付款方式" min-width="120">
           <template #default="scope">
-            {{ '银行转账' }}
-            <!-- {{ {1:'全款',2:'分期'}[scope.row.payType as number] }} -->
+            {{ {1:'全款',2:'分期'}[scope.row.payType as number] }}
           </template>
         </el-table-column>
         <el-table-column prop="payStatus" label="付款状态" min-width="120">

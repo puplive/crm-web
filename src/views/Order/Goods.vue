@@ -7,7 +7,6 @@
   import { useRouter, useRoute } from 'vue-router'
   import { goods as goodsApi, booth as boothApi  } from '@/api/Order/index'
   import { uploadFile } from '@/api/common'
-import { order } from '@/api/Finances'
 
   
   const router = useRouter()
@@ -219,6 +218,11 @@ import { order } from '@/api/Finances'
     detailRef.value.getDetail(id)
   }
 
+  goodsApi.getSearchField().then((res: any) => {
+    if (res.code === 0) {
+      searchData.value = res.data
+    }
+  })
   getList()
   
 </script>

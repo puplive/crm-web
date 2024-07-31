@@ -99,6 +99,11 @@
     })
   }
   
+  boothApi.getSearchField().then((res: any) => {
+    if (res.code === 0) {
+      searchData.value = res.data
+    }
+  })
 
   getList()
   

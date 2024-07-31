@@ -98,9 +98,9 @@
         <el-table-column prop="positionCode" label="展位号" />
         <el-table-column prop="payCompany" label="付款公司" min-width="120" />
         <el-table-column prop="payPrice" label="付款金额" min-width="120" />
-        <el-table-column prop="" label="付款方式" min-width="120">
+        <!-- <el-table-column prop="" label="付款方式" min-width="120">
           <template #default="scope">{{ '银行转账' }}</template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="orderPrice" label="订单金额" min-width="120" />
         <el-table-column prop="payType" label="付款类型" min-width="120">
           <template #default="scope">
