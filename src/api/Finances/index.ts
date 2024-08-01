@@ -2,7 +2,7 @@ import request from "@/utils/request";
 import type { del } from "../Exhibitor";
 // import type { UserType } from './types'
 import { delNullProperty } from '@/utils/tool'
-import qs from "qs";
+// import qs from "qs";
 
 
 const prefix = "/web/v1";
@@ -38,11 +38,12 @@ export const payment = {
     });
   },
   add: (data: any): Promise<any> => {
-    delNullProperty(data)
+    let _d = JSON.parse(JSON.stringify(data))
+    delNullProperty(_d)
     return request({
       url: prefix + "/finance/orderPayment/add",
       method: "post",
-      data,
+      data: _d,
     });
   },
   getDetail: (params: any): Promise<any> => {
