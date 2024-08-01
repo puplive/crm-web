@@ -217,7 +217,11 @@ const orderId: any = ref(Number(route.query.id))
   const addDetail = () => {
     formData.push({
       orderId: orderId,
-      invoice: {}
+      payImg: '',
+      receiveImg: '',
+      invoice: {
+        img: '',
+      }
     })
   }
 

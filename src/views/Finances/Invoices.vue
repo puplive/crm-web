@@ -167,13 +167,14 @@
         </el-table-column>
         <el-table-column prop="invoiceImg" label="发票附件" min-width="120">
           <template #default="scope">
-            <el-image
+            <el-link v-if="scope.row.invoiceImg" :href="scope.row.invoiceImg" type="primary">下载</el-link>
+            <!-- <el-image
               style="width: 30px; height: 30px; margin-right: 5px;" 
               :src="scope.row.invoiceImg" 
               fit="contain" 
               :preview-src-list="[scope.row.invoiceImg]" 
               :preview-teleported="true"
-              loading="lazy" />
+              loading="lazy" /> -->
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="250">

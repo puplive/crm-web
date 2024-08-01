@@ -174,6 +174,16 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           // icon: 'list'
         }
       }
+      // {
+      //   path: 'reserve',
+      //   name: 'GoodsReserve',
+      //   component: () => import('@/views/Goods/Reserve.vue'),
+      //   meta: {
+      //     isMenu: true,
+      //     title: '物料预定',
+      //     // icon: 'list'
+      //   }
+      // }
     ]
   },
   {
@@ -560,16 +570,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
           // icon: 'list'
         }
       },
-      {
-        path: 'reserve',
-        name: 'GoodsReserve',
-        component: () => import('@/views/Goods/Reserve.vue'),
-        meta: {
-          isMenu: true,
-          title: '物料预定',
-          // icon: 'list'
-        }
-      }
+
     ]
   },
 ]

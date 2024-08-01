@@ -312,9 +312,9 @@ getCart()
                   <p class="title" :title="item.position">{{item.position}}</p>
                   <p class="p" :title="item.size"><label for="">规格(尺寸)：</label>{{item.size}}</p>
                   <p class="p" :title="item.price+'元/'+item.unit"><label for="">单&emsp;&emsp;价：</label><span>{{item.price+'元/'+item.unit}}</span></p>
-                  <p class="p"><label for="">库&emsp;&emsp;存：</label>{{item.num}}</p>
+                  <p class="p"><label for="">库&emsp;&emsp;存：</label>{{item.stock}}</p>
               </div>
-              <el-button type="primary" @click="addShop(item)" :disabled="item.num<=0" style="width: 100%;">加入购物车</el-button>
+              <el-button type="primary" @click="addShop(item)" :disabled="item.stock<=0" style="width: 100%;">加入购物车</el-button>
               <!-- <div data-id=${item.id} data-index=${i} class="btn j-add ${item.en_stoko>0?'':'disabled'}">加入购物车</div> -->
           </li>
         </div>
