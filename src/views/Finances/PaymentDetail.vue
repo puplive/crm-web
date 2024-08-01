@@ -82,7 +82,7 @@
           <el-table-column prop="contact" label="联系人"></el-table-column>
           <el-table-column prop="email" label="发送邮箱" min-width="120"></el-table-column>
           <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
-            <template #default="scope">{{ {0:'未申请',1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}</template>
+            <template #default="scope">{{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="invoiceCode" label="发票号"></el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>

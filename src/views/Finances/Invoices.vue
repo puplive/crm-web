@@ -140,13 +140,11 @@
         <el-table-column prop="invoicePrice" label="开票金额" min-width="120" />
         <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
           <template #default="scope">
-            <!-- {{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }} -->
             {{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}
           </template>
         </el-table-column>
         <el-table-column prop="payImg" label="付款凭证" min-width="120">
           <template #default="scope">
-            <!-- <el-link :href="scope.row.payImg" target="_blank">{{ scope.row.payImg }}</el-link> -->
             <el-image 
               style="width: 30px; height: 30px; margin-right: 5px;"
               :src="scope.row.payImg" 
