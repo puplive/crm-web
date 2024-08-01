@@ -126,7 +126,7 @@
         <el-table-column type="selection" width="42" />
         <el-table-column prop="orderCode" label="订单编号" width="200" />
         <el-table-column prop="companyName" label="企业名称" min-width="120" />
-        <el-table-column prop="hallCode" label="展位号" />
+        <el-table-column prop="positionCode" label="展位号" />
         <el-table-column prop="brand" label="参展品牌" min-width="120" />
         <el-table-column prop="area" label="面积" />
         <el-table-column prop="num" label="展位数" />
