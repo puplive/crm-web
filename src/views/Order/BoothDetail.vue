@@ -224,13 +224,13 @@ const revoke = (id: any) => {
           <el-table-column prop="contact" label="联系人"></el-table-column>
           <el-table-column prop="email" label="发送邮箱" min-width="120"></el-table-column>
           <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
-            <template #default="scope">{{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}</template>
+            <template #default="scope">{{ {1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="invoiceCode" label="发票号"></el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200" v-if="d.orderStatus === 1">
             <template #default="scope">
-              <el-button v-if="scope.row.invoiceStatus === 0" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+              <el-button v-if="scope.row.invoiceStatus === 1" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
               <UpInvoice :id="scope.row.id" @callback="getBoothDetail"></UpInvoice>
               <el-button link type="primary" @click="() => { 
                 let d={...scope.row, invoiceTitle: scope.row.title }; 

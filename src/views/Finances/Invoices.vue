@@ -140,7 +140,7 @@
         <el-table-column prop="invoicePrice" label="开票金额" min-width="120" />
         <el-table-column prop="invoiceStatus" label="开票状态" min-width="120">
           <template #default="scope">
-            {{ {0:'待开票',1:'已开票'}[scope.row.invoiceStatus as number] }}
+            {{ {1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}
           </template>
         </el-table-column>
         <el-table-column prop="payImg" label="付款凭证" min-width="120">
@@ -178,7 +178,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button v-if="scope.row.invoiceStatus === 0" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+            <el-button v-if="scope.row.invoiceStatus === 1" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
             <UpInvoice :id="scope.row.id" @callback="getList" />
             <el-button link type="primary" @click="editInvoiceRef.setEdit(scope.row)">编辑</el-button>
             <el-button link type="danger" @click="Del([scope.row.id])">删除</el-button>

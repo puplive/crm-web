@@ -116,8 +116,8 @@
       </el-form-item>
       <el-form-item label="开票状态">
         <el-radio-group v-model="apply.form.status">
-          <el-radio :value="0">待开票</el-radio>
-          <el-radio :value="1">已开票</el-radio>
+          <el-radio :value="1">待开票</el-radio>
+          <el-radio :value="2">已开票</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="发票号" >

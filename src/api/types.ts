@@ -88,8 +88,8 @@ export const invoiceTypes = {
     label: '发票状态',
     type: 3,
     options: [
-      { value: 0, label: '待开票' },
-      { value: 1, label: '已开票' },
+      { value: 1, label: '待开票' },
+      { value: 2, label: '已开票' },
     ]
   },
 }

@@ -247,8 +247,8 @@ const uploadImg = (fileObj: any) => {
   })
 }
 
+
 const submitForm = (i: any) => {
-  // console.log(formData[i])
   payment.add(formData[i]).then(res => {
     if(res.code === 0){
       ElMessage.success('保存成功')
