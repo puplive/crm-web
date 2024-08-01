@@ -33,7 +33,7 @@ const setFinalPrice = computed(()=>{
       p = p * i.ratio / 100
     }
     
-    return Number(p.toFixed(2))
+    return p<0?0: Number(p.toFixed(2))
   }
 })
 
@@ -102,7 +102,7 @@ const handleBack = () => {
       <div class="p4">
         <!-- <el-checkbox v-model="item.deposit" label="预定金" /> -->
         <span>预定金</span>
-        <el-input v-model="item.deposit" placeholder="请输入金额" style="width: 120px; margin: 0 10px 0 10px;"></el-input>
+        <el-input-number v-model="item.deposit" placeholder="请输入金额" :min="0" :controls="false" style="width: 120px; margin: 0 10px 0 10px;"/>
         <span>元</span>
 
         <span style="margin: 0 10px 0 40px;">是否冲抵展位费</span>
@@ -115,7 +115,7 @@ const handleBack = () => {
           <el-radio :value="1">全款</el-radio>
           <el-radio :value="2">分期</el-radio>
         </el-radio-group>
-        <el-input v-model="item.ratio" placeholder="分期比例" style="width: 120px;"></el-input>
+        <el-input-number v-model="item.ratio" placeholder="分期比例" :min="0" :max="100" :controls="false" style="width: 120px;"/>
         <span style="margin-left: 10px">%</span>
       </div>
     </div>
