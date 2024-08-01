@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { booth as boothApi  } from '@/api/Order/index'
-import { payment, invoice,  } from '@/api/Finances/index'
+import { order, payment, invoice,  } from '@/api/Finances/index'
 import UpInvoice from '@/views/Finances/components/UpInvoice.vue'
 import ApplyInvoice from '@/views/Finances/components/ApplyInvoice.vue'
 import EditInvoice from '@/views/Finances/components/EditInvoice.vue'
@@ -11,6 +11,7 @@ import Invoicing from '@/views/Finances/components/Invoicing.vue'
 
 const route = useRoute()
 const id = ref(route.query.id)
+const pageName: any = ref(route.name)
 const applyInvoiceRef: any = ref(null)
 const editInvoiceRef: any = ref(null)
 const editPaymentRef: any = ref(null)
@@ -24,15 +25,27 @@ const d:any = ref({
 // const list3 = ref([{}])
 
 const getBoothDetail = () => {
-  boothApi.getDetail({ id: id.value }).then(res => {
-    if (res.code === 0) {
-      d.value = res.data
-      
-    }else {
-      ElMessage.error(res.msg)
-    }
-  
-  })
+  if(pageName.value === 'FinancesOrderDetail'){
+    order.getDetail({ id: id.value }).then(res => {
+      if (res.code === 0) {
+        d.value = res.data
+        
+      }else {
+        ElMessage.error(res.msg)
+      }
+    
+    })
+  }else{
+    boothApi.getDetail({ id: id.value }).then(res => {
+      if (res.code === 0) {
+        d.value = res.data
+        
+      }else {
+        ElMessage.error(res.msg)
+      }
+    
+    })
+  }
 }
 
 const revoke = (id: any) => {
@@ -110,7 +123,7 @@ const revoke = (id: any) => {
       <div class="info">
         <span>订单编号：{{ d.orderCode }}</span>
         <span>企业名称：{{ d.exhibitorName }}</span>
-        <span>参展品牌：{{ d.brand.join(',') }}</span>
+        <span>参展品牌：{{ d.brand.join('，') }}</span>
         <span>订单状态：{{ d.orderStatus }}</span>
         <span>订单生成时间：{{ d.orderTime }}</span>
         <span>下单人：{{ d.authUser }}</span>
@@ -176,7 +189,7 @@ const revoke = (id: any) => {
                 :src="scope.row.payImg"
                 :preview-src-list="[scope.row.payImg]"
                 fit="contain"
-                preview-teleported="true"
+                :preview-teleported="true"
                 loading="lazy"
               />
             </template>
@@ -189,7 +202,7 @@ const revoke = (id: any) => {
                 :src="scope.row.receiveImg"
                 :preview-src-list="[scope.row.receiveImg]"
                 fit="contain"
-                preview-teleported="true"
+                :preview-teleported="true"
                 loading="lazy"
               />
             </template>

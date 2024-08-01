@@ -59,7 +59,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/exhibition/manage',
+        path: 'manage',
         name: 'Manage',
         component: () => import('@/views/Exhibition/Manage.vue'),
         meta: {
@@ -69,7 +69,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/exhibition/add',
+        path: 'add',
         name: 'ExhibitionAdd',
         component: () => import('@/views/Exhibition/Add.vue'),
         meta: {
@@ -79,7 +79,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/exhibition/edit',
+        path: 'edit',
         name: 'ExhibitionEdit',
         component: () => import('@/views/Exhibition/Add.vue'),
         meta: {
@@ -89,7 +89,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/exhibition/enroll',
+        path: 'enroll',
         name: 'ExhibitionEnroll',
         component: () => import('@/views/Exhibition/Enroll.vue'),
         meta: {
@@ -132,7 +132,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'create_order',
+        path: 'create/order',
         name: 'BoothCreateOrder',
         component: () => import('@/views/Booth/CreateOrder.vue'),
         meta: {
@@ -155,7 +155,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/goods/manage',
+        path: 'manage',
         name: 'GoodsManage',
         component: () => import('@/views/Goods/Manage.vue'),
         meta: {
@@ -165,7 +165,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/goods/reserve',
+        path: 'reserve',
         name: 'GoodsReserve',
         component: () => import('@/views/Goods/Reserve.vue'),
         meta: {
@@ -188,7 +188,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/market/clues',
+        path: 'clues',
         name: 'Clues',
         component: () => import('@/views/Market/Clues.vue'),
         meta: {
@@ -197,7 +197,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/market/clues/add',
+        path: 'clues/add',
         name: 'CluesAdd',
         component: () => import('@/views/Market/CluesAdd.vue'),
         meta: {
@@ -206,7 +206,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/market/clues/edit',
+        path: 'clues/edit',
         name: 'CluesEdit',
         component: () => import('@/views/Market/CluesAdd.vue'),
         meta: {
@@ -215,7 +215,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/market/clues/import',
+        path: 'clues/import',
         name: 'CluesImport',
         component: () => import('@/views/Market/CluesImport.vue'),
         meta: {
@@ -224,7 +224,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/market/clues/info',
+        path: 'clues/info',
         name: 'CluesInfo',
         component: () => import('@/views/Market/CluesInfo.vue'),
         meta: {
@@ -233,7 +233,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/market/will',
+        path: 'will',
         name: 'Will',
         component: () => import('@/views/Market/Will.vue'),
         meta: {
@@ -243,7 +243,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/market/shared',
+        path: 'shared',
         name: 'Shared',
         component: () => import('@/views/Market/Shared.vue'),
         meta: {
@@ -253,7 +253,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/market/historical',
+        path: 'historical',
         name: 'Historical',
         component: () => import('@/views/Market/Historical.vue'),
         meta: {
@@ -276,7 +276,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/order/booth',
+        path: 'booth',
         name: 'OrderBooth',
         component: () => import('@/views/Order/Booth.vue'),
         meta: {
@@ -286,7 +286,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/order/goods',
+        path: 'goods',
         name: 'OrderGoods',
         component: () => import('@/views/Order/Goods.vue'),
         meta: {
@@ -329,7 +329,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/contract/manage',
+        path: 'manage',
         name: 'ContractManage',
         component: () => import('@/views/Contract/Manage.vue'),
         meta: {
@@ -382,7 +382,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/finances/order',
+        path: 'order',
         name: 'FinancesOrder',
         component: () => import('@/views/Finances/Order.vue'),
         meta: {
@@ -392,7 +392,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/finances/payment',
+        path: 'payment',
         name: 'FinancesPayment',
         component: () => import('@/views/Finances/Payment.vue'),
         meta: {
@@ -402,7 +402,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/finances/invoices',
+        path: 'invoices',
         name: 'FinancesInvoices',
         component: () => import('@/views/Finances/Invoices.vue'),
         meta: {
@@ -412,7 +412,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/finances/recording',
+        path: 'recording',
         name: 'FinancesRecording',
         component: () => import('@/views/Finances/Recording.vue'),
         meta: {
@@ -422,7 +422,17 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/finances/PaymentDetail',
+        path: 'order/detail',
+        name: 'FinancesOrderDetail',
+        component: () => import('@/views/Order/BoothDetail.vue'),
+        meta: {
+          isMenu: false,
+          title: '订单详情',
+          // icon: 'list'
+        }
+      },
+      {
+        path: 'payment/detail',
         name: 'FinancesPaymentDetail',
         component: () => import('@/views/Finances/PaymentDetail.vue'),
         meta: {
@@ -445,7 +455,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/baoguan/consult',
+        path: 'consult',
         name: 'BaoguanConsult',
         component: () => import('@/views/Baoguan/Consult.vue'),
         meta: {
@@ -468,7 +478,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/settings/custom',
+        path: 'custom',
         name: 'Custom',
         component: () => import('@/views/Settings/Custom.vue'),
         meta: {
@@ -478,7 +488,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/settings/custom/field',
+        path: 'custom/field',
         name: 'CustomField',
         component: () => import('@/views/Settings/FieldDetail.vue'),
         meta: {
@@ -488,7 +498,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/settings/org',
+        path: 'org',
         name: 'Org',
         component: () => import('@/views/Settings/Org.vue'),
         meta: {
@@ -498,7 +508,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/settings/role',
+        path: 'role',
         name: 'Role',
         component: () => import('@/views/Settings/Role.vue'),
         meta: {
@@ -508,7 +518,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/settings/exhibitors',
+        path: 'exhibitors',
         name: 'Exhibitors',
         component: () => import('@/views/Settings/Exhibitors.vue'),
         meta: {
@@ -518,7 +528,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/settings/exhibitors/detail',
+        path: 'exhibitors/detail',
         name: 'ExhibitorsDetail',
         component: () => import('@/views/Settings/ExhibitorsDetail.vue'),
         meta: {
@@ -541,7 +551,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: '/hall/layout',
+        path: 'layout',
         name: 'HallLayout',
         component: () => import('@/views/Hall/Layout.vue'),
         meta: {
@@ -551,7 +561,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
-        path: '/hall/reserve',
+        path: 'reserve',
         name: 'GoodsReserve',
         component: () => import('@/views/Goods/Reserve.vue'),
         meta: {

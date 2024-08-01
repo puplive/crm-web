@@ -10,7 +10,7 @@
         <el-table-column prop="name" label="名称">
           <template #default="scope: any">
             <el-button v-if="scope.row.type != 1 && scope.row.type != 2" type="primary" link
-              @click="$router.push({ path: '/settings/custom/field', query: { id: scope.row.id, title: scope.row.name, type: scope.row.type } })">{{
+              @click="$router.push({ name: 'CustomField', query: { id: scope.row.id, title: scope.row.name, type: scope.row.type } })">{{
                 scope.row.name }}</el-button>
             <template v-else>{{ scope.row.name }}</template>
           </template>

@@ -35,7 +35,7 @@
                 :src="scope.row.payImg"
                 :preview-src-list="[scope.row.payImg]"
                 fit="contain"
-                preview-teleported="true"
+                :preview-teleported="true"
                 loading="lazy"
               />
             </template>
@@ -48,7 +48,7 @@
                 :src="scope.row.receiveImg"
                 :preview-src-list="[scope.row.receiveImg]"
                 fit="contain"
-                preview-teleported="true"
+                :preview-teleported="true"
                 loading="lazy"
               />
             </template>
