@@ -122,8 +122,8 @@
   const handleEdit = async (row: any) => {
     isEdit.value = true
     addShow.value = true
-    await nextTick()
-    formRef.value.resetFields()
+    // await nextTick()
+    // formRef.value.resetFields()
     
     addForm.hallCode = row.hallCode
     addForm.positionCode = row.positionCode
@@ -134,6 +134,7 @@
     addForm.width = row.width
     addForm.remark = row.remark
     addForm.exhibitor = row.exhibitor
+    addForm.exhibitorId = row.exhibitorId
 
     addForm.id = row.id
     
@@ -172,8 +173,8 @@
     isEdit.value = false
     addShow.value = true
     addForm.remark = ''
-    await nextTick()
-    formRef.value.resetFields()
+    // await nextTick()
+    // formRef.value.resetFields()
   }
   const addSub = () => {
     formRef.value.validate((valid: any) => {
@@ -319,7 +320,7 @@
         <el-table-column prop="width" label="宽" />
         <el-table-column prop="remark" label="备注" />
         <el-table-column prop="exhibitor" label="参展商" />
-        <el-table-column prop="createTime" label="创建时间" min-width="120" />
+        <el-table-column prop="time" label="创建时间" min-width="120" />
         <el-table-column fixed="right" label="操作" width="150">
           <template #default="scope">
             <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>
@@ -333,7 +334,7 @@
     </div>
   </div>
 
-  <el-dialog v-model="addShow" :title="isEdit?'编辑':'新增展位信息'" width="500" draggable>
+  <el-dialog v-model="addShow" :title="isEdit?'编辑':'新增展位信息'" width="500" draggable @close="() => formRef.resetFields()">
     <el-form ref="formRef" :model="addForm" :rules="rules" label-width="auto" label-position="left">
       <el-form-item label="展馆号" prop="hallCode">
         <!-- <el-input v-model="addForm.hallCode" autocomplete="off" /> -->

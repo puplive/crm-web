@@ -161,7 +161,7 @@
             <el-button link type="primary" @click="$router.push({ name: 'FinancesOrderDetail', query: { id: scope.row.id } })">详情</el-button>
             <!-- <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.payStatus !== 0">申请发票</el-button> -->
             <template v-if="scope.row.orderStatus === 1">
-              <el-button link type="primary" @click="$router.push({ name: 'FinancesRecording', query: { id: scope.row.id } })">录入到款</el-button>
+              <el-button :disabled="scope.row.contractStatus === 0" link type="primary" @click="$router.push({ name: 'FinancesRecording', query: { id: scope.row.id } })">录入到款</el-button>
               <el-button link type="danger" @click="revoke(scope.row.id)">撤销</el-button>
             </template>
             <el-button link disabled v-else>已撤销</el-button>
