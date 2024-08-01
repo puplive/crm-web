@@ -195,7 +195,7 @@ const revoke = (id: any) => {
             </template>
           </el-table-column>
           <el-table-column prop="invoiceStatus" label="发票状态" min-width="120">
-            <template #default="scope">{{ {0:'未申请',1:'待开票',2:'部分开票',3:'已开票'}[scope.row.invoiceStatus as number] }}</template>
+            <template #default="scope">{{ {0:'未申请',1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200" v-if="d.orderStatus === 1">

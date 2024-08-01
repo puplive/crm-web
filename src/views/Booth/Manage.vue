@@ -223,14 +223,16 @@
   const _import: any = reactive({
     show: false,
     loading: false,
+    list: [],
     set: () => {
-      // uploadRef.value!.clearFiles()
       _import.show = true
-      console.log(uploadRef.value)
 
     },
     sub: () => {
-      _import.loading = true
+      if(_import.list.length === 0) {
+        ElMessage.error('请选择文件')
+        return
+      }
       uploadRef.value!.submit()
     },
     dowModel: () => {
@@ -265,7 +267,7 @@
   }
 
   const uploadFile = (file: any) => {
-    // console.log(file)
+    _import.loading = true
     const formData = new FormData()
     formData.append('file', file.file)
     formData.append('exhibitionId', id)
@@ -295,7 +297,7 @@
 </script>
 <template>
   <div class="s-flex-col" style="height: 100%">
-    <TableSearch :data="searchData" @search="search"/>
+    <!-- <TableSearch :data="searchData" @search="search"/> -->
     <div class="s-table-operations">
       <el-button size="small" @click="handleAdd">新增</el-button>
       <el-button size="small" @click="_import.set()">导入</el-button>
@@ -393,16 +395,18 @@
     width="500" 
     draggable
     @close="() => { 
+      _import.loading = false
       uploadRef!.clearFiles()
     }">
     <el-button type="" @click="_import.dowModel" style="margin-bottom: 20px;">下载导入模板</el-button>
     <el-upload
         ref="uploadRef"
+        v-model:file-list="_import.list"
         :before-upload="beforeUpload"
         :http-request="uploadFile"
         accept=".xls,.xlsx"
         :on-exceed="handleExceed"
-        limit="1"
+        :limit="1"
         :multiple="false"
         :auto-upload="false">
         <el-button type="primary" >选择文件</el-button>

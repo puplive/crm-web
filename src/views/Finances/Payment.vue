@@ -81,7 +81,7 @@
 <template>
   <div class="s-flex-col" style="height: 100%;">
     <div></div>
-    <TableSearch :data="searchData" @search="search"/>
+    <TableSearch :data="searchData" @search="search" :type="'payment'"/>
     <div class="s-table-operations">
       <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button> -->
       <!-- <el-button size="small" @click="Import">导入</el-button> -->

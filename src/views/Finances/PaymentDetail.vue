@@ -54,7 +54,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="invoiceStatus" label="发票状态" min-width="120">
-            <template #default="scope">{{ {0:'未申请',1:'待开票',2:'部分开票',3:'已开票'}[scope.row.invoiceStatus as number] }}</template>
+            <template #default="scope">{{ {0:'未申请',1:'待开票',2:'已开票'}[scope.row.invoiceStatus as number] }}</template>
           </el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
@@ -71,7 +71,7 @@
 
       <div class="title">发票详情</div>
       <div class="table">
-        <el-table :data="[d.invoice]" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
+        <el-table :data="d.invoice? [d.invoice] : []" border table-layout="fixed" show-overflow-tooltip header-row-class-name="s-table-header">
           <el-table-column prop="code" label="编号"></el-table-column>
           <el-table-column prop="invoiceTitle" label="发票抬头" min-width="120"></el-table-column>
           <el-table-column prop="socialCode" label="社会信用代码" min-width="120"></el-table-column>

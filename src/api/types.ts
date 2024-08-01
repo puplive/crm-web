@@ -75,6 +75,17 @@ export const types: any = {
 
 }
 
+export const paymentTypes = {
+  invoiceStatus: {
+    label: '发票状态',
+    type: 3,
+    options: [
+      { value: 0, label: '未申请' },
+      { value: 1, label: '待开票' },
+      { value: 2, label: '已开票' },
+    ]
+  },
+}
 export const invoiceTypes = {
   payType: {
     label: '付款方式',
