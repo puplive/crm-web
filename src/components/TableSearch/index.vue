@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
 import type { FormInstance } from 'element-plus'
-import {types, invoiceTypes} from '@/api/types'
+import {types, invoiceTypes, paymentTypes} from '@/api/types'
 import { delNullProperty } from '@/utils/tool'
 
 const refForm = ref<FormInstance>()
@@ -26,8 +26,14 @@ const formData:any = reactive({})
 
 const options = computed(() => {
   return (field: string)=>{
-    if(props.type === 'invoice' && (field === 'payType' || field === 'invoiceStatus')){
-      return invoiceTypes[field].options
+    if(props.type === 'invoice'){
+      if(field === 'payType' || field === 'invoiceStatus'){
+        return invoiceTypes[field].options
+      }
+    }else if(props.type === 'payment'){
+      if(field === 'invoiceStatus'){
+        return paymentTypes[field].options
+      }
     }
     return types[field].options
   }
