@@ -9,10 +9,11 @@ export const exhibitorList = (): Promise<any> => {
     method: "get",
   });
 }
-export const getExhibitor = (): Promise<any> => {
+export const getExhibitor = (params: any): Promise<any> => {
   return request({
     url: prefix + "/exhibitor/account/getExhibitor",
     method: "get",
+    params,
   });
 }
 

@@ -106,7 +106,7 @@ const getZh = () => {
 }
 
 const getZs = () => {
-  getExhibitor().then((res: any) => {
+  getExhibitor({ exhibitionId: exhibitionId.value }).then((res: any) => {
     if(res.code === 0){
       zs.value = res.data
     }
@@ -198,6 +198,8 @@ const Sub = () => {
 watch(() => exhibitionId.value , (val) => {
     hallCode.value = ''
     positionCode.value = ''
+    exhibitorId.value = ''
+    getZs()
     getZg()
     getZw()
     getMaterial()

@@ -97,7 +97,7 @@
   }
 
   let exhibitorOptions: any = ref([])
-  getExhibitor().then((res: any) => {
+  getExhibitor({ exhibitionId: id }).then((res: any) => {
     if (res.code === 0) {
       exhibitorOptions.value = res.data
     }
