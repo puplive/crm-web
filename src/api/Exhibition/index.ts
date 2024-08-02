@@ -70,10 +70,9 @@ export const getHallImg = (params: any): Promise<any> => {
   });
 }
 
-export const getSearchField = (params: any): Promise<any> => {
+export const getSearchField = (): Promise<any> => {
   return request({
     url: prefix + "/exhibition/info/getSearchField",
     method: "get",
-    params,
   });
 }

@@ -180,10 +180,13 @@ getList()
 <template>
   <div class="s-flex-col" style="height: 100%;">
     <div class="" style="margin-bottom: 10px;">
-      <el-dropdown @command="handleCommand" style="outline: none;">
-        <span class="el-dropdown-link">
+      <el-dropdown
+        @command="handleCommand" 
+        max-height="80vh"
+        placement="bottom-start">
+        <el-button text>
           {{ zh_name }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
-        </span>
+        </el-button>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item v-for="(item, i) in exhibitionData" :key="i" :command="item">{{ item.exhibitionName

@@ -54,7 +54,7 @@
     <el-form ref="moveFormRef" :model="moveForm" label-width="auto" label-position="left">
       <el-form-item label="">是否将选中的销售线索转移？</el-form-item>
       <el-form-item label="销售线索所有人" prop="userId" :rules="[{ required: true, message: '请选择销售线索所有人' }]">
-        <el-select v-model="moveForm.userId" placeholder="">
+        <el-select v-model="moveForm.userId" placeholder="" filterable>
           <el-option v-for="item in SponsorUser" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>

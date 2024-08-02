@@ -4,9 +4,9 @@ import { ref } from 'vue'
 import TableSearch from '@/components/TableSearch/index.vue'
 import { exhibitionList, setStatus, exhibitionDelete, getSearchField } from "@/api/Exhibition"; 
 // const Edit = ref()  
-const searchForm = ref({})
-const searchData = ref([])
-  const list = ref([])  
+const searchForm: any = ref({})
+const searchData: any = ref([])
+  const list: any = ref([])  
   const getList = () => {
     exhibitionList({...searchForm.value}).then(res => {
       if (res.code === 0) {
@@ -27,7 +27,7 @@ const searchData = ref([])
     }
   })
 
-  const onChange = (d) => {
+  const onChange = (d: any) => {
     setStatus({id: d.id, status: d.status}).then(res => {
       if (res.code === 0) {
         ElMessage.success('修改成功')
@@ -38,7 +38,7 @@ const searchData = ref([])
     })
   }
 
-  const onDel = (id) => {
+  const onDel = (id: any) => {
     ElMessageBox.confirm('此操作将永久删除该展会, 是否继续?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
@@ -47,7 +47,7 @@ const searchData = ref([])
       exhibitionDelete({id}).then(res => {
         if (res.code === 0) {
           ElMessage.success('删除成功')
-          list.value = list.value.filter(item => item.id!== id)
+          list.value = list.value.filter((item: any) => item.id!== id)
         }else{
           ElMessage.error('删除失败')
         }
@@ -94,8 +94,8 @@ const searchData = ref([])
             <el-button size="small" type="info" plain>关闭</el-button>
           </el-button-group> -->
           <el-button-group style="margin-left: 10px;">
-            <el-button size="small" type="primary" text @click="$router.push({path: `/exhibition/edit`, query: {id: item.id}})"><el-icon><Edit /></el-icon></el-button>
-            <el-button size="small" type="danger" text @click="onDel(item.id)"><el-icon><Delete /></el-icon></el-button>
+            <el-button :disabled="item.status === 1" type="primary" text @click="$router.push({path: `/exhibition/edit`, query: {id: item.id}})" icon="Edit" style="font-size: 18px;"></el-button>
+            <el-button  type="danger" text @click="onDel(item.id)" icon="Delete" style="font-size: 18px;"></el-button>
           </el-button-group>
         </div>
       </div>
