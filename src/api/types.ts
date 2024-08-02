@@ -50,7 +50,8 @@ export const types: any = {
     options: [
       { value: 0, label: '未签订' },
       { value: 1, label: '已签订' },
-      { value: 2, label: '已回执' },
+      { value: 2, label: '已回执(电子)' },
+      { value: 3, label: '已回执(纸质)' }
     ]
   },
   invoiceType: {

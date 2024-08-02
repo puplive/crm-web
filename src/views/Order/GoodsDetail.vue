@@ -80,7 +80,7 @@ const revoke = (id: any) => {
           <el-table-column prop="unitPrice" label="单价"></el-table-column>
           <el-table-column prop="orderPrice" label="订单金额" min-width="120"></el-table-column>
           <el-table-column prop="contractStatus" label="合同状态" min-width="120">
-            <template #default="scope">{{ ['未签约', '已签约', '已回执'][scope.row.contractStatus] }}</template>
+            <template #default="scope">{{ ['未签约', '已签约', '已回执(电子)','已回执(纸质)'][scope.row.contractStatus] }}</template>
           </el-table-column>
           <el-table-column prop="payStatus" label="付款状态" min-width="120">
             <template #default="scope">{{ ['未付款', '部分付款', '已付款'][scope.row.payStatus] }}</template>

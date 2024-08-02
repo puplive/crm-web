@@ -1,14 +1,17 @@
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   import { getMenu } from '@/api/user'
-  // import { asyncRouterMap } from '@/router/index'
-  // const routers: any = ref([]);
+  import { userStore } from "@/stores/user";
+ 
+  const activeIndex = ref(userStore().MENU_ACTIVE)
+  console.log(activeIndex.value)
   const menu: any = ref([]);
   getMenu().then(res => {
     menu.value = res.data;
   })
-  // routers.value = asyncRouterMap
-  // console.log(routers)
+  const handleSelect = (key, keyPath) => {
+    // console.log(key, keyPath);
+  }
   const handleOpen = (key, keyPath) => {
     // console.log(key, keyPath);
   }
@@ -162,12 +165,13 @@
   <!-- <el-aside width="200px"> -->
     <el-scrollbar>
       <el-menu
-        router
+        :router="true"
         active-text-color="#ffd04b"
         background-color="#393d49"
         class="el-menu-vertical-demo"
-        default-active="2"
+        :default-active="activeIndex"
         text-color="#fff"
+        @select="handleSelect"
         @open="handleOpen"
         @close="handleClose">
         <template v-for="(item, index) in menu" :key="index">

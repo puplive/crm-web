@@ -124,7 +124,7 @@ const revoke = (id: any) => {
         <span>订单编号：{{ d.orderCode }}</span>
         <span>企业名称：{{ d.exhibitorName }}</span>
         <span>参展品牌：{{ d.brand.join('，') }}</span>
-        <span>订单状态：{{ d.orderStatus }}</span>
+        <span>订单状态：{{ {0:'已撤销',1:'已完成'}[d.orderStatus as number] }}</span>
         <span>订单生成时间：{{ d.orderTime }}</span>
         <span>下单人：{{ d.authUser }}</span>
         <span>对应销售：{{ d.clueUser }}</span>
@@ -145,9 +145,11 @@ const revoke = (id: any) => {
           <el-table-column prop="costPrice" label="订单原价" min-width="120"></el-table-column>
           <el-table-column prop="discountPrice" label="优惠(折扣)金额" min-width="120"></el-table-column>
           <el-table-column prop="addPrice" label="加收金额" min-width="120"></el-table-column>
-          <el-table-column prop="pendingPrice" label="待支付金额" min-width="120"></el-table-column>
+          <el-table-column prop="payType" label="付款方式" min-width="120">
+            <template #default="scope">{{ {1:'全款',2:'分期'}[scope.row.payType as number] }}</template>
+          </el-table-column>
           <el-table-column prop="contractStatus" label="合同状态" min-width="120">
-            <template #default="scope">{{ ['未签约', '已签约', '已回执'][scope.row.contractStatus] }}</template>
+            <template #default="scope">{{ ['未签约', '已签约', '已回执(电子)','已回执(纸质)'][scope.row.contractStatus] }}</template>
           </el-table-column>
           <el-table-column prop="payStatus" label="付款状态" min-width="120">
             <template #default="scope">{{ ['未付款', '部分付款', '已付款'][scope.row.payStatus] }}</template>

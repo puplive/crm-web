@@ -73,12 +73,6 @@
     })
   }
 
-  // api.getSearchField().then((res) => {
-  //   if(res.code === 0) {
-  //     searchData.value = res.data
-  //   }
-  // })
-
   const revoke = (id: any) => {
     ElMessageBox.confirm('是否确认要撤销订单?', '提示', {
       confirmButtonText: '确定',
@@ -99,7 +93,7 @@
     })
   }
   
-  boothApi.getSearchField().then((res: any) => {
+  api.order.getSearchField().then((res: any) => {
     if (res.code === 0) {
       searchData.value = res.data
     }
@@ -133,7 +127,7 @@
         <el-table-column prop="orderPrice" label="订单金额" min-width="120" />
         <el-table-column prop="contractStatus" label="合同状态" min-width="120">
           <template #default="scope">
-            {{ ['未签订','已签订','已回执'][scope.row.contractStatus] }}
+            {{ ['未签订','已签订','已回执(电子)','已回执(纸质)'][scope.row.contractStatus] }}
           </template>
         </el-table-column>
         <el-table-column prop="contractReceipt" label="合同附件" min-width="120">

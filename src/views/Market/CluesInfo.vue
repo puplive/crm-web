@@ -167,7 +167,6 @@
               <el-table-column prop="unknownPrice" label="未收款" />
               <el-table-column prop="contractStatus" label="合同状态" min-width="120">
                 <template #default="scope"> 
-                  <!-- 合同状态，0撤销，1已完成 -->
                   {{ {0: '撤销', 1: '已完成'}[scope.row.contractStatus as number] }}
                 </template>
               </el-table-column>

@@ -282,7 +282,7 @@
             <el-table-column prop="role" label="系统角色" min-width="120"/>
             <el-table-column prop="phone" label="手机" />
             <el-table-column prop="email" label="邮箱" />
-            <el-table-column prop="" label="密码" />
+            <el-table-column prop="password" label="密码" />
             <el-table-column prop="creatTime" label="添加时间" min-width="120" />
             <el-table-column prop="" label="登录时间" min-width="120" />
             <el-table-column label="操作" fixed="right" width="150">

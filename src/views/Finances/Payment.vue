@@ -82,12 +82,9 @@
   <div class="s-flex-col" style="height: 100%;">
     <div></div>
     <TableSearch :data="searchData" @search="search" :type="'payment'"/>
-    <div class="s-table-operations">
-      <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button> -->
-      <!-- <el-button size="small" @click="Import">导入</el-button> -->
-      <!-- <el-button size="small" @click="Export">导出</el-button> -->
+    <!-- <div class="s-table-operations">
       <el-button size="small" @click="">合并开票</el-button>
-    </div>
+    </div> -->
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
         height="100%" show-overflow-tooltip

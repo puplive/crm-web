@@ -54,8 +54,8 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     name: 'Exhibition',
     meta: {
       title: '展会管理',
-      icon: 'dashboard',
-      isMenu: true,
+      icon: '',
+      activeMenu: '/exhibition',
     },
     children: [
       {
@@ -63,7 +63,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Manage',
         component: () => import('@/views/Exhibition/Manage.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/exhibition',
           title: '展会管理',
           // icon: 'list'
         }
@@ -73,7 +73,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ExhibitionAdd',
         component: () => import('@/views/Exhibition/Add.vue'),
         meta: {
-          isMenu: false,
           title: '新增展会',
           // icon: 'list'
         }
@@ -83,7 +82,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ExhibitionEdit',
         component: () => import('@/views/Exhibition/Add.vue'),
         meta: {
-          isMenu: false,
           title: '编辑展会',
           // icon: 'list'
         }
@@ -93,7 +91,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ExhibitionEnroll',
         component: () => import('@/views/Exhibition/Enroll.vue'),
         meta: {
-          isMenu: false,
+          activeMenu: '/exhibition/enroll',
           title: '展会报名',
           // icon: 'list'
         }
@@ -106,7 +104,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     redirect: '/booth/manage',
     name: 'Booth',
     meta: {
-      isMenu: false,
+      activeMenu: '/exhibition',
       title: '展位管理',
       // icon: 'dashboard'
     },
@@ -116,7 +114,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'BoothManage',
         component: () => import('@/views/Booth/Manage.vue'),
         meta: {
-          isMenu: false,
           title: '展位管理',
           // icon: 'list'
         }
@@ -126,7 +123,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'BoothReserve',
         component: () => import('@/views/Booth/Reserve.vue'),
         meta: {
-          isMenu: false,
           title: '展位预定',
           // icon: 'list'
         }
@@ -136,7 +132,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'BoothCreateOrder',
         component: () => import('@/views/Booth/CreateOrder.vue'),
         meta: {
-          isMenu: false,
           title: '展位下单',
           // icon: 'list'
         }
@@ -149,7 +144,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     redirect: '/goods/manage',
     name: 'Goods',
     meta: {
-      isMenu: false,
       title: '物料',
       icon: 'dashboard'
     },
@@ -159,7 +153,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'GoodsManage',
         component: () => import('@/views/Goods/Manage.vue'),
         meta: {
-          isMenu: false,
           title: '物料设置',
           // icon: 'list'
         }
@@ -169,21 +162,10 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'GoodsReserve',
         component: () => import('@/views/Goods/Reserve.vue'),
         meta: {
-          isMenu: false,
           title: '物料预定',
           // icon: 'list'
         }
       }
-      // {
-      //   path: 'reserve',
-      //   name: 'GoodsReserve',
-      //   component: () => import('@/views/Goods/Reserve.vue'),
-      //   meta: {
-      //     isMenu: true,
-      //     title: '物料预定',
-      //     // icon: 'list'
-      //   }
-      // }
     ]
   },
   {
@@ -202,7 +184,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Clues',
         component: () => import('@/views/Market/Clues.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/market/clues',
           title: '销售线索',
         }
       },
@@ -211,7 +193,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'CluesAdd',
         component: () => import('@/views/Market/CluesAdd.vue'),
         meta: {
-          isMenu: false,
           title: '新增线索',
         }
       },
@@ -220,7 +201,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'CluesEdit',
         component: () => import('@/views/Market/CluesAdd.vue'),
         meta: {
-          isMenu: false,
           title: '编辑线索',
         }
       },
@@ -229,7 +209,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'CluesImport',
         component: () => import('@/views/Market/CluesImport.vue'),
         meta: {
-          isMenu: false,
           title: '线索导入',
         }
       },
@@ -238,7 +217,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'CluesInfo',
         component: () => import('@/views/Market/CluesInfo.vue'),
         meta: {
-          isMenu: false,
           title: '公司信息',
         }
       },
@@ -247,7 +225,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Will',
         component: () => import('@/views/Market/Will.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/market/will',
           title: '意向展商',
           // icon: 'list'
         }
@@ -257,7 +235,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Shared',
         component: () => import('@/views/Market/Shared.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/market/shared',
           title: '线索公海',
           // icon: 'list'
         }
@@ -267,7 +245,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Historical',
         component: () => import('@/views/Market/Historical.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/market/historical',
           title: '历史企业',
           // icon: 'list'
         }
@@ -280,7 +258,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     redirect: '/order/booth',
     name: 'Order',
     meta: {
-      isMenu: true,
+      activeMenu: '/order/booth',
       title: '订单管理',
       icon: 'dashboard'
     },
@@ -290,7 +268,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'OrderBooth',
         component: () => import('@/views/Order/Booth.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/order/booth',
           title: '展位订单',
           // icon: 'list'
         }
@@ -300,7 +278,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'OrderGoods',
         component: () => import('@/views/Order/Goods.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/order/goods',
           title: '物料订单',
           // icon: 'list'
         }
@@ -310,7 +288,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'OrderBoothDetail',
         component: () => import('@/views/Order/BoothDetail.vue'),
         meta: {
-          isMenu: false,
           title: '展位订单详情',
           // icon: 'list'
         }
@@ -320,7 +297,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'OrderGoodsDetail',
         component: () => import('@/views/Order/GoodsDetail.vue'),
         meta: {
-          isMenu: false,
           title: '物料订单详情',
           // icon: 'list'
         }
@@ -343,7 +319,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ContractManage',
         component: () => import('@/views/Contract/Manage.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/contract/manage',
           title: '合同模板',
           // icon: 'list'
         }
@@ -353,7 +329,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ContractTemplates',
         component: () => import('@/views/Contract/Templates.vue'),
         meta: {
-          isMenu: false,
           title: '合同模板',
           // icon: 'list'
         }
@@ -363,7 +338,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ContractConclude',
         component: () => import('@/views/Contract/Conclude.vue'),
         meta: {
-          isMenu: false,
           title: '签订合同',
           // icon: 'list'
         }
@@ -373,7 +347,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ContractDetail',
         component: () => import('@/views/Contract/Conclude.vue'),
         meta: {
-          isMenu: false,
           title: '合同详情',
           // icon: 'list'
         }
@@ -386,7 +359,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     redirect: '/finances/contract',
     name: 'Finances',
     meta: {
-      isMenu: true,
+      activeMenu: '/finances/order',
       title: '财务管理',
       icon: 'dashboard'
     },
@@ -396,7 +369,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'FinancesOrder',
         component: () => import('@/views/Finances/Order.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/finances/order',
           title: '订单管理',
           // icon: 'list'
         }
@@ -406,7 +379,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'FinancesPayment',
         component: () => import('@/views/Finances/Payment.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/finances/payment',
           title: '到款信息',
           // icon: 'list'
         }
@@ -416,7 +389,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'FinancesInvoices',
         component: () => import('@/views/Finances/Invoices.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/finances/invoices',
           title: '发票管理',
           // icon: 'list'
         }
@@ -426,7 +399,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'FinancesRecording',
         component: () => import('@/views/Finances/Recording.vue'),
         meta: {
-          isMenu: false,
           title: '录入到款',
           // icon: 'list'
         }
@@ -436,7 +408,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'FinancesOrderDetail',
         component: () => import('@/views/Order/BoothDetail.vue'),
         meta: {
-          isMenu: false,
           title: '订单详情',
           // icon: 'list'
         }
@@ -446,7 +417,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'FinancesPaymentDetail',
         component: () => import('@/views/Finances/PaymentDetail.vue'),
         meta: {
-          isMenu: false,
           title: '到款详情',
           // icon: 'list'
         }
@@ -469,7 +439,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'BaoguanConsult',
         component: () => import('@/views/Baoguan/Consult.vue'),
         meta: {
-          isMenu: false,
           title: '报馆查询',
           // icon: 'list'
         }
@@ -482,7 +451,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
     redirect: '/settings/custom',
     name: 'Settings',
     meta: {
-      isMenu: true,
+      activeMenu: '/settings/custom',
       title: '设置',
       icon: 'dashboard'
     },
@@ -492,7 +461,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Custom',
         component: () => import('@/views/Settings/Custom.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/settings/custom',
           title: '自定义字段',
           // icon: 'list'
         }
@@ -502,8 +471,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'CustomField',
         component: () => import('@/views/Settings/FieldDetail.vue'),
         meta: {
-          // isMenu: true,
-          title: '',
+          title: '自定义字段',
           // icon: 'list'
         }
       },
@@ -512,7 +480,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Org',
         component: () => import('@/views/Settings/Org.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/settings/org',
           title: '公司架构',
           // icon: 'list'
         }
@@ -522,7 +490,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Role',
         component: () => import('@/views/Settings/Role.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/settings/role',
           title: '角色权限',
           // icon: 'list'
         }
@@ -532,7 +500,7 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'Exhibitors',
         component: () => import('@/views/Settings/Exhibitors.vue'),
         meta: {
-          isMenu: true,
+          activeMenu: '/settings/exhibitors',
           title: '参展商账号管理',
           // icon: 'list'
         }
@@ -542,7 +510,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'ExhibitorsDetail',
         component: () => import('@/views/Settings/ExhibitorsDetail.vue'),
         meta: {
-          isMenu: false,
           title: '参展商详情',
           // icon: 'list'
         }
@@ -565,7 +532,6 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         name: 'HallLayout',
         component: () => import('@/views/Hall/Layout.vue'),
         meta: {
-          isMenu: false,
           title: '展馆示意图',
           // icon: 'list'
         }
@@ -580,7 +546,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  // console.log(to)
   // 页面标题
   document.title = to.meta.title || '招展管理系统';
 
@@ -588,7 +553,7 @@ router.beforeEach((to, from) => {
   const _userStore = userStore()
   const token = _userStore ? _userStore.TOKEN : ''
   if (token) {
-
+    _userStore.SET_MENU_ACTIVE(to.meta.activeMenu)
   } else {
     // token不存在，跳转到登录页面
     if (to.name !== "Login" && to.name !== "Register") {

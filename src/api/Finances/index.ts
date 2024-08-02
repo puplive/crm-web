@@ -22,6 +22,12 @@ export const order = {
       params,
     });
   },
+  getSearchField: (): Promise<any> => {
+    return request({
+      url: prefix + "/finance/order/getSearchField",
+      method: "get",
+    });
+  },
 }
 export const payment = {
   getList: (params: any): Promise<any> => {

@@ -257,7 +257,7 @@
         <el-table-column prop="receivedPrice" label="到款金额" min-width="120" />
         <el-table-column prop="contractStatus" label="合同状态" min-width="120">
           <template #default="scope">
-            {{ { 0:'未签订',1:'已签订',2:'已回执' }[scope.row.contractStatus as number] }}
+            {{ { 0:'未签订',1:'已签订',2:'已回执(电子)',3:'已回执(纸质)' }[scope.row.contractStatus as number] }}
           </template>
         </el-table-column>
         <el-table-column prop="invoiceStatus" label="发票状态" min-width="120">

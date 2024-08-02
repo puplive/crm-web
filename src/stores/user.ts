@@ -2,12 +2,13 @@
 import { defineStore } from 'pinia'
 // import { useRouter, useRoute } from 'vue-router'
 
-export const userStore = defineStore('user',{
+export const userStore = defineStore('user', {
   persist: true,
   state: () => ({
     TOKEN: '',
     USER_INFO: {},
     MENU: [],
+    MENU_ACTIVE: '',
   }),
   getters: {
     // double: (state) => state.count * 2,
@@ -23,6 +24,10 @@ export const userStore = defineStore('user',{
     },
     SET_MENU(data: any) {
       this.MENU = data
+    },
+    SET_MENU_ACTIVE(data: any) {
+
+      this.MENU_ACTIVE = data || this.MENU_ACTIVE || ''
     },
     SET_USER_INFO(data: any) {
       this.USER_INFO = data
