@@ -7,6 +7,7 @@ import axios, {
 } from "axios";
 import { ElMessage } from "element-plus";
 import { userStore } from "@/stores/user";
+import { delNullProperty } from '@/utils/tool'
 
 //第一步:利用axios对象的create方法,去创建axios实例(其他的配置:基础路径、超时的时间)
 const request: AxiosInstance = axios.create({
@@ -25,6 +26,11 @@ request.interceptors.request.use(
     const _token = _userStore ? _userStore.TOKEN : ''
     config.headers["Authorization"] = _token;
 
+    if (config.params) {
+      let _params = JSON.parse(JSON.stringify(config.params))
+      delNullProperty(_params)
+      config.params = _params
+    }
     return config;
   },
   (error: any) => {

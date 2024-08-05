@@ -7,6 +7,17 @@
   import EditInvoice from './components/EditInvoice.vue'
   import api from '@/api/Finances'
 
+  import ExhibitionChange from '@/views/Market/components/ExhibitionChange.vue'
+  import { userStore } from "@/stores/user";
+  const _store = userStore()
+  const exhibitionInfo: any = ref(_store.EXHIBITION_INFO)
+  watch(() => _store.EXHIBITION_INFO,(val:any, oldVal)=>{
+    if(val.id!== oldVal.id){
+      exhibitionInfo.value = val
+      getList()
+    }
+  }, {deep: true})
+
   const page = reactive({
     page: 1,
     perPage: 10,
@@ -24,7 +35,7 @@
   }
 
   const getList = async () => {
-    api.invoice.getList({...searchForm.value, ...page}).then((res: any) => {
+    api.invoice.getList({exhibitionId: exhibitionInfo.value.id, ...searchForm.value, ...page}).then((res: any) => {
       if (res.code === 0) {
         tableData.value = res.data.data
         total.value = res.data.total
@@ -80,7 +91,9 @@
 </script>
 <template>
   <div class="s-flex-col" style="height: 100%;">
-    <div></div>
+    <div class="" style="margin-bottom: 10px;">
+      <ExhibitionChange />
+    </div>
     <TableSearch :data="searchData" @search="search" :type="'invoice'"/>
     <!-- <div class="s-table-operations"> -->
       <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button> -->
@@ -95,6 +108,7 @@
         <!-- <el-table-column type="selection" width="42" /> -->
         <el-table-column prop="orderCode" label="订单编号" width="180" />
         <el-table-column prop="companyName" label="企业名称" min-width="120" />
+        <el-table-column prop="exhibitionName" label="展会名称" min-width="120" />
         <el-table-column prop="hallCode" label="展馆号" />
         <el-table-column prop="positionCode" label="展位号" />
         <el-table-column prop="positionType" label="展位类型" min-width="120">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { booth as boothApi } from '@/api/Order';
 
@@ -9,6 +9,13 @@ const route: any = useRoute();
 const companyName = route.query.companyName;
 const data: any = ref({});
 data.value = JSON.parse(route.query.data);
+
+// watch(() => data.value.position, (newVal, oldVal) => {
+//   // console.log(newVal, oldVal)
+//   if (newVal.payType === 1) {
+//     data.value.position.ratio = 0
+//   }
+// }, {deep: true})
 // console.log(data.value);
 const unit:any = {1:'%', 2:'￥'}
 const format = (d: any) => {
@@ -31,6 +38,8 @@ const setFinalPrice = computed(()=>{
     }
     if(i.payType === 2){
       p = p * i.ratio / 100
+    }else{
+      i.ratio = 0
     }
     
     return p<0?0: Number(p.toFixed(2))
@@ -58,9 +67,8 @@ const handleSubmit = () => {
   })
 }
 const handleBack = () => {
-  router.go(-1);
+  router.push({ name: 'BoothReserve', query: { ...route.query } });
 }
-
 
 </script>
 <template>
@@ -115,7 +123,9 @@ const handleBack = () => {
           <el-radio :value="1">全款</el-radio>
           <el-radio :value="2">分期</el-radio>
         </el-radio-group>
-        <el-input-number v-model="item.ratio" placeholder="分期比例" :min="0" :max="100" :controls="false" style="width: 120px;"/>
+        <el-input-number v-model="item.ratio" 
+          :value-on-clear="0"
+          placeholder="分期比例" :min="0" :max="100" :controls="false" style="width: 120px;"/>
         <span style="margin-left: 10px">%</span>
       </div>
     </div>

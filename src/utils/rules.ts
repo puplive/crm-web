@@ -42,19 +42,16 @@ const _rules = {
     }
   ],
   positive: [
-    { pattern: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/, message: '必须大于0', trigger: 'blur' }
-    // {
-    //   validator: (rule: any, value: any, callback: any) => {
-    //     console.log(value)
-    //     setTimeout(() => {
-    //       if (value <= 0) {
-    //         callback(new Error('需大于0'))
-    //       } else {
-    //         callback()
-    //       }
-    //     }, 100)
-    //   }, trigger: 'blur'
-    // }
+    { type: 'number', message: '请输入数字', trigger: 'blur' },
+    {
+      validator: (rule: any, value: any, callback: any) => {
+        if (value <= 0) {
+          callback(new Error('必须大于0'))
+        } else {
+          callback()
+        }
+      }, trigger: 'blur'
+    }
   ],
   // 非空数组
   notEmptyArray: [

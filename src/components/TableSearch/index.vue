@@ -2,7 +2,6 @@
 import { reactive, ref, computed } from 'vue'
 import type { FormInstance } from 'element-plus'
 import {types, invoiceTypes, paymentTypes} from '@/api/types'
-import { delNullProperty } from '@/utils/tool'
 
 const refForm = ref<FormInstance>()
 interface DataItem {
@@ -45,8 +44,6 @@ const resetForm = (formEl: FormInstance | undefined) => {
   emit('search', formData)
 }
 const _search = () =>{
-  delNullProperty(formData)
-  // console.log(formData)
   emit('search', formData)
 }
 </script>

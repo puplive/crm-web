@@ -4,7 +4,6 @@
   import { userStore } from "@/stores/user";
  
   const activeIndex = ref(userStore().MENU_ACTIVE)
-  console.log(activeIndex.value)
   const menu: any = ref([]);
   getMenu().then(res => {
     menu.value = res.data;
@@ -200,3 +199,8 @@
     </el-scrollbar>
   <!-- </el-aside> -->
 </template>
+<style scoped>
+  .el-menu{
+    border-right: none;
+  }
+</style>

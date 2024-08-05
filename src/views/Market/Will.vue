@@ -2,14 +2,21 @@
 <script lang="ts" setup>
 import { ref, reactive, watch } from 'vue'
 import TableSearch from '@/components/TableSearch/index.vue'
+import ExhibitionChange from '@/views/Market/components/ExhibitionChange.vue'
 import Move from './components/Move.vue'
 import api from '@/api/Clues'
-import { exhibitionList } from '@/api/Exhibition'
 // import { getSponsorUser } from '@/api/user'
 
+import { userStore } from "@/stores/user";
 
-const zh_name = ref('全部')
-const exhibitionId = ref('')
+const _store = userStore()
+const exhibitionInfo: any = ref(_store.EXHIBITION_INFO)
+watch(() => _store.EXHIBITION_INFO,(val:any, oldVal)=>{
+  if(val.id!== oldVal.id){
+    exhibitionInfo.value = val
+    getList()
+  }
+}, {deep: true})
 
 const page = reactive({
   page: 1,
@@ -20,7 +27,6 @@ const searchForm = ref({})
 const tableData = ref([])
 const tableRef: any = ref(null)
 const searchData = ref([])
-const exhibitionData: any = ref([])
 
 
 const search = (d: any) => {
@@ -31,7 +37,7 @@ const search = (d: any) => {
 }
 
 const getList = async () => {
-  api.getList({ status: 2, exhibitionId: exhibitionId.value, ...page, ...searchForm.value }).then((res) => {
+  api.getList({ status: 2, exhibitionId: exhibitionInfo.value.id, ...page, ...searchForm.value }).then((res) => {
     if (res.code === 0) {
       tableData.value = res.data.data
       total.value = res.data.total
@@ -143,18 +149,7 @@ api.getSearchField().then((res) => {
     searchData.value = res.data
   }
 })
-exhibitionList().then((res) => {
-  if (res.code === 0) {
-    exhibitionData.value = [{ exhibitionName: '全部', id: '' }, ...res.data]
-  }
-})
 
-const handleCommand = (command: any) => {
-  // console.log(command)
-  zh_name.value = command.exhibitionName
-  exhibitionId.value = command.id
-  getList()
-}
 
 const customField: any = ref([])
   const getCustomField = () => {
@@ -179,20 +174,7 @@ getList()
 <template>
   <div class="s-flex-col" style="height: 100%;">
     <div class="" style="margin-bottom: 10px;">
-      <el-dropdown
-        @command="handleCommand" 
-        max-height="80vh"
-        placement="bottom-start">
-        <el-button text>
-          {{ zh_name }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
-        </el-button>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item v-for="(item, i) in exhibitionData" :key="i" :command="item">{{ item.exhibitionName
-              }}</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+      <ExhibitionChange />
     </div>
     <TableSearch :data="searchData" @search="search" />
     <div class="s-table-operations">

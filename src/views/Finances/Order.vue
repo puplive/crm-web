@@ -3,8 +3,19 @@
   import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
   import ApplyInvoice from './components/ApplyInvoice.vue'
+  import ExhibitionChange from '@/views/Market/components/ExhibitionChange.vue'
   import api from '@/api/Finances'
   import { booth as boothApi} from '@/api/Order/index'
+  import { userStore } from "@/stores/user";
+
+  const _store = userStore()
+  const exhibitionInfo: any = ref(_store.EXHIBITION_INFO)
+  watch(() => _store.EXHIBITION_INFO,(val:any, oldVal)=>{
+    if(val.id!== oldVal.id){
+      exhibitionInfo.value = val
+      getList()
+    }
+  }, {deep: true})
 
   const page = reactive({
     page: 1,
@@ -17,7 +28,6 @@
   const searchData = ref([])
   const applyInvoiceRef: any = ref(null)
 
-
   const search = (d: any) => {
     searchForm.value = d
     page.page = 1
@@ -25,7 +35,7 @@
   }
 
   const getList = async () => {
-    api.order.getList({...searchForm.value, ...page}).then((res: any) => {
+    api.order.getList({...searchForm.value, ...page, exhibitionId: exhibitionInfo.value.id}).then((res: any) => {
       if (res.code === 0) {
         tableData.value = res.data.data
         total.value = res.data.total
@@ -104,7 +114,9 @@
 </script>
 <template>
   <div class="s-flex-col" style="height: 100%;">
-    <div></div>
+    <div style="margin-bottom: 10px;">
+      <ExhibitionChange />
+    </div>
     <TableSearch :data="searchData" @search="search"/>
     <!-- <div class="s-table-operations"> -->
       <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新增</el-button> -->
@@ -120,6 +132,7 @@
         <el-table-column type="selection" width="42" />
         <el-table-column prop="orderCode" label="订单编号" width="200" />
         <el-table-column prop="companyName" label="企业名称" min-width="120" />
+        <el-table-column prop="exhibitionName" label="展会名称" min-width="120" />
         <el-table-column prop="positionCode" label="展位号" />
         <el-table-column prop="brand" label="参展品牌" min-width="120" />
         <el-table-column prop="area" label="面积" />

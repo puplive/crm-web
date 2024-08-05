@@ -1,6 +1,6 @@
 <!-- 销售线索列表 -->
 <script lang="ts" setup>
-  import { ref, reactive, nextTick } from 'vue'
+  import { ref, reactive, nextTick, watch } from 'vue'
   // import { genFileId } from 'element-plus'
   import TableSearch from '@/components/TableSearch/index.vue'
   import { useRouter, useRoute } from 'vue-router'
@@ -8,8 +8,17 @@
   import { uploadFile } from '@/api/common'
   import { download } from '@/api/Contract'
   import { zipFiles } from '@/utils/fileZip'
+  import ExhibitionChange from '@/views/Market/components/ExhibitionChange.vue'
+  import { userStore } from "@/stores/user";
+  const _store = userStore()
+  const exhibitionInfo: any = ref(_store.EXHIBITION_INFO)
+  watch(() => _store.EXHIBITION_INFO,(val:any, oldVal)=>{
+    if(val.id!== oldVal.id){
+      exhibitionInfo.value = val
+      getList()
+    }
+  }, {deep: true})
 
-  
   const router = useRouter()
   const route = useRoute()
   const Loading = ref(false)
@@ -48,7 +57,7 @@
   // })
 
   const getList = () => {
-    boothApi.getList({...page, ...searchForm.value}).then((res: any) => {
+    boothApi.getList({ exhibitionId: exhibitionInfo.value.id, ...page, ...searchForm.value}).then((res: any) => {
       if (res.code === 0) {
         tableData.value = res.data.data
         total.value = res.data.total
@@ -191,7 +200,7 @@
     fileList.value = []
   }
   const subContract = () => {
-    if (fileList.value.length === 0) {
+    if (uploadContract.type === 1 && fileList.value.length === 0) {
       ElMessage.warning('请选择合同文件')
       return
     }
@@ -246,6 +255,9 @@
 </script>
 <template>
   <div class="s-flex-col" style="height: 100%;">
+    <div class="" style="margin-bottom: 10px;">
+      <ExhibitionChange />
+    </div>
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
       <el-button size="small" @click="handleDownload">批量下载合同</el-button>
@@ -258,6 +270,7 @@
         <!-- <el-table-column prop="id" label="ID" width="50" /> -->
         <el-table-column prop="orderCode" label="订单编号" width="280" />
         <el-table-column prop="companyName" label="企业名称" min-width="120" />
+        <el-table-column prop="exhibitionName" label="展会名称" min-width="120" />
         <el-table-column prop="hallCode" label="展馆号" />
         <el-table-column prop="positionCode" label="展位号" />
         <el-table-column prop="area" label="面积" />

@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import type { del } from "../Exhibitor";
 // import type { UserType } from './types'
 import { delNullProperty } from '@/utils/tool'
 // import qs from "qs";

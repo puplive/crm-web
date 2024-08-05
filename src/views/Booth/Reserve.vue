@@ -8,7 +8,6 @@
   const router = useRouter();
   const route = useRoute();
 
-
   const clueId = route.query.clueId;
   const exhibitionId = route.query.exhibitionId;
   const exhibitorId = route.query.exhibitorId;
@@ -63,6 +62,17 @@
       },
     ]
   })
+  if(route.query.data){
+    if (typeof route.query.data === 'string') {
+      let _data = JSON.parse(route.query.data)
+      form.clueId = _data.clueId
+      form.exhibitionId = _data.exhibitionId
+      form.exhibitorId = _data.exhibitorId
+      form.position = _data.position
+      form.add = _data.add
+      form.discount = _data.discount
+    }
+  }
 
   const gg_select:any = ref({})
   const ggFormRef: any = ref(null)
@@ -223,8 +233,6 @@
     return Number((_costPrice+_addPrice-_discountPrice).toFixed(2))
   }
 
-  
-
   const companyName = ref('')
   const isNew = ref(true)
   getExhibitionInfo({clueId, exhibitionId}).then(res => {
@@ -250,8 +258,6 @@
     }
     
   })
-  
-
 
 </script>
 <template>
@@ -381,7 +387,7 @@
       </el-form-item>
       <el-form-item label="尺寸">
         <el-col :span="11">
-          <el-form-item label="" prop="length" :rules="rules.required"> 
+          <el-form-item label="" prop="length" :rules="rules.positive"> 
             <el-input-number v-model="gg.form.length" :min="0" :controls="false" style="flex: 1;" />
           </el-form-item>
         </el-col>
@@ -389,7 +395,7 @@
           <el-icon><Close /></el-icon>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="" prop="width" :rules="rules.required">
+          <el-form-item label="" prop="width" :rules="rules.positive">
             <el-input-number v-model="gg.form.width" :min="0" :controls="false" style="flex: 1;" />
             <!-- <el-input v-model="gg.form.width" autocomplete="off" /> -->
           </el-form-item>

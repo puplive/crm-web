@@ -9,6 +9,7 @@ export const userStore = defineStore('user', {
     USER_INFO: {},
     MENU: [],
     MENU_ACTIVE: '',
+    EXHIBITION_INFO: {},
   }),
   getters: {
     // double: (state) => state.count * 2,
@@ -31,6 +32,9 @@ export const userStore = defineStore('user', {
     },
     SET_USER_INFO(data: any) {
       this.USER_INFO = data
-    }
+    },
+    SET_EXHIBITION_INFO(data: any) {
+      this.EXHIBITION_INFO = data
+    },
   },
 })
