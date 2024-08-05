@@ -7,7 +7,6 @@
   import {getSponsorUser} from '@/api/user'
   // import { customFieldTypes } from "@/api/Custom";
   import { useRouter, useRoute } from 'vue-router'
-  import {downloadFile} from '@/utils/tool'
 
   const router = useRouter()
   const route = useRoute()
@@ -162,7 +161,7 @@
     api.clueExport({status:4}).then((res: any) => {
       if(res.code === 0) {
         ElMessage.success('导出成功')
-        downloadFile(res.data.url, '线索列表.xlsx')
+        window.open(res.data.url, '_self')
       }else {
         ElMessage.error(res.msg)
       }

@@ -75,6 +75,14 @@ export const booth = {
       data,
     });
   },
+  export: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/order/position/export",
+      method: "post",
+      data,
+    });
+  },
+
 
 }
 
