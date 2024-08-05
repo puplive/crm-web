@@ -20,12 +20,12 @@
             <el-row  :gutter="20">
               <el-col :span="12">
                 <el-form-item label="企业名称" prop="companyName">
-                  <el-input v-model="ruleForm.companyName" />
+                  <el-input v-model.trim="ruleForm.companyName" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="选择主办" prop="sponsorId">
-                  <el-select v-model="ruleForm.sponsorId" placeholder="请选择主办">
+                  <el-select v-model.trim="ruleForm.sponsorId" placeholder="请选择主办">
                     <el-option v-for="item in sponsorList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                   </el-select>
                 </el-form-item>
@@ -34,7 +34,7 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="姓名" prop="userName">
-                  <el-input v-model="ruleForm.userName" style="width: calc(100% - 160px);" />
+                  <el-input v-model.trim="ruleForm.userName" style="width: calc(100% - 160px);" />
                   <el-form-item label="" prop="gender">
                     <el-radio-group v-model="ruleForm.gender" style="margin-left: 10px; width: 150px;">
                       <el-radio value="1">先生</el-radio>
@@ -46,7 +46,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="手机号" prop="phone">
-                  <el-input v-model="ruleForm.phone" style="width: calc(100% - 110px);" />
+                  <el-input v-model.trim="ruleForm.phone" style="width: calc(100% - 110px);" />
                   <el-button type="primary" style="margin-left: 10px; width: 100px;" @click="sendSms(ruleFormRef)">发送验证码</el-button>
                 </el-form-item>
                 
@@ -56,12 +56,12 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="注册人邮箱" prop="email">
-                  <el-input v-model="ruleForm.email" />
+                  <el-input v-model.trim="ruleForm.email" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="验证码" prop="code">
-                  <el-input v-model="ruleForm.code" />
+                  <el-input v-model.trim="ruleForm.code" />
                 </el-form-item>
               </el-col>
             </el-row>

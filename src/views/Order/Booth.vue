@@ -122,6 +122,10 @@
     download({ orderId: ids}).then((res) => {
       if(res.code === 0) {
         // ElMessage.success('成功')
+        if(res.data.length === 0){
+          ElMessage.warning('无数据')
+          return
+        }
         zipFiles(res.data)
       }else {
         ElMessage.error(res.msg)

@@ -8,10 +8,10 @@
         <div class="login-form">
           <el-form :model="data" size="large" style="max-width: 600px">
             <el-form-item>
-              <el-input v-model="data.account" placeholder="请输入用户名" />
+              <el-input v-model.trim="data.account" placeholder="请输入用户名" />
             </el-form-item>
             <el-form-item>
-              <el-input v-model="data.password" type="password" placeholder="请输入密码" />
+              <el-input v-model.trim="data.password" type="password" placeholder="请输入密码" />
             </el-form-item>
             <el-button style="width: 100%" type="primary" @click="login">登录</el-button>
             <div class="login-footer">
