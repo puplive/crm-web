@@ -7,6 +7,8 @@
   import { useRouter, useRoute } from 'vue-router'
   import { goods as goodsApi, booth as boothApi  } from '@/api/Order/index'
   import { uploadFile } from '@/api/common'
+  import { download } from '@/api/Contract'
+  import { zipFiles } from '@/utils/fileZip'
 
   
   const router = useRouter()
@@ -111,21 +113,36 @@
     })
   }
     
-  const handleImport = () => {
-    // boothImport().then(() => {
-    //   getData()
-    // })
+  const handleDownload = () => {
+    let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
+    if (ids.length === 0) {
+      ElMessage.warning('请选择需要下载的数据')
+      return
+    }
+    
+    download({ orderId: ids}).then((res) => {
+      if(res.code === 0) {
+        // ElMessage.success('成功')
+        if(res.data.length === 0){
+          ElMessage.warning('无数据')
+          return
+        }
+        zipFiles(res.data)
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
   }
 
   const handleExport = () => {
-    // boothExport({ exhibitionId: id }).then((res: any) => {
-    //   if(res.code === 0) {
-    //     window.open(res.data.url, '_self')
-    //     ElMessage.success('导出成功')
-    //   }else {
-    //     ElMessage.error(res.msg)
-    //   }
-    // })
+    boothApi.export({ exhibitionId: id }).then((res: any) => {
+      if(res.code === 0) {
+        window.open(res.data.url, '_self')
+        ElMessage.success('导出成功')
+      }else {
+        ElMessage.error(res.msg)
+      }
+    })
   }
 
 
@@ -230,7 +247,7 @@
   <div class="s-flex-col" style="height: 100%;">
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
-      <el-button size="small" @click="handleExport">批量下载合同</el-button>
+      <el-button size="small" @click="handleDownload">批量下载合同</el-button>
       <el-button size="small" @click="handleExport">导出</el-button>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
