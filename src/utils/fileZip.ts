@@ -46,12 +46,11 @@ export const zipFiles = (files: any[]) => {
 export const downloadFile = (url: string, fileName: string) => {
   getFile(url).then((data: any) => {
     const blob = new Blob([data], { type: 'application/octet-stream' });
-    const link = document.createElement('a');
+    const link: any = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = fileName;
     link.click();
-    document.body.removeChild(link);
-
+    link.parentNode.removeChild(link);
   }).catch((error) => {
     ElMessage.error(error.message);
   });

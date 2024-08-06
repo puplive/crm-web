@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, onMounted, watch } from 'vue'
 import type { FormInstance } from 'element-plus'
 import {types, invoiceTypes, paymentTypes} from '@/api/types'
 
@@ -14,6 +14,33 @@ const props = defineProps<{
   data: DataItem[],
   type?: string
 }>()
+
+
+const list: any = ref([])
+
+watch(() => props.data, (val) => {
+  list.value.push( val[0])
+})
+
+const add = () => {
+  for (let index = 0; index < props.data.length; index++) {
+    const element = props.data[index];
+    if(!hasField(element.field)){
+      list.value.push(element)
+
+      return
+    }
+  }
+  
+}
+
+const setList = (index: number, field: string) => {
+  list.value[index] = props.data.find((item) => item.field === field)
+}
+
+const hasField = (field: string) => {
+  return list.value.some((item: any) => item.field === field)
+}
 
 const emit = defineEmits(['search'])
 
@@ -46,12 +73,39 @@ const resetForm = (formEl: FormInstance | undefined) => {
 const _search = () =>{
   emit('search', formData)
 }
+onMounted(() => {
+  // console.log('props.data', props.data)
+  // if(props.data.length > 0){
+  //   list.value.push(props.data[0])
+  // }
+})
 </script>
 <template>
   <div>
     <el-form ref="refForm"  :inline="true" :model="formData" class="table-search-form" label-width="auto" label-position="left">
 
-      <el-form-item v-for="(item, index ) in data" :key="index" :label="item.text" :prop="item.field">
+      <el-form-item v-for="(item, index ) in list" :key="index" :prop="item.field">
+        <template #label>
+          <el-dropdown  trigger="click">
+            <el-button link style="line-height: 26px;"  >{{ item.text }}</el-button>
+            <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item 
+              v-for="(option, i) in data" 
+              :key="i" 
+              @click="()=>{
+                formData[item.field] = '';
+                _search();
+                setList(index, option.field)
+              }"
+              :disabled="hasField(option.field)">
+              {{ option.text }}
+            </el-dropdown-item>
+            
+          </el-dropdown-menu>
+        </template>
+          </el-dropdown>
+        </template>
         <template v-if="types[item.field]">
           <el-select v-if="types[item.field].type === 3" v-model="formData[item.field]" placeholder="请选择" clearable>
             <!-- <el-option label="全部" value=""></el-option> -->
@@ -70,12 +124,25 @@ const _search = () =>{
           <!-- <el-time-picker v-else-if="item.type === 'time'" v-model="formData[item.field]" type="timerange" placeholder="Select time" clearable /> -->
         </template>
         <el-input v-else v-model="formData[item.field]" placeholder="请输入" clearable />
-
+        <el-button 
+          v-if="list.length > 1" 
+          type="primary" icon="Minus" size="small" circle
+          @click="() => {
+            formData[item.field] = ''; 
+            list.splice(index, 1); 
+            _search();
+          }"  
+          style="font-size: 16px; margin-left: 5px "/>
       </el-form-item>
       
       <el-form-item>
         <el-button type="primary" @click="_search">搜索</el-button>
-        <el-button v-if="data.length > 0" type="primary" @click="resetForm(refForm)">重置</el-button>
+        <el-button type="primary" @click="resetForm(refForm)">重置</el-button>
+        <el-button 
+          v-if="list.length < props.data.length" 
+          type="primary" icon="Plus" size="small" circle 
+          style="font-size: 16px;" 
+          @click="add" />
       </el-form-item>
     </el-form>
   </div>

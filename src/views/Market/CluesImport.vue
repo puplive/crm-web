@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import { clueImport } from '@/api/Clues';
+  import { clueImport, getImportTemplate } from '@/api/Clues';
   import { useRouter } from 'vue-router';
   import { downloadFile } from '@/utils/fileZip';
  
@@ -56,6 +56,16 @@
       })
     })
   }
+
+  const getTemplate = () => {
+    getImportTemplate().then((res: any) => {
+      if(res.code === 0){
+        downloadFile(res.data.url, res.data.name)
+      }
+    })
+  }
+
+
 </script>
 <template>
   <div>
@@ -73,9 +83,7 @@
           <dl>
             <dt>一、请按最新的数据模版格式导入最新的数据</dt>
             <dd>
-              <el-button type="primary" @click="()=>{
-                  downloadFile('https://crm-test-1256699835.cos.ap-shanghai.myqcloud.com/importTemplate/clue.xlsx', '线索导入模板.xlsx')
-                }">下载数据模板</el-button>
+              <el-button type="primary" @click="getTemplate">下载数据模板</el-button>
             </dd>
           </dl>
           <dl>

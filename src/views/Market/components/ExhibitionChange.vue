@@ -30,10 +30,10 @@
 <template>
   <el-dropdown
         @command="handleCommand" 
-        max-height="80vh"
+        max-height="300px"
         placement="bottom-start">
-        <el-button text>
-          {{ exhibitionInfo.exhibitionName }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+        <el-button link style="font-size: 16px;">
+          {{ exhibitionInfo.exhibitionName }}<el-icon class="el-icon--right" style="color: #f3d19e;"><Document /></el-icon>
         </el-button>
         <template #dropdown>
           <el-dropdown-menu>
@@ -48,3 +48,6 @@
         </template>
       </el-dropdown>
 </template>
+<style scoped>
+  .el-tooltip__trigger { outline: none !important; }
+</style>

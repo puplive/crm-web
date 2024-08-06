@@ -44,6 +44,13 @@ export const boothImport = (data: any): Promise<any> => {
     data,
   });
 }
+export const getImportTemplate = (params: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibition/position/getImportTemplate",
+    method: "get",
+    params,
+  });
+}
 
 export const boothExport = (data: any): Promise<any> => {
   return request({

@@ -3,7 +3,7 @@
   import { ref, reactive, nextTick } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { boothList, boothAdd, boothEdit , boothDelete, boothImport, boothExport } from '@/api/Booth/index'
+  import { boothList, boothAdd, boothEdit , boothDelete, boothImport, boothExport, getImportTemplate } from '@/api/Booth/index'
   import { getExhibitor } from '@/api/Exhibitor/index'
   import { getHallInfo } from '@/api/Order/index'
   import { genFileId } from 'element-plus'
@@ -238,7 +238,11 @@
       uploadRef.value!.submit()
     },
     dowModel: () => {
-      downloadFile('https://crm-test-1256699835.cos.ap-shanghai.myqcloud.com/importTemplate/position.xlsx', '展位导入模板.xlsx')
+      getImportTemplate({exhibitionId: id}).then((res: any) => {
+        if(res.code === 0){
+          downloadFile(res.data.url, res.data.name)
+        }
+      })
     }
   })
     

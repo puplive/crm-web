@@ -152,6 +152,13 @@ export const clueImport = (data: any): Promise<any> => {
   });
 }
 
+export const getImportTemplate = (): Promise<any> => {
+  return request({
+    url: prefix + "/sales/clue/getImportTemplate",
+    method: "get",
+  });
+}
+
 export const contact = {
   getList: (params: any): Promise<any> => {
     return request({
@@ -221,6 +228,7 @@ export default {
   exitExhibition,
   clueExport,
   clueImport,
+  getImportTemplate,
   contact,
   clueRecord
 };
