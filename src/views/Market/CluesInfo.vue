@@ -172,11 +172,11 @@
               </el-table-column>
               <el-table-column label="操作" width="200" fixed="right">
                 <template #default="scope"> 
-                  <el-button link type="primary">详情</el-button>
-                  <el-button link type="primary" v-if="scope.row.contractStatus === 1">撤销</el-button>
+                  <el-button link type="primary" @click="$router.push({ name: 'ContractDetail', query: { orderId: scope.row.orderId } })">详情</el-button>
+                  <el-button link type="primary" v-if="scope.row.contractStatus === 1" @click="contractRevoke(scope.row.orderId)">撤销</el-button>
                   <template v-else>
                     <el-button link type="info" disabled>已撤销</el-button>
-                    <el-button link type="danger">删除</el-button>
+                    <!-- <el-button link type="danger" @click="contractDel(scope.row.id)">删除</el-button> -->
                   </template>
                 </template>
               </el-table-column>
@@ -261,6 +261,7 @@ import Move from './components/Move.vue'
 import GoodsOrderDetail from '@/views/Order/components/GoodsOrderDetail.vue'
 import {getData, contact, getCustomField, del, editNew, exitExhibition } from '@/api/Clues'
 import { booth as boothApi, goods as goodsApi } from '@/api/Order/index'
+import contractApi from '@/api/Contract'
 import rules from '@/utils/rules'
 
 const router = useRouter()
@@ -301,7 +302,7 @@ const customFieldTrans = computed(() => {
       name: d? d.name : '',
     })
   }
-  console.log(list)
+  // console.log(list)
   return list
 })
 
@@ -533,6 +534,47 @@ const detailRef: any = ref(null)
 const goodsDetail = (id: any) => {
   detailRef.value.getDetail(id)
 }
+
+const contractRevoke = (orderId: any) => {
+  ElMessageBox.confirm('是否确认要撤销合同?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    contractApi.revoke({ orderId }).then((res: any) => {
+      if(res.code === 0) {
+        ElMessage.success('撤销成功')
+        _getData()
+      }else {
+        ElMessage.error(res.msg)
+      }
+      
+    })
+  }).catch(() => {
+  })
+}
+// const contractDel = (id: any, type: any) => {
+//   ElMessageBox.confirm('是否确认要删除合同?', '提示', {
+//     confirmButtonText: '确定',
+//     cancelButtonText: '取消',
+//     type: 'warning'
+//   }).then(() => {
+//     let _del = boothApi.del
+//     if (type === 2) {
+//       _del = goodsApi.del
+//     }
+//     _del({ id }).then((res: any) => {
+//       if(res.code === 0) {
+//         ElMessage.success('删除成功')
+//         _getData()
+//       }else {
+//         ElMessage.error(res.msg)
+//       }
+      
+//     })
+//   }).catch(() => {
+//   })
+// }
 
 _getData()
 _getCustomField()

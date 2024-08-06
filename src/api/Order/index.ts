@@ -163,4 +163,11 @@ export const goods = {
       params
     });
   },
+  export: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/order/material/export",
+      method: "post",
+      data,
+    });
+  },
 }

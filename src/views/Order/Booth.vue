@@ -326,7 +326,7 @@
                 <el-button link type="primary" @click="setContract(scope.row.id)">上传合同</el-button>
               </template>
               <template v-else>
-                <el-button link type="primary" @click="$router.push({ name: 'ContractTemplates', query: { id: scope.row.id, type: 1 } })">更新合同</el-button>
+                <el-button link type="primary" @click="$router.push({ name: 'ContractConclude', query: { id: scope.row.contractTemplateId, orderId: scope.row.id, isUpdate: 1 } })">更新合同</el-button>
                 <el-button link type="primary" @click="setContract(scope.row.id)">上传合同</el-button>
               </template>
               <!-- <el-button link type="primary" @click="Recording(scope.row.id)">录入到款</el-button> -->

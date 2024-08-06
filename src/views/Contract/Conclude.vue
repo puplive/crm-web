@@ -4,16 +4,21 @@
   import { useRoute, useRouter } from 'vue-router';
   import { htmlToPDF, goPrint } from '@/utils/html2pdf'
   // import htmlToPdfmake  from '@/utils/htmlToPdfmake'
-  
+  const route = useRoute();
 
+  const isUpdate = route.query.isUpdate
   // import VueHtml2pdf from 'vue-html2pdf'
   const isEdit = ref(false)
-  const route = useRoute();
+  
   const orderId = route.query.orderId;
   const templateId = route.query.id
   const pageName = route.name
   // console.log(route)
   const contractRef:any = ref(null);
+
+  // if(isUpdate == '1'){
+  //   isEdit.value = true
+  // }
   
   const createContract = () => {
     contractRef.value.createContract(templateId)
@@ -42,7 +47,7 @@
       </div>
       <div class="p1" v-else >
         <template v-if="!isEdit">
-          <el-button type="primary" @click="createContract">签订合同</el-button>
+          <el-button v-if="isUpdate != '1'" type="primary" @click="createContract">签订合同</el-button>
           <!-- <el-button type="primary" @click="() => htmlToPdfmake.pdf.download()">打印</el-button> -->
           <el-button type="primary" @click="() => htmlToPDF('pdf-content','test pdf')">导出</el-button>
           <el-button type="primary" @click="isEdit = true">编辑</el-button>

@@ -58,6 +58,13 @@ export const payment = {
       params,
     });
   },
+  revoke: (data: any): Promise<any> => {
+    return request({
+      url: prefix + "/finance/orderPayment/revoke",
+      method: "post",
+      data,
+    });
+  },
   del: (data: any): Promise<any> => {
     return request({
       url: prefix + "/finance/orderPayment/delete",

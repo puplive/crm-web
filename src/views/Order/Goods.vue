@@ -145,7 +145,7 @@
   }
 
   const handleExport = () => {
-    boothApi.export({ exhibitionId: id }).then((res: any) => {
+    goodsApi.export({ exhibitionId: id }).then((res: any) => {
       if(res.code === 0) {
         window.open(res.data.url, '_self')
         ElMessage.success('导出成功')

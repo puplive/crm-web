@@ -80,4 +80,10 @@ export const download = (data: any): Promise<any> => {
 
 export default {
   getList,
+  getContractData,
+  create,
+  edit,
+  receipt,
+  revoke,
+  download,
 };

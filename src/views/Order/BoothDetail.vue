@@ -88,6 +88,25 @@ const revoke = (id: any) => {
     })
   }
 
+  const revokePayment = (id: any) => {
+    ElMessageBox.confirm('确定撤销？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+
+      payment.revoke({ id: id}).then((res: any) => {
+        if(res.code === 0) {
+          ElMessage.success('撤销成功')
+          getBoothDetail()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }).catch(() => {
+    })
+  }
+
   const delPayment = (id: any) => {
     ElMessageBox.confirm('是否确认要删除付款记录?', '提示', {
       confirmButtonText: '确定',
@@ -215,12 +234,18 @@ const revoke = (id: any) => {
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200" v-if="d.orderStatus === 1">
             <template #default="scope">
-              <el-button link type="primary" @click="() => { 
-                let d={...scope.row, account: scope.row.receiveAccount }; 
-                editPaymentRef.setEdit(d)
-               }">编辑</el-button>
-              <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.invoiceStatus === 0">申请发票</el-button>
-              <el-button link type="danger" @click="delPayment(scope.row.id)">删除</el-button>
+              <template v-if="scope.row.status === 0">
+                <el-button link type="" disabled>已撤销</el-button>
+                <el-button link type="danger" @click="delPayment(scope.row.id)">删除</el-button>
+              </template>
+              <template v-else>
+                <el-button link type="primary" @click="() => { 
+                  let d={...scope.row, account: scope.row.receiveAccount }; 
+                  editPaymentRef.setEdit(d)
+                }">编辑</el-button>
+                <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.invoiceStatus === 0">申请发票</el-button>
+                <el-button link type="danger" @click="revokePayment(scope.row.id)">撤销</el-button>
+              </template>
             </template>
           </el-table-column>
         </el-table>

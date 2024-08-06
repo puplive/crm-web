@@ -80,6 +80,25 @@
     })
   }
 
+  const revoke = (id: any) => {
+    ElMessageBox.confirm('确定撤销？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+
+      api.payment.revoke({ id: id}).then((res: any) => {
+        if(res.code === 0) {
+          ElMessage.success('撤销成功')
+          getList()
+        }else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }).catch(() => {
+    })
+  }
+
   api.payment.getSearchField().then((res) => {
     if(res.code === 0) {
       searchData.value = res.data
@@ -129,8 +148,14 @@
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
             <el-button link type="primary" @click="$router.push({name:'FinancesPaymentDetail',query:{id:scope.row.id}})">详情</el-button>
-            <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.invoiceStatus === 0">申请发票</el-button>
-            <el-button link type="danger" @click="Del(scope.row.id)">删除</el-button>
+            <template v-if="scope.row.status === 0">
+              <el-button link type="" disabled>已撤销</el-button>
+              <el-button link type="danger" @click="Del(scope.row.id)">删除</el-button>
+            </template>
+            <template v-else>
+              <el-button link type="primary" @click="applyInvoiceRef.setApply(scope.row)" v-if="scope.row.invoiceStatus === 0">申请发票</el-button>
+              <el-button link type="danger" @click="revoke(scope.row.id)">撤销</el-button>
+            </template>
           </template>
         </el-table-column>
       </el-table>
