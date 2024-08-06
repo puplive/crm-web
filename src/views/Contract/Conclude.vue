@@ -41,23 +41,27 @@
 </script>
 <template>
     <div class="conclude">
-      <div class="p1" v-if="pageName === 'ContractDetail'">
-        <span style="margin-right: 20px;">合同详情</span>
-        <el-button type="" @click="$router.back()">返回</el-button>
-      </div>
-      <div class="p1" v-else >
-        <template v-if="!isEdit">
-          <el-button v-if="isUpdate != '1'" type="primary" @click="createContract">签订合同</el-button>
-          <!-- <el-button type="primary" @click="() => htmlToPdfmake.pdf.download()">打印</el-button> -->
-          <el-button type="primary" @click="() => htmlToPDF('pdf-content','test pdf')">导出</el-button>
-          <el-button type="primary" @click="isEdit = true">编辑</el-button>
-          <el-button type="" @click="$router.back()">取消</el-button>
-        </template>
-        <template v-else>
-          <el-button type="primary" @click="edit">保存</el-button>
-          <el-button type="" @click="isEdit = false">取消</el-button>
-        </template>
-      </div>
+        <div class="p1" v-if="pageName === 'ContractTemplatesDetail'">
+          <span style="margin-right: 20px;">合同模板详情</span>
+          <el-button type="" @click="$router.back()">返回</el-button>
+        </div>
+        <div class="p1" v-else-if="pageName === 'ContractDetail'">
+          <span style="margin-right: 20px;">合同详情</span>
+          <el-button type="" @click="$router.back()">返回</el-button>
+        </div>
+        <div class="p1" v-else >
+          <template v-if="!isEdit">
+            <el-button v-if="isUpdate != '1'" type="primary" @click="createContract">签订合同</el-button>
+            <!-- <el-button type="primary" @click="() => htmlToPdfmake.pdf.download()">打印</el-button> -->
+            <el-button type="primary" @click="() => htmlToPDF('pdf-content','test pdf')">导出</el-button>
+            <el-button type="primary" @click="isEdit = true">编辑</el-button>
+            <el-button type="" @click="$router.back()">取消</el-button>
+          </template>
+          <template v-else>
+            <el-button type="primary" @click="edit">保存</el-button>
+            <el-button type="" @click="isEdit = false">取消</el-button>
+          </template>
+        </div>
       <div class="p2">
         <el-scrollbar>
           <!-- <vue-html2pdf

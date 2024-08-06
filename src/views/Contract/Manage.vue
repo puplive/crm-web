@@ -95,15 +95,16 @@
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="42" />
-        <el-table-column prop="name" label="标题" width="180" />
-        <el-table-column prop="" label="类型" />
-        <el-table-column prop="" label="编号" />
+        <!-- <el-table-column type="selection" width="42" /> -->
+        <el-table-column prop="name" label="名称" width="180" />
+        <el-table-column prop="type" label="类型" />
+        <!-- <el-table-column prop="" label="编号" />
         <el-table-column prop="" label="开始日期" min-width="120" />
         <el-table-column prop="" label="结束日期" min-width="120" />
-        <el-table-column prop="" label="签约日期" min-width="120" />
+        <el-table-column prop="" label="签约日期" min-width="120" /> -->
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
+            <el-button link type="primary" @click="$router.push({ name: 'ContractTemplatesDetail' })">详情</el-button>
             <!-- <el-button link type="primary" size="small" @click="$router.push('/market/clues/edit/' + scope.row.id)">编辑</el-button>
             <el-button link type="primary" size="small" @click="Del([scope.row.id])">删除</el-button> -->
           </template>

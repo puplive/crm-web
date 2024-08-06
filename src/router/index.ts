@@ -334,6 +334,15 @@ export const asyncRouterMap: RouteRecordRaw[] = [
         }
       },
       {
+        path: 'templates/detail',
+        name: 'ContractTemplatesDetail',
+        component: () => import('@/views/Contract/Conclude.vue'),
+        meta: {
+          title: '详情-合同模板',
+          // icon: 'list'
+        }
+      },
+      {
         path: 'conclude',
         name: 'ContractConclude',
         component: () => import('@/views/Contract/Conclude.vue'),
