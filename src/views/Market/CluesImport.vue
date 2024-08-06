@@ -2,6 +2,7 @@
   import { ref } from 'vue'
   import { clueImport } from '@/api/Clues';
   import { useRouter } from 'vue-router';
+  import { downloadFile } from '@/utils/fileZip';
  
 
   const router = useRouter()
@@ -73,7 +74,7 @@
             <dt>一、请按最新的数据模版格式导入最新的数据</dt>
             <dd>
               <el-button type="primary" @click="()=>{
-                  window.open('https://crm-test-1256699835.cos.ap-shanghai.myqcloud.com/importTemplate/clue.xlsx', '_self')
+                  downloadFile('https://crm-test-1256699835.cos.ap-shanghai.myqcloud.com/importTemplate/clue.xlsx', '线索导入模板.xlsx')
                 }">下载数据模板</el-button>
             </dd>
           </dl>

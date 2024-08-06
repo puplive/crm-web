@@ -4,7 +4,7 @@ import axios from 'axios';
 import { ElMessage } from "element-plus";
 // import request from "@/utils/request";
 
-export const downloadFile = (url: string) => {
+export const getFile = (url: string) => {
   return new Promise((resolve, reject) => {
     axios({
       url,
@@ -25,7 +25,7 @@ export const zipFiles = (files: any[]) => {
   const promises: any[] = [];
 
   files.forEach((file: any) => {
-    const Promise = downloadFile(file.url).then((data: any) => {
+    const Promise = getFile(file.url).then((data: any) => {
       let fileType = file.url.split('.')
       zip.file(file.name + '.' + fileType[fileType.length - 1], data);
     });
@@ -41,4 +41,18 @@ export const zipFiles = (files: any[]) => {
     ElMessage.error(error.message);
   });
 
+};
+
+export const downloadFile = (url: string, fileName: string) => {
+  getFile(url).then((data: any) => {
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+    document.body.removeChild(link);
+
+  }).catch((error) => {
+    ElMessage.error(error.message);
+  });
 };

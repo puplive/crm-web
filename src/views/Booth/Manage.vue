@@ -8,6 +8,7 @@
   import { getHallInfo } from '@/api/Order/index'
   import { genFileId } from 'element-plus'
   import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
+  import { downloadFile } from '@/utils/fileZip';
 // import { uploadFile } from '@/api/common'
 
   
@@ -237,7 +238,7 @@
       uploadRef.value!.submit()
     },
     dowModel: () => {
-      window.open('https://crm-test-1256699835.cos.ap-shanghai.myqcloud.com/importTemplate/position.xlsx', '_self')
+      downloadFile('https://crm-test-1256699835.cos.ap-shanghai.myqcloud.com/importTemplate/position.xlsx', '展位导入模板.xlsx')
     }
   })
     
