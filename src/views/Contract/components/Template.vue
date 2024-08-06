@@ -93,7 +93,11 @@ const editContract = (templateId: any) => {
       ElMessage.success('编辑成功')
       emit('update:isEdit', false)
     }else{
-      ElMessage.error(res.msg)
+      if(res.code === 170201){
+        emit('update:isEdit', false)
+      }else{
+        ElMessage.error(res.msg)
+      }
     }
   })
 }
@@ -240,7 +244,7 @@ defineExpose({
     <p class="page-break"><b>第三条 付款及退展</b></p>
     <p class="page-break">1、乙方于协议约定时间内以电汇方式支付全部款项，并将签字盖章的协议原件或扫描件给甲方；逾期未履行协议，视为自动放弃所选服务。对于乙方减少展示面积的，甲方有权重新安排位置。</p>
     <p class="page-break">2、乙方款项到达到甲方账户后，甲方向乙方开具正规增值税发票，按费用明细类别开据。</p>
-    <p class="page-break">3、<b>协议签订后，如乙方在<input v-if="isEdit" class="input" style="text-align: center;" v-model="contract.exitTime" placeholder="例：2024-01-01" /><template v-else>{{ contract.exitTime }}</template>后提出退展，则乙方无权要求退还展位费，甲方有权将展位另作安排。</b></p>
+    <p class="page-break">3、<b>协议签订后，如乙方在<input v-if="isEdit" class="input" style="text-align: center; font-weight: bold;" v-model="contract.exitTime" placeholder="例：2024-01-01" /><template v-else><b style="text-decoration: underline;">&ensp; {{ contract.exitTime }} &ensp;</b></template>后提出退展，则乙方无权要求退还展位费，甲方有权将展位另作安排。</b></p>
     <p class="page-break">4、如乙方未在约定时间内向甲方缴纳全部相关费用，则视为乙方自动放弃所选展位，甲方有权将展位另作安排。</p>
     <p class="page-break">5、指定收款账户信息（<b>必须公司付款，并在汇款时标明“2025北京站”</b>）</p>
     <p class="page-break"><b>户 名：北京智霖博雅展览有限公司</b></p>
