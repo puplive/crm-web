@@ -205,34 +205,52 @@
       return
     }
     Loading.value = true
-    let formData = new FormData()
-    formData.append('upload', fileList.value[0].raw)
-    uploadFile(formData).then(res => {
-      if (res.code === 0) {
-        boothApi.receipt({ 
-          orderId: uploadContract.orderId, 
-          type: uploadContract.type,
-          url: res.data.url
-        }).then((res: any) => {
-          if (res.code === 0) {
-            ElMessage.success('上传成功')
-            uploadContract.show = false
-            getList()
-          } else {
-            ElMessage.error(res.msg)
-          }
-          Loading.value = false
-          console.log(Loading.value)
-        }).catch(() => {
-          Loading.value = false
-        })
-      } else {
-        ElMessage.error(res.msg)
+    if(fileList.value.length === 0){
+      boothApi.receipt({ 
+        orderId: uploadContract.orderId, 
+        type: uploadContract.type,
+        // url: res.data.url
+      }).then((res: any) => {
+        if (res.code === 0) {
+          ElMessage.success('上传成功')
+          uploadContract.show = false
+          getList()
+        } else {
+          ElMessage.error(res.msg)
+        }
         Loading.value = false
-      }
-    }).catch(() => {
-      Loading.value = false
-    })
+      }).catch(() => {
+        Loading.value = false
+      })
+    }else {
+      let formData = new FormData()
+      formData.append('upload', fileList.value[0].raw)
+      uploadFile(formData).then(res => {
+        if (res.code === 0) {
+          boothApi.receipt({ 
+            orderId: uploadContract.orderId, 
+            type: uploadContract.type,
+            url: res.data.url
+          }).then((res: any) => {
+            if (res.code === 0) {
+              ElMessage.success('上传成功')
+              uploadContract.show = false
+              getList()
+            } else {
+              ElMessage.error(res.msg)
+            }
+            Loading.value = false
+          }).catch(() => {
+            Loading.value = false
+          })
+        } else {
+          ElMessage.error(res.msg)
+          Loading.value = false
+        }
+      }).catch(() => {
+        Loading.value = false
+      })
+    }
   }
 
   const Recording = (id: any) => {
