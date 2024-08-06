@@ -50,7 +50,9 @@ export const downloadFile = (url: string, fileName: string) => {
     link.href = URL.createObjectURL(blob);
     link.download = fileName;
     link.click();
-    link.parentNode.removeChild(link);
+    // if (link.parentNode) {
+    //   link.parentNode.removeChild(link);
+    // }
   }).catch((error) => {
     ElMessage.error(error.message);
   });
