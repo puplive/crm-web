@@ -63,7 +63,8 @@ const createContract = (templateId: any) => {
     discountRatio: contract.value.discountRatio,
     amount: contract.value.finalPrice,
     discount: contract.value.discount,
-    payment: contract.value.payment
+    payment: contract.value.payment,
+    exitTime: contract.value.exitTime
   }).then((res: any) => {
     if (res.code === 0) {
       ElMessage.success('签订成功')
