@@ -310,7 +310,8 @@ defineExpose({
       4、甲乙双方任何一方对于因签署或履行本协议,而了解或接触到本合同的内容和执行、对方的商业秘密及其他机密资料和信息,均应保守秘密，未经甲乙双方书面同意不得向任何第三方泄露。任何一方因违反保密义务而给另一方损失的应负相应的赔偿责任。无论本合同解除或终止本合同持续有效。
     </p>
     <p class="page-break">5、本合同未尽事宜甲乙双方共同协商解决，协商无法达成一致的，任何一方均有权向北京人民法院提出诉讼。</p>
-    <div class="d1 page-break" style="margin-top: 50px;">
+    <div class="d1 page-break" style="margin-top: 50px; position: relative;">
+      <img style="width: 200px;  object-fit: contain; border: none; position: absolute; top: -50px; left: 50px; z-index: -1" src="@/assets/images/ht2.png" alt="">
       <div>
         <div>甲方：北京智霖博雅展览有限公司</div>
         <div>代表（签字盖章）</div>
@@ -329,7 +330,7 @@ defineExpose({
         <b>添加企业微信</b>
         <div>为了更好地服务展商，请企业联系人（不限数量）添加中国特许加盟展展商服务企业微信号，添加时务必备注企业名称和联系人姓名。谢谢！</div>
       </div>
-      <img src="" alt="">
+      <img src="@/assets/images/ht1.png" alt="">
     </div>
   </div>
 </template>
