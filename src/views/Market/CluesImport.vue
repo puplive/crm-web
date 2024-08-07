@@ -3,6 +3,8 @@
   import { clueImport, getImportTemplate } from '@/api/Clues';
   import { useRouter } from 'vue-router';
   import { downloadFile } from '@/utils/fileZip';
+  import { genFileId } from 'element-plus'
+  import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
  
 
   const router = useRouter()
@@ -16,7 +18,7 @@
   const type:any = ref(1)
 
   const loading = ref(false)
-  const uploadRef: any = ref(null)
+  const uploadRef: any = ref<UploadInstance>()
 
   const beforeUpload: any = (rawFile: any) => {
     // if (rawFile.type !== 'image/jpeg') {
@@ -44,7 +46,7 @@
           router.back()
         }else{
           reject(res)
-          ElMessage.error('上传失败');
+          ElMessage.error(res.msg);
           uploadRef.value.clearFiles()
         }
         loading.value = false
@@ -56,6 +58,15 @@
       })
     })
   }
+  const handleSuccess = (res: any) => {
+    console.log(res)
+  }
+  const handleExceed: UploadProps['onExceed'] = (files) => {
+    uploadRef.value!.clearFiles()
+    const file = files[0] as UploadRawFile
+    file.uid = genFileId()
+    uploadRef.value!.handleStart(file)
+  }
 
   const getTemplate = () => {
     getImportTemplate().then((res: any) => {
@@ -63,6 +74,11 @@
         downloadFile(res.data.url, res.data.name)
       }
     })
+  }
+
+  // const uploadRef = ref<UploadInstance>()
+  const submitUpload = () => {
+    uploadRef.value!.submit()
   }
 
 
@@ -103,10 +119,13 @@
                 ref="uploadRef"
                 :before-upload="beforeUpload"
                 :http-request="uploadImg"
+                :limit="1"
+                :on-exceed="handleExceed"
                 type="drag"
                 accept=".xls,.xlsx"
+                :auto-upload="false"
               >
-                <el-button size="small" type="primary">上传文件</el-button>
+                <el-button type="primary">选择文件</el-button>
               </el-upload>
             </dd>
           </dl>
@@ -121,7 +140,7 @@
         </el-col>
       </el-row>
       <div style="text-align: center;">
-        <!-- <el-button type="primary">保存</el-button> -->
+        <el-button type="primary" @click="submitUpload">导入</el-button>
       </div>
     </div>
   </div>
