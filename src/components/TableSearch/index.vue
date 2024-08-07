@@ -2,6 +2,7 @@
 import { reactive, ref, computed, onMounted, watch } from 'vue'
 import type { FormInstance } from 'element-plus'
 import {types, invoiceTypes, paymentTypes} from '@/api/types'
+import {sponsorAccount} from '@/api/user/index'
 
 const refForm = ref<FormInstance>()
 interface DataItem {
@@ -21,7 +22,13 @@ const list: any = ref([])
 watch(() => props.data, (val) => {
   list.value.push( val[0])
   if(val.some((item) => item.field === 'authUser')){
-    
+    sponsorAccount.getAccount().then((res) => {
+      if(res.code === 0){
+        types['authUser'].options = res.data.map((item: any) => {
+          return { label: item.name, value: item.name }
+        })
+      }
+    })
   }
 })
 

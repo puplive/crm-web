@@ -167,5 +167,12 @@ export const sponsorAccount = {
       method: "post",
       data,
     });
-  }
+  },
+
+  getAccount: (): Promise<any> => {
+    return request({
+      url: prefix + "/auth/sponsorAccount/getAccount",
+      method: "get",
+    });
+  },
 }
