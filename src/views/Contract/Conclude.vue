@@ -36,7 +36,9 @@
   // const html2Pdf:any = ref(null);
 
   onMounted(() => {
-    contractRef.value.setData(orderId)
+    if(pageName !== 'ContractTemplatesDetail'){
+      contractRef.value.setData(orderId)
+    }
   })
 </script>
 <template>

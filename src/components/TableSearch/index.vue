@@ -20,6 +20,9 @@ const list: any = ref([])
 
 watch(() => props.data, (val) => {
   list.value.push( val[0])
+  if(val.some((item) => item.field === 'authUser')){
+    
+  }
 })
 
 const add = () => {
@@ -52,16 +55,23 @@ const formData:any = reactive({})
 
 const options = computed(() => {
   return (field: string)=>{
-    if(props.type === 'invoice'){
-      if(field === 'payType' || field === 'invoiceStatus'){
-        return invoiceTypes[field].options
+
+      if(field === 'payType'){
+        if(props.type === 'invoice'){
+          return invoiceTypes[field].options
+        }
+      }else if(field === 'invoiceStatus'){
+        if(props.type === 'invoice'){
+          return invoiceTypes[field].options
+        }else if(props.type === 'payment'){
+          return paymentTypes[field].options
+        }
       }
-    }else if(props.type === 'payment'){
-      if(field === 'invoiceStatus'){
-        return paymentTypes[field].options
-      }
-    }
-    return types[field].options
+      // else if(field === 'authUser'){
+      //   return 
+      // }
+      return types[field].options
+    
   }
 })
 

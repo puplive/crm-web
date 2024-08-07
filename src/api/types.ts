@@ -72,6 +72,11 @@ export const types: any = {
       { value: 3, label: '已开票' },
     ]
   },
+  authUser: {
+    label: '持有人',
+    type: 3,
+    options: []
+  }
 
 
 }

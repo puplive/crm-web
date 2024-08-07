@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, reactive, watch, computed } from 'vue'
   import { booth as boothApi, getExhibitionInfo } from '@/api/Order/index'
-  import { getPosition  } from '@/api/Booth/index'
+  import { getPosition, positionIsLock } from '@/api/Booth/index'
   import { useRouter, useRoute } from 'vue-router';
   import rules from "@/utils/rules";
 
@@ -99,7 +99,13 @@
       return ''
     }
   })
-
+  const checkLength = (rule: any, value: any, callback: any) => {
+    if (value.length <= 0 || gg.form.width <= 0) {
+      callback(new Error('例如 3X3,且尺寸不可为0和负数'))
+    } else {
+      callback()
+    }
+  }
   
   const Add = () => {
     let n = form.position.length
@@ -132,6 +138,24 @@
     })
   }
   set_booth_list(hallCode.value, 0)
+
+  const checkBooth = (rule: any, value: any, callback: any, hallCode: any) => {
+    if (!value) {
+      return callback(new Error('必填项'))
+    }
+    positionIsLock({
+      exhibitionId,
+      exhibitorId,
+      hallCode: hallCode,
+      positionCode: value,
+    }).then(res => {
+      if (res.code === 0 && res.data.status) {
+        callback()
+      } else {
+        callback(new Error('该展位已锁定'))
+      }
+    })
+  }
 
 
   const formRef: any = ref(null)
@@ -318,7 +342,7 @@
                   <el-option v-for="(item,i) in hall_list" :key="i" :label="item.code" :value="item.code" />
                 </el-select>
               </el-form-item>
-              <el-form-item label="展位号" :prop="`position[${index}].positionCode`" :rules="rules.required">
+              <el-form-item label="展位号" :prop="`position[${index}].positionCode`" :rules="[{ validator: (rule:any, value:any, callback:any)=> checkBooth(rule, value, callback, form.position[index].hallCode), trigger: 'change' }]">
                 <el-select 
                   v-model="form.position[index].positionCode"
                   filterable
@@ -385,9 +409,9 @@
           <el-option v-for="(item,i) in gg_list" :key="i" :label="item.text" :value="item.price" />
         </el-select> -->
       </el-form-item>
-      <el-form-item label="尺寸">
+      <el-form-item label="尺寸" prop="length" :rules="[{ validator: checkLength, trigger: 'blur' }]">
         <el-col :span="11">
-          <el-form-item label="" prop="length" :rules="rules.positive"> 
+          <el-form-item label=""> 
             <el-input-number v-model="gg.form.length" :min="0" :controls="false" style="flex: 1;" />
           </el-form-item>
         </el-col>
@@ -395,7 +419,7 @@
           <el-icon><Close /></el-icon>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="" prop="width" :rules="rules.positive">
+          <el-form-item label="">
             <el-input-number v-model="gg.form.width" :min="0" :controls="false" style="flex: 1;" />
             <!-- <el-input v-model="gg.form.width" autocomplete="off" /> -->
           </el-form-item>

@@ -33,7 +33,7 @@ const contract: any = ref({
 
 const orderId: any = ref('')
 // const boothData: any = ref({})
-const _date: any = ref(new Date().toLocaleDateString('zh-CN', { year: 'numeric',month: 'long',day: 'numeric', }))
+// const _date: any = ref(new Date().toLocaleDateString('zh-CN', { year: 'numeric',month: 'long',day: 'numeric', }))
 
 const setData = (id: any) => {
   orderId.value = Number(id)
@@ -91,6 +91,7 @@ const editContract = (templateId: any) => {
   }).then((res: any) => {
     if (res.code === 0) {
       ElMessage.success('编辑成功')
+      setData(orderId.value)
       emit('update:isEdit', false)
     }else{
       if(res.code === 170201){
@@ -100,6 +101,10 @@ const editContract = (templateId: any) => {
       }
     }
   })
+}
+
+const setPrice = () => {
+  contract.value.finalPrice = (Number(contract.value.positionUnitPrice) * Number(contract.value.positionArea) * (1 - Number(contract.value.discountRatio) / 100)).toFixed(2)
 }
 
 // defineProps({
@@ -177,15 +182,15 @@ defineExpose({
           </td>
           <td>{{ { 1: '标准', 2: '特装' }[contract.positionType as number] }}</td>
           <td>
-            <input v-if="isEdit" v-model="contract.positionUnitPrice"/>
+            <input v-if="isEdit" v-model="contract.positionUnitPrice" @input="setPrice"/>
             <template v-else>{{contract.positionUnitPrice}}</template>
           </td>
           <td>
-            <input v-if="isEdit" v-model="contract.positionArea"/>
+            <input v-if="isEdit" v-model="contract.positionArea" @input="setPrice"/>
             <template v-else>{{contract.positionArea}}</template>
           </td>
           <td>
-            <input v-if="isEdit" v-model="contract.discountRatio"/>
+            <input v-if="isEdit" v-model="contract.discountRatio" @input="setPrice"/>
             <template v-else>{{contract.discountRatio}}</template>
           </td>
           <td>
@@ -201,7 +206,7 @@ defineExpose({
     <table>
       <thead>
         <tr>
-          <th>款项名称</th>
+          <th style="width: 90px;">款项名称</th>
           <th>付款比率（%）</th>
           <th>付款金额（RMB）</th>
           <th>最迟付款时间</th>
@@ -214,8 +219,11 @@ defineExpose({
             <template v-else>{{item.name}}</template>
           </td>
           <td>
-            <input v-if="isEdit" v-model="item.ratio"/>
-            <template v-else>{{item.ratio}}</template>
+            <!-- <template v-if="item.name !== '全款'"> -->
+              <input v-if="isEdit" v-model="item.ratio"/>
+              <template v-else>{{item.ratio}}</template>
+            <!-- </template>
+            <template v-else>100</template> -->
           </td>
           <!-- <td><input :value="_ratio(item.ratio)" @input="(ev:any)=>{
             if (ev.target) {

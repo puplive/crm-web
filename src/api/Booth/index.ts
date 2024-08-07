@@ -68,3 +68,11 @@ export const getPosition = (params: any): Promise<any> => {
   });
 }
 
+export const positionIsLock = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/order/position/positionIsLock",
+    method: "post",
+    data,
+  });
+}
+
