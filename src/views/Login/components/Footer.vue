@@ -5,7 +5,7 @@
       <div class="foot-right-main">
         <ul class="">
           <li><a href="https://scm.exposaas.com/web/oa-yun/about">公司信息</a></li>
-          <li><a href="javascript:;" class="j-lxwm">联系我们</a></li>
+          <li><a href="javascript:;" @click="contactRef.setShow(true)">联系我们</a></li>
         </ul>
         <ul class="">
           <li>
@@ -23,15 +23,24 @@
       </div>
     </div>
   </div>
+  <Contact ref="contactRef" />
 </template>
+
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import Contact from '@/components/Contacts/index.vue'
+
+  let contactRef = ref(null)
+  
+</script>
 <style scoped>
   .footer {
     background-color:rgba(56,56,56);
-    color:#D3B365;
+    color:var(--el-color-primary);
     padding: 30px 100px;
     .main-foot{
       display:flex;
-      justify-content:space-between;
+      justify-content: center;
       align-items:center;
       .foot-logo{
         width:120px;
@@ -47,13 +56,14 @@
         ul{
           margin-top:31px;
           display:flex;
+          flex-wrap: wrap;
           align-items:center;
           li{
             padding:0 10px;
             font-size:14px;
             a{
               color:#fff;
-              &:hover{color:#D3B365}
+              &:hover{color: var(--el-color-primary)}
             }
             p{color:#fff}
           }
