@@ -129,7 +129,7 @@
         height="100%"
         show-overflow-tooltip
         header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="42" />
+        <!-- <el-table-column type="selection" width="42" /> -->
         <el-table-column prop="orderCode" label="订单编号" width="200" />
         <el-table-column prop="companyName" label="企业名称" min-width="120" />
         <el-table-column prop="exhibitionName" label="展会名称" min-width="120" />

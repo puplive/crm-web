@@ -96,7 +96,7 @@
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
         <!-- <el-table-column type="selection" width="42" /> -->
-        <el-table-column prop="name" label="名称" width="180" />
+        <el-table-column prop="name" label="名称" />
         <el-table-column prop="type" label="类型">
           <template #default="scope">{{ scope.row.type === 1 ? '展位合同' : '物料合同' }}</template>
         </el-table-column>

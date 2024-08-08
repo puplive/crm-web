@@ -122,7 +122,7 @@
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
         <!-- <el-table-column type="selection" width="42" /> -->
-        <el-table-column prop="id" label="ID" width="50" />
+        <el-table-column prop="id" label="ID" min-width="60" />
         <el-table-column prop="account" label="用户名" min-width="120" />
         <el-table-column prop="userName" label="注册人" />
         <el-table-column prop="phone" label="手机" min-width="120" />

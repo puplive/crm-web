@@ -121,7 +121,7 @@
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
-        <el-table-column type="selection" width="42" />
+        <!-- <el-table-column type="selection" width="42" /> -->
         <el-table-column prop="code" label="编号" width="180" />
         <el-table-column prop="companyName" label="企业名称" min-width="120" />
         <el-table-column prop="exhibitionName" label="展会名称" min-width="120" />
