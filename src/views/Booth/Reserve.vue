@@ -347,7 +347,6 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="展位号" :prop="`position[${index}].positionCode`" :rules="[...rules.required,{ validator: (rule:any, value:any, callback:any)=> checkBooth(rule, value, callback, form.position[index].hallCode), trigger: 'change' }]">
-                
                 <el-dropdown trigger="click" style="width: 100%;" 
                   max-height="300px"
                   @command="(command: any)=>{

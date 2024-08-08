@@ -273,8 +273,23 @@ getCart()
           </el-select>
         </el-form-item>
         <el-form-item label="展位号" style="width: 220px;">
+          <el-dropdown trigger="click" style="width: 100%;" 
+            max-height="300px"
+            @command="(command: any)=>{
+              positionCode = command
+            }">
+            <el-input v-model="positionCode" autocomplete="off" suffix-icon="ArrowDown" />
+            <template #dropdown>
+              <el-dropdown-menu v-if="zw.length">
+                <template v-for="(item,i) in zw" :key="i">
+                  <el-dropdown-item style="width: 166px;" :command="item">{{ item }}</el-dropdown-item>
+                </template>
+              </el-dropdown-menu>
+              <div v-else  style="width: 166px; text-align: center; padding: 10px">无数据</div>
+            </template>
+          </el-dropdown>
           <!-- multiple -->
-          <el-select
+          <!-- <el-select
             v-model="positionCode"
             
             filterable
@@ -290,7 +305,7 @@ getCart()
               :label="item"
               :value="item"
             />
-          </el-select>
+          </el-select> -->
         </el-form-item>
       </el-form>
     </div>
