@@ -100,10 +100,14 @@
     }
   })
   const checkLength = (rule: any, value: any, callback: any) => {
-    if (value.length <= 0 || gg.form.width <= 0) {
-      callback(new Error('例如 3X3,且尺寸不可为0和负数'))
+    if (value.length === '' || gg.form.width === '') {
+      callback(new Error('请填写尺寸'))
     } else {
-      callback()
+      if (value.length <= 0 || gg.form.width <= 0) {
+        callback(new Error('尺寸不可为0和负数'))
+      } else {
+        callback()
+      }
     }
   }
   
@@ -177,8 +181,8 @@
     gg.index = i
     gg.form.product = ''
     gg.form.unitPrice = ''
-    gg.form.length = 0
-    gg.form.width = 0
+    gg.form.length = ''
+    gg.form.width = ''
     gg.form.num = 1
 
     gg.show = true
@@ -342,7 +346,7 @@
                   <el-option v-for="(item,i) in hall_list" :key="i" :label="item.code" :value="item.code" />
                 </el-select>
               </el-form-item>
-              <el-form-item label="展位号" :prop="`position[${index}].positionCode`" :rules="[{ validator: (rule:any, value:any, callback:any)=> checkBooth(rule, value, callback, form.position[index].hallCode), trigger: 'change' }]">
+              <el-form-item label="展位号" :prop="`position[${index}].positionCode`" :rules="[...rules.required,{ validator: (rule:any, value:any, callback:any)=> checkBooth(rule, value, callback, form.position[index].hallCode), trigger: 'change' }]">
                 <el-select 
                   v-model="form.position[index].positionCode"
                   filterable
@@ -409,10 +413,10 @@
           <el-option v-for="(item,i) in gg_list" :key="i" :label="item.text" :value="item.price" />
         </el-select> -->
       </el-form-item>
-      <el-form-item label="尺寸" prop="length" :rules="[{ validator: checkLength, trigger: 'blur' }]">
+      <el-form-item label="尺寸" prop="length" required :rules="[{ validator: checkLength, trigger: 'blur' }]">
         <el-col :span="11">
           <el-form-item label=""> 
-            <el-input-number v-model="gg.form.length" :min="0" :controls="false" style="flex: 1;" />
+            <el-input type="number" v-model="gg.form.length" style="flex: 1;" input-style="text-align: center;" placeholder="长： 例如3" />
           </el-form-item>
         </el-col>
         <el-col :span="2" style="display: flex; align-items: center; justify-content: center; font-size: 20px;">
@@ -420,7 +424,7 @@
         </el-col>
         <el-col :span="11">
           <el-form-item label="">
-            <el-input-number v-model="gg.form.width" :min="0" :controls="false" style="flex: 1;" />
+            <el-input type="number" v-model="gg.form.width" style="flex: 1;" input-style="text-align: center;" placeholder="宽： 例如3" />
             <!-- <el-input v-model="gg.form.width" autocomplete="off" /> -->
           </el-form-item>
         </el-col>
