@@ -284,7 +284,7 @@
             <el-table-column prop="email" label="邮箱" />
             <el-table-column prop="password" label="密码" />
             <el-table-column prop="creatTime" label="添加时间" min-width="120" />
-            <el-table-column prop="" label="登录时间" min-width="120" />
+            <el-table-column prop="loginTime" label="登录时间" min-width="120" />
             <el-table-column label="操作" fixed="right" width="150">
               <template #default="scope">
                 <el-button link type="primary" @click="addAccount.set(scope.row)">编辑</el-button>

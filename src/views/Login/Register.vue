@@ -46,8 +46,8 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="手机号" prop="phone">
-                  <el-input v-model.trim="ruleForm.phone" style="width: calc(100% - 110px);" />
-                  <el-button type="primary" style="margin-left: 10px; width: 100px;" @click="sendSms(ruleFormRef)">发送验证码</el-button>
+                  <el-input v-model.trim="ruleForm.phone" style="width: calc(100% - 120px);" />
+                  <el-button type="primary" style="margin-left: 10px; width: 110px;" @click="sendSms(ruleFormRef)" :disabled="sendSmsTime !== 0">{{ sendSmsLabel }}</el-button>
                 </el-form-item>
                 
               </el-col>
@@ -185,20 +185,36 @@
       }
     })
   }
-
+  const sendSmsLabel = ref('发送验证码')
+  const sendSmsTime = ref(0)
+  const sendSmsInterval = ()=>{
+    let _interval = setInterval(() => {
+      if (sendSmsTime.value > 0) {
+        sendSmsTime.value--
+        sendSmsLabel.value = `发送验证码(${sendSmsTime.value})`
+      } else {
+        sendSmsLabel.value = '发送验证码'
+        clearInterval(_interval)
+      }
+    }, 1000)
+  }
   const sendSms = (formRef: any) => {
     formRef.validateField(['phone'], (valid: any) => {
       if (valid) {
+        sendSmsTime.value = 60
         sendSmsApi(ruleForm).then(res => {
           // console.log(res)
           if (res.code === 0) {
             ElMessage.success('验证码已发送，请注意查收')
+            sendSmsInterval()
           }else {
             ElMessage.error(res.msg)
+            sendSmsTime.value = 0
           }
         })
       } else {
         console.log('error phone')
+        sendSmsTime.value = 0
         return false
       }
     })

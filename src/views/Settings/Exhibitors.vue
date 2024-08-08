@@ -128,8 +128,8 @@
         <el-table-column prop="phone" label="手机" min-width="120" />
         <el-table-column prop="email" label="邮箱" min-width="120"/>
         <el-table-column prop="password" label="密码" min-width="120" />
-        <el-table-column prop="" label="添加时间" min-width="120" />
-        <el-table-column prop="" label="登录时间" min-width="120" />
+        <el-table-column prop="creatTime" label="添加时间" min-width="120" />
+        <el-table-column prop="loginTime" label="登录时间" min-width="120" />
         <el-table-column prop="status" label="状态">
           <template #default="scope">
             <!-- 状态，0待审核，1通过，2拒绝 -->

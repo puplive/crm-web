@@ -92,6 +92,17 @@ input[type="number"] {
 .s-number-input.el-input-number .el-input__inner{
   text-align: left;
 }
+.el-table__cell{
+  .el-tooltip{
+    .el-link{
+      display: inline;
+      .el-link__inner{
+        display: inline;
+      }
+    }
+  }
+}
+.el-tooltip__trigger { outline: none }
 @media (hover: hover) {
   a:hover {
     /* background-color: hsla(160, 100%, 37%, 0.2); */

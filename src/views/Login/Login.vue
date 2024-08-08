@@ -16,7 +16,7 @@
             <el-button style="width: 100%" type="primary" @click="login">登录</el-button>
             <div class="login-footer">
               <el-button link type="primary" @click="router.push('/register')">注册账号</el-button>
-              <el-link type="primary" href="/handbooks.pdf" target="_blank">操作手册</el-link>
+              <el-button link type="primary" @click="book">操作手册</el-button>
             </div>
           </el-form>
         </div>
@@ -54,6 +54,10 @@
     })
   }
 
+  const book = () => {
+    window.open('/handbooks.pdf', '_blank')
+  }
+
 </script>
 
 <style scoped>
@@ -63,7 +67,7 @@
   justify-content: flex-end;
   align-items: center;
   padding: 0 200px;
-  background: url('http://chinafeed.exposaas.com/uploads/web/20221009/f94b570e37f6a9ce27b0b7963ff0a419.jpg') no-repeat center center;
+  background: url('@/assets/images/login-bg.jpg') no-repeat center center;
   background-size: cover;
 }
 .login-box {

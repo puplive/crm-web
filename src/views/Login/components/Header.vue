@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <img class="logo" src="@/assets/logo.svg" alt="">
+        <img class="logo" src="@/assets/images/logo.png" alt="">
         <span class="title">欢迎登录 &nbsp;&nbsp;&nbsp;&nbsp; 会展云-招展系统</span>
     </div>
 </template>

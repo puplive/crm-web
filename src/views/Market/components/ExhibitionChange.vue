@@ -33,7 +33,7 @@
         max-height="300px"
         placement="bottom-start">
         <el-button link style="font-size: 16px;">
-          {{ exhibitionInfo.exhibitionName }}<el-icon class="el-icon--right" style="color: #f3d19e;"><Document /></el-icon>
+          {{ exhibitionInfo.exhibitionName }}<el-icon class="el-icon--right" style="color: var(--el-color-primary)"><Document /></el-icon>
         </el-button>
         <template #dropdown>
           <el-dropdown-menu>

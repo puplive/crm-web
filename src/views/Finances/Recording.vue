@@ -207,6 +207,7 @@ const orderId: any = ref(Number(route.query.id))
 
   const formData: any = reactive([{
     orderId: orderId,
+    orderType: 1,
     payImg: '',
     receiveImg: '',
     invoice: {
@@ -217,6 +218,7 @@ const orderId: any = ref(Number(route.query.id))
   const addDetail = () => {
     formData.push({
       orderId: orderId,
+      orderType: 1,
       payImg: '',
       receiveImg: '',
       invoice: {

@@ -153,8 +153,8 @@ onMounted(() => {
       </el-form-item>
       
       <el-form-item>
-        <el-button type="primary" @click="_search">搜索</el-button>
-        <el-button type="primary" @click="resetForm(refForm)">重置</el-button>
+        <el-button type="primary" @click="_search" icon="Search">搜索</el-button>
+        <el-button type="" @click="resetForm(refForm)">重置</el-button>
         <el-button 
           v-if="list.length < props.data.length" 
           type="primary" icon="Plus" size="small" circle 

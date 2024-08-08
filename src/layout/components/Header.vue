@@ -33,7 +33,7 @@
     </el-sub-menu>
   </el-menu> -->
   <div class="header">
-    <div><img src="@/assets/logo.svg" alt=""></div>
+    <div><img src="@/assets/images/logo.png" style="height: 45px; margin-right: 10px; display: block;" alt="" ></div>
     <div class="s-flex-grow"></div>
     <div>
       <el-dropdown trigger="hover" @command="handleCommand">
