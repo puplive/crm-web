@@ -347,7 +347,23 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="展位号" :prop="`position[${index}].positionCode`" :rules="[...rules.required,{ validator: (rule:any, value:any, callback:any)=> checkBooth(rule, value, callback, form.position[index].hallCode), trigger: 'change' }]">
-                <el-select 
+                
+                <el-dropdown trigger="click" style="width: 100%;" 
+                  max-height="300px"
+                  @command="(command: any)=>{
+                    form.position[index].positionCode = command
+                  }">
+                  <el-input v-model="form.position[index].positionCode" autocomplete="off" suffix-icon="ArrowDown" />
+                  <template #dropdown>
+                    <el-dropdown-menu v-if="booth_list[index].length">
+                      <template v-for="(item,i) in booth_list[index]" :key="i">
+                        <el-dropdown-item style="width: 270px;" :command="item">{{ item }}</el-dropdown-item>
+                      </template>
+                    </el-dropdown-menu>
+                    <div v-else  style="width: 270px; text-align: center; padding: 10px">无数据</div>
+                  </template>
+                </el-dropdown>
+                <!-- <el-select 
                   v-model="form.position[index].positionCode"
                   filterable
                   allow-create
@@ -355,7 +371,7 @@
                   :reserve-keyword="false"
                   placeholder="请选择">
                   <el-option v-for="(item,i) in booth_list[index]" :key="i" :label="item" :value="item" />
-                </el-select>
+                </el-select> -->
               </el-form-item>
               <el-form-item label="品牌">
                 <el-select v-model="form.position[index].companyBrand" multiple placeholder="请选择">
