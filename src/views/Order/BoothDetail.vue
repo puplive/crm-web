@@ -272,7 +272,10 @@ const revoke = (id: any) => {
             <template #default="scope">
               <el-button :disabled="scope.row.status===0" link :type="scope.row.status===0?'':'primary'" v-if="scope.row.invoiceStatus === 1" @click="()=>invoicingRef.openInvoiceSet(scope.row)">开票</el-button>
               <!-- <UpInvoice :disabled="scope.row.status===0" :id="scope.row.id" @callback="getBoothDetail"></UpInvoice> -->
-              <el-button :disabled="scope.row.status===0" link :type="scope.row.status===0?'':'primary'"><UpInvoice :id="scope.row.id" @callback="getBoothDetail" /></el-button>
+              <el-button :disabled="scope.row.status===0" link :type="scope.row.status===0?'':'primary'">
+                <span v-if="scope.row.status === 0">上传发票</span>
+                <UpInvoice v-else :id="scope.row.id" @callback="getBoothDetail" />
+              </el-button>
               <el-button :disabled="scope.row.status===0" link :type="scope.row.status===0?'':'primary'" @click="() => { 
                 let d={...scope.row, invoiceTitle: scope.row.title }; 
                 editInvoiceRef.setEdit(d) }">编辑</el-button>
