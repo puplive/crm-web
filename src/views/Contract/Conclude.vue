@@ -5,6 +5,7 @@
   import { htmlToPDF, goPrint } from '@/utils/html2pdf'
   // import htmlToPdfmake  from '@/utils/htmlToPdfmake'
   const route = useRoute();
+  const router = useRouter();
 
   const isUpdate = route.query.isUpdate
   // import VueHtml2pdf from 'vue-html2pdf'
@@ -21,7 +22,7 @@
   // }
   
   const createContract = () => {
-    contractRef.value.createContract(templateId)
+    contractRef.value.createContract(templateId, ()=>{ setTimeout(() => { router.go(-2) }, 2000) })
   }
   const printContract = () => {
     contractRef.value.printContract()

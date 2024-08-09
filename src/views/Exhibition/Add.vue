@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" label-width="auto"  style="width: 800px; margin: 0 auto;">
+  <el-form ref="formRef":model="form" label-width="auto"  style="width: 800px; margin: 0 auto;" class="add-exhibition">
     <el-divider content-position="left"><span class="title">基本信息</span></el-divider>
     <el-col :span="20" :offset="2">
       <el-form-item label="展会名称">
@@ -52,6 +52,7 @@
           range-separator="至"
           start-placeholder=""
           end-placeholder=""
+          :disabled-date="(time: any)=>{return form.startTime? new Date(form.startTime).getTime()-1000*60*60*24 < time.getTime() : false}"
         />
       </el-form-item>
       <el-form-item label="开展日期">
@@ -62,6 +63,7 @@
           range-separator="至"
           start-placeholder=""
           end-placeholder=""
+          :disabled-date="(time: any)=>{return form.arrangeEndTime? time.getTime() < new Date(form.arrangeEndTime).getTime() : false}"
         />
       </el-form-item>
       <el-form-item label="销售截止日期">
@@ -77,7 +79,13 @@
     <el-divider content-position="left"><span class="title">图片素材</span></el-divider>
     <el-col :span="20" :offset="2">
       <el-form-item label="招展平面图">
-        <el-image :src="hallImg" :preview-src-list="[hallImg]" fit="cover" style="width: 100px; height: 100px" />
+        <el-image :src="hallImg" :preview-src-list="[hallImg]" fit="contain" style="width: 100px; height: 100px">
+          <template #error >
+            <div class="el-image__error">
+              {{hallImg == '' ? '暂无图片' : '加载失败'}}
+            </div>
+          </template>
+        </el-image>
         <!-- <el-upload
           class="img-uploader"
           :show-file-list="false"
@@ -139,12 +147,51 @@
 
     <el-divider content-position="left"><span class="title">单价设置</span></el-divider>
     <el-col :span="20" :offset="2">
-      <el-form-item label=" ">
-        <div class="list" v-for="(item, index) in form.unitPrice">
+      <el-form-item label=" " v-for="(item, index) in form.unitPrice">
+        <div class="list">
           <div><label v-if="index === 0" for="">标题</label><el-input v-model="item.text" placeholder="请输入标题"></el-input></div>
-          <div><label v-if="index === 0" for="">单价</label><el-input v-model="item.price" placeholder="请输入单价" type="number"></el-input></div>
-          <div><label v-if="index === 0" for="">计价基数</label><el-input v-model="item.num" placeholder="请输入计价基数" type="number"></el-input></div>
-          <el-button type="info" plain v-if="index === 0" icon="Plus" @click="()=>{form.unitPrice.push({text:'', price:0, num:0})}"/>
+          <div><label v-if="index === 0" for="">单价</label>
+            <el-form-item label="" :prop="`unitPrice[${index}].price`"
+              :rules="[{ 
+                validator: (rule: any, value: any, callback: any) => { 
+                  console.log(value)
+                  if (value === '') {
+                    callback()
+                    // callback(new Error('请输入单价'))
+                  } else {
+                    if (value < 1) {
+                      callback(new Error('单价大于0'))
+                    } else {
+                      callback()
+                    }
+                  }
+                }, 
+                trigger: 'blur' 
+              }]">
+              <el-input v-model="item.price" placeholder="请输入单价" type="number"></el-input>
+            </el-form-item>
+          </div>
+          <div><label v-if="index === 0" for="">计价基数</label>
+            <el-form-item label="" :prop="`unitPrice[${index}].num`"
+              :rules="[{ 
+                validator: (rule: any, value: any, callback: any) => { 
+                  if (value === '') {
+                    callback()
+                    // callback(new Error('请输入计价基数'))
+                  } else {
+                    if (value < 1) {
+                      callback(new Error('计价基数大于等于1'))
+                    } else {
+                      callback()
+                    }
+                  }
+                }, 
+                trigger: 'blur' 
+              }]">
+              <el-input v-model="item.num" placeholder="请输入计价基数" type="number"></el-input>
+            </el-form-item>
+          </div>
+          <el-button type="info" plain v-if="index === 0" icon="Plus" @click="()=>{form.unitPrice.push({text:'', price:'', num:''})}"/>
           <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.unitPrice.splice(index, 1)}"/>
         </div>
       </el-form-item>
@@ -161,14 +208,31 @@
               <el-input v-model="item.text" placeholder="例如：双开口"></el-input>
             </div>
             <div>
-              <el-input type="number" v-model="item.price" :placeholder="item.priceType==1?'设置比例':'设置金额'">
-                <template #append>
-                  <el-select v-model="item.priceType" placeholder="" style="width: 60px;">
-                    <el-option label="%" :value="1" />
-                    <el-option label="￥" :value="2" />
-                  </el-select>
-                </template>
-              </el-input>
+              <el-form-item label="" :prop="`attachPrice[${index}].price`"
+                :rules="[{ 
+                  validator: (rule: any, value: any, callback: any) => { 
+                    if (value === '') {
+                      callback()
+                      // callback(new Error('请输入计价基数'))
+                    } else {
+                      if (value < 1) {
+                        callback(new Error(item.priceType==1?'比例大于0':'金额大于0'))
+                      } else {
+                        callback()
+                      }
+                    }
+                  }, 
+                  trigger: 'blur' 
+                }]">
+                <el-input type="number" v-model="item.price" :placeholder="item.priceType==1?'设置比例':'设置金额'">
+                  <template #append>
+                    <el-select v-model="item.priceType" placeholder="" style="width: 60px;">
+                      <el-option label="%" :value="1" />
+                      <el-option label="￥" :value="2" />
+                    </el-select>
+                  </template>
+                </el-input>
+              </el-form-item>
             </div>
             <el-button type="info" plain v-if="index === form.attachPrice.findIndex((item: any) => item.changeType === 1)" icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:'', priceType:1, changeType:1})}"/>
             <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
@@ -186,14 +250,31 @@
               <el-input v-model="item.text" placeholder="例如：提前预定"></el-input>
             </div>
             <div>
-              <el-input type="number" v-model="item.price" :placeholder="item.priceType==1?'设置比例':'设置金额'">
-                <template #append>
-                  <el-select v-model="item.priceType" placeholder="" style="width: 60px;">
-                    <el-option label="%" :value="1" />
-                    <el-option label="￥" :value="2" />
-                  </el-select>
-                </template>
-              </el-input>
+              <el-form-item label="" :prop="`attachPrice[${index}].price`"
+                :rules="[{ 
+                  validator: (rule: any, value: any, callback: any) => { 
+                    if (value === '') {
+                      callback()
+                      // callback(new Error('请输入计价基数'))
+                    } else {
+                      if (value < 1) {
+                        callback(new Error(item.priceType==1?'比例大于0':'金额大于0'))
+                      } else {
+                        callback()
+                      }
+                    }
+                  }, 
+                  trigger: 'blur' 
+                }]">
+                <el-input type="number" v-model="item.price" :placeholder="item.priceType==1?'设置比例':'设置金额'">
+                  <template #append>
+                    <el-select v-model="item.priceType" placeholder="" style="width: 60px;">
+                      <el-option label="%" :value="1" />
+                      <el-option label="￥" :value="2" />
+                    </el-select>
+                  </template>
+                </el-input>
+              </el-form-item>
             </div>
             <el-button type="info" plain v-if="index === form.attachPrice.findIndex((item: any) => item.changeType === -1)" icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:'', priceType:1, changeType:-1})}"/>
             <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
@@ -203,13 +284,13 @@
     </el-col>
     <el-divider content-position="left"><span class="title">付款期限</span></el-divider>
     <el-col :span="20" :offset="2">
-      <el-form-item label="一期款">
+      <el-form-item label="一期款" prop="payFirst">
         <el-input type="number" v-model="form.payFirst">
           <template #prepend>合同签订后</template>
           <template #append>个自然日</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="尾款及全款">
+      <el-form-item label="尾款及全款" prop="payFirst">
         <el-input type="number" v-model="form.payFinal">
           <template #prepend>合同签订后</template>
           <template #append>个自然日</template>
@@ -217,7 +298,7 @@
       </el-form-item>
     </el-col>
     <div class="s-flex-center">
-      <el-button type="primary" @click="onSubmit">保存</el-button>
+      <el-button type="primary" @click="sub">保存</el-button>
       <el-button @click="$router.go(-1)">取消</el-button>
     </div>
   </el-form>
@@ -235,6 +316,7 @@ const route = useRoute()
 // console.log(route, router)
 let id = route.query.id
 
+const formRef:any = ref(null)
 const form: any = reactive({
   exhibitionName : '',  //string 展会名称 必需
   cityId: '',  //integer 城市ID 必需
@@ -257,7 +339,7 @@ const form: any = reactive({
 
   position: [{code:'', img:''}],  //array[string] 展位图 必需 示例值:["[['code' => '展馆号1', 'img' => '图片地址1'], ['code' => '展馆号2', 'img' => '图片地址2']]"]
   cate: [{name:'', rgb:''}],  //array[string] 展区分类 示例值:["[['name' => '展区分类1', 'rgb' => '#409EFF']]"]
-  unitPrice: [{text: '', price: 0, num: 0}],  //array[string] 单价设置
+  unitPrice: [{text: '', price: '', num: ''}],  //array[string] 单价设置
   attachPrice: [{text: '', price: '', priceType: 1, changeType: 1}, {text: '', price: '', priceType: 1, changeType: -1}],  //array[string] 主办方 ["[['text' => '名称1', 'price'=> 10, 'priceType' => 1, 'changeType' => 1],['text' => '名称2', 'price'=> 5, 'priceType' => 2, 'changeType' => -1]]"]
 })
 const hallImg = ref('')  //string 展馆平面图
@@ -310,7 +392,7 @@ if(id){
       form.payFinal = data.payFinal
       form.position = data.position
       form.cate = data.cate.length? data.cate : [{name: '', rgb: ''}]
-      form.unitPrice = data.unitPrice.length ? data.unitPrice : [{text: '', price: 0, num: 0}]
+      form.unitPrice = data.unitPrice.length ? data.unitPrice : [{text: '', price: '', num: ''}]
 
       let changeType_1 = 0, changeType_2 = 0
       form.attachPrice = data.add.map((item: any) => {
@@ -350,8 +432,6 @@ if(id){
     }
   })
 }
-
-
 
 getCityList().then(res => {
   if(res.code === 0 && res.data.length > 0){
@@ -397,8 +477,8 @@ const hallChange = (value: any) => {
 const _getHallImg = () => {
   if(form.hallId){
     getHallImg({hallId: form.hallId}).then(res => {
-      if(res.code === 0 && res.data.length > 0){
-        hallImg.value = res.data
+      if(res.code === 0 ){
+        hallImg.value = res.data.url || ''
       }
     })
   }
@@ -447,9 +527,15 @@ const uploadImg = (fileObj: any) => {
     })
   })
 }
-
+const sub = ()=>{
+  formRef.value.validate((valid: boolean) => {
+    if (valid) {
+      onSubmit()
+    }
+  })
+}
 const onSubmit = () => {
-  console.log(form)
+  // console.log(form)
   let d: any = {}
   for(let key in form){
     if(form[key] !== undefined){
@@ -484,7 +570,7 @@ const onSubmit = () => {
       }
     })
   }else{
-    exhibitionAdd(d).then(res => {
+    exhibitionAdd(d).then((res:any) => {
       if(res.code === 0){
         ElMessage.success('保存成功')
         router.back()
@@ -533,5 +619,7 @@ const onSubmit = () => {
     }
 </style>
 <style>
-
+  .add-exhibition .el-form-item .el-input__validateIcon {
+      display: none !important;
+  }
 </style>

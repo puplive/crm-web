@@ -50,7 +50,7 @@ const setData = (id: any) => {
   // })
 }
 
-const createContract = (templateId: any) => {
+const createContract = (templateId: any, callback: any) => {
   // console.log(contract.value)
   create({
     orderId: orderId.value,
@@ -68,6 +68,7 @@ const createContract = (templateId: any) => {
   }).then((res: any) => {
     if (res.code === 0) {
       ElMessage.success('签订成功')
+      callback && callback()
     }else{
       ElMessage.error(res.msg)
     }

@@ -151,6 +151,9 @@ const searchData: any = ref([])
       font-size: 16px;
       font-weight: bold;
       margin-bottom: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .content{
       display: flex;

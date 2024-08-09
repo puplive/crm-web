@@ -79,6 +79,7 @@
   const gg: any = reactive({
     show: false,
     index: 0,
+    selected: {},
     form: {
       product: '',
       unitPrice: '',
@@ -88,9 +89,12 @@
     }
   })
   const ggChange = (val:any)=>{
-    gg.form.unitPrice = Number(val.price); 
-    gg.form.product = val.text;
-    gg.form.num = val.num;
+    let _val = gg_list.value.find((item:any) => {
+      return item.text === val
+    })
+    gg.form.unitPrice = Number(_val.price); 
+    gg.form.product = _val.text;
+    gg.form.num = _val.num;
   }
   const gg_price_label = computed(() => {
     if(gg.form.unitPrice){
@@ -419,7 +423,7 @@
     <el-form ref="ggFormRef" :model="gg.form" label-width="auto" label-position="left">
       <el-form-item label="产品名称" prop="product" :rules="rules.required">
         <el-select v-model="gg.form.product" placeholder="" @change="ggChange">
-          <el-option v-for="item in gg_list" :key="item.id" :label="item.text+ ' ' + item.price + '/'+ item.num + '/㎡'" :value="item" />
+          <el-option v-for="item in gg_list" :key="item.id" :label="item.text+ ' ' + item.price + '/'+ item.num + '/㎡'" :value="item.text" />
         </el-select>
       </el-form-item>
       <el-form-item label="单价" prop="unitPrice">

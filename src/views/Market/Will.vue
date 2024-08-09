@@ -5,10 +5,12 @@ import TableSearch from '@/components/TableSearch/index.vue'
 import ExhibitionChange from '@/views/Market/components/ExhibitionChange.vue'
 import Move from './components/Move.vue'
 import api from '@/api/Clues'
-// import { getSponsorUser } from '@/api/user'
+import { isOrder } from '@/api/Exhibition'
 
 import { userStore } from "@/stores/user";
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const _store = userStore()
 const exhibitionInfo: any = ref(_store.EXHIBITION_INFO)
 watch(() => _store.EXHIBITION_INFO,(val:any, oldVal)=>{
@@ -164,6 +166,25 @@ const customField: any = ref([])
     }
   })
 }
+const setBooth = (row: any) => {
+  isOrder({exhibitionId: row.exhibitionId}).then(res => {
+    if(res.code === 0 ){
+      router.push({ name: 'HallLayout', query: { clueId: row.id, exhibitionId: row.exhibitionId, exhibitorId: row.exhibitorId } })
+    }else{
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
+const setGoods = (row: any) => {
+  isOrder({exhibitionId: row.exhibitionId}).then(res => {
+    if(res.code === 0 ){
+      router.push({ name: 'GoodsReserve', query: { clueId: row.id, exhibitionId: row.exhibitionId, exhibitorId: row.exhibitorId, hallCode: row.hallCode, positionCode: row.positionCode } })
+    }else{
+      ElMessage.error(res.msg)
+    }
+  })
+}
 
 getCustomField()
 
@@ -183,6 +204,8 @@ getList()
       <el-button size="small" @click="merge.set">合并</el-button>
       <el-button size="small" @click="Export">导出</el-button>
       <el-button size="small" @click="Del">删除</el-button>
+      <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
+      <el-button size="small" @click="$router.push('/market/clues/import')">导入线索</el-button>
       <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button> -->
       <!-- <el-button size="small" @click="Import">导入线索</el-button> -->
     </div>
@@ -232,12 +255,12 @@ getList()
             <!-- <el-button link type="primary" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
             <el-button 
               link type="primary" 
-              @click="$router.push({ name: 'HallLayout', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId } })">
+              @click="setBooth(scope.row)">
               {{scope.row.orderPositionStatus?'新增':''}}展位预定
             </el-button>
             <el-button
               link type="primary" 
-              @click="$router.push({ name: 'GoodsReserve', query: { clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode, positionCode: scope.row.positionCode } })">
+              @click="setGoods(scope.row)">
               {{scope.row.orderMaterialStatus?'新增':''}}物料预定
             </el-button>
             <!-- <el-button link type="primary" @click="willSet(scope.row)">

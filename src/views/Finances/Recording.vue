@@ -259,7 +259,11 @@ const submitForm = (i: any) => {
     if(res.code === 0){
       ElMessage.success('保存成功')
       formData[i].isSub = true
-      // router.back()
+      if(!formData.some((item: any) => item.isSub !== true)){
+        setTimeout(() => {
+          router.back()
+        }, 2000)
+      }
     }else{
       ElMessage.error(res.msg)
     }

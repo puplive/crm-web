@@ -77,3 +77,11 @@ export const getSearchField = (): Promise<any> => {
     method: "get",
   });
 }
+
+export const isOrder = (data: any): Promise<any> => {
+  return request({
+    url: prefix + "/exhibition/info/isOrder",
+    method: "post",
+    data,
+  });
+}
