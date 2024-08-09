@@ -29,10 +29,10 @@
   import vHeader from './components/Header.vue'
   import vFooter from './components/Footer.vue'
   import { loginApi } from "@/api/user";
-  import { reactive } from 'vue'
+  import { reactive, watch } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { userStore } from '@/stores/user'
-  import { getMenu } from '@/api/user'
+  // import { getMenu } from '@/api/user'
   const store = userStore()
 
   const router = useRouter()
@@ -47,16 +47,7 @@
       if (res.code === 0) {
         ElMessage.success('登录成功')
         store.SET_TOKEN(res.data.token)
-        
-        // getMenu().then(res => {
-        //   if (res.code === 0) {
-        //     store.SET_MENU(res.data)
-        //     if(res.data.length > 0){
-        //       router.push(res.data[0].path)
-        //     }
-        //   }
-        // })
-        
+        store.SET_MENU()
       } else {
         ElMessage.error(res.msg)
       }
@@ -66,6 +57,16 @@
   const book = () => {
     window.open('/handbooks.pdf', '_blank')
   }
+
+  watch(() => store.MENU,(val:any, oldVal)=>{
+    if (val.length > 0) {
+      if (val[0].child && val[0].child.length > 0) {
+        router.push(val[0].child[0].path)
+      } else {
+        router.push(val[0].path)
+      }
+    }
+  }, {deep: true})
 
 </script>
 

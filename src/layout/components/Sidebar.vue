@@ -1,14 +1,11 @@
 <script lang="ts" setup>
-  import { ref, computed, watch } from 'vue'
+  import { ref, computed, watch, onMounted } from 'vue'
   // import { getMenu } from '@/api/user'
   import { userStore } from "@/stores/user";
   
   const _store = userStore()
   const activeIndex = ref(_store.MENU_ACTIVE)
   const menu: any = ref(_store.MENU);
-  // getMenu().then(res => {
-  //   menu.value = res.data;
-  // })
   watch(() => _store.MENU,(val:any, oldVal)=>{
     if(val.id!== oldVal.id){
       menu.value = val
@@ -23,6 +20,10 @@
   const handleClose =(key, keyPath) =>{
     // console.log(key, keyPath);
   }
+  onMounted(() => {
+    // console.log(menu.value);
+    _store.SET_MENU()
+  })
   // menu.value = [
   //   {
   //     path:'/exhibition',
