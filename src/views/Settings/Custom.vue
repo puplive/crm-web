@@ -1,7 +1,10 @@
 <template>
   <el-tabs type="border-card">
 
-    <el-tab-pane label="销售客户">
+    <el-tab-pane label="销售线索">
+      <!-- <template #label>
+          <span style="color: #333;">销售线索</span>
+      </template> -->
       <div class="s-table-operations">
         <el-button size="small" icon="Plus" @click="showAddForm">线索字段</el-button>
       </div>
@@ -9,9 +12,9 @@
         header-row-class-name="s-table-header">
         <el-table-column prop="name" label="名称">
           <template #default="scope: any">
-            <el-button v-if="scope.row.type != 1 && scope.row.type != 2" type="primary" link
+            <el-link v-if="scope.row.type != 1 && scope.row.type != 2" type=""
               @click="$router.push({ name: 'CustomField', query: { id: scope.row.id, title: scope.row.name, type: scope.row.type } })">{{
-                scope.row.name }}</el-button>
+                scope.row.name }}</el-link>
             <template v-else>{{ scope.row.name }}</template>
           </template>
         </el-table-column>
@@ -195,3 +198,10 @@ const changeEnable = (row: any, index: number) => {
 getTableData()
 
 </script>
+<style>
+/* .custom-tabs {
+  .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+    color: #303133 ;
+  }
+} */
+</style>

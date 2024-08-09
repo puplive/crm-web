@@ -3,6 +3,8 @@
 import { ref } from 'vue'
 import TableSearch from '@/components/TableSearch/index.vue'
 import { exhibitionList, setStatus, exhibitionDelete, getSearchField } from "@/api/Exhibition"; 
+import { EditPen } from '@element-plus/icons-vue';
+// import { isDark } from '~/composables/dark'
 // const Edit = ref()  
 const searchForm: any = ref({})
 const searchData: any = ref([])
@@ -27,10 +29,11 @@ const searchData: any = ref([])
     }
   })
 
-  const onChange = (d: any) => {
-    setStatus({id: d.id, status: d.status}).then(res => {
+  const onChange = (d: any, status: number) => {
+    setStatus({id: d.id, status: status}).then(res => {
       if (res.code === 0) {
         ElMessage.success('修改成功')
+        d.status = status
       }else{
         ElMessage.error('修改失败')
         d.status = d.status? 0 : 1
@@ -76,27 +79,37 @@ const searchData: any = ref([])
         <div class="title">{{item.exhibitionName}}</div>
         <div class="content">
           <div @click="$router.push({path: '/booth/manage', query: {id: item.id}})">
-            <el-icon size="30"><FolderAdd /></el-icon>
+            <!-- <el-icon size="30"><FolderAdd /></el-icon> -->
+            <img src="@/assets/images/xinj1.svg" alt="">
             <p>导入展位信息</p>
           </div>
           <!-- <RouterLink :to="{path: '/booth/reserve'}"> -->
           <div @click="$router.push({path: '/goods/manage', query: {id: item.id, title: item.exhibitionName}})">
-            <el-icon size="30"><ShoppingCartFull /></el-icon>
+            <!-- <el-icon size="30"><ShoppingCartFull /></el-icon> -->
+            <img src="@/assets/images/shop-car.svg" alt="">
             <p>设置物料</p>
           </div>
         <!-- </RouterLink> -->
         </div>
         <div class="actions">
-          <el-switch v-model="item.status" :active-value="1" :inactive-value="0" active-text="开启" inactive-text="关闭" inline-prompt 
-            @change="onChange(item)"/>
-          <!-- <el-button-group>
-            <el-button size="small" type="primary">开启</el-button>
-            <el-button size="small" type="info" plain>关闭</el-button>
-          </el-button-group> -->
-          <el-button-group style="margin-left: 10px;">
-            <el-button :disabled="item.status === 1" type="primary" text @click="$router.push({path: `/exhibition/edit`, query: {id: item.id}})" icon="Edit" style="font-size: 18px;"></el-button>
-            <el-button  type="danger" text @click="onDel(item.id)" icon="Delete" style="font-size: 18px;"></el-button>
-          </el-button-group>
+          <!-- <el-switch color="#409EFF" v-model="item.status" :active-value="1" :inactive-value="0" active-text="开启" inactive-text="关闭" inline-prompt 
+            @change="onChange(item)"/> -->
+          <div style="display: flex; align-items: center;">
+            <template v-if="item.status === 1">
+            <el-button size="small" color="#2f9dff" style="margin: 0; border-radius: 2px 0 0 2px;"><span style=" color:#fff">开启</span></el-button>
+            <el-button size="small" color="rgba(249, 250, 251, 1)" style="margin: 0; border-radius: 0 2px 2px 0 ; border-left: 0; " @click="onChange(item, 0)"><span style=" color:rgba(145, 158, 171, 1)">关闭</span></el-button>
+            </template>
+            <template v-else>
+            <el-button size="small" color="rgba(249, 250, 251, 1)" style="margin: 0; border-radius: 2px 0 0 2px;" @click="onChange(item, 1)"><span style=" color:rgba(145, 158, 171, 1)">开启</span></el-button>
+            <el-button size="small" color="#2f9dff" style="margin: 0; border-radius: 0 2px 2px 0 ; border-left: 0; "><span style=" color:#fff">关闭</span></el-button>
+            </template>
+          </div>
+          <div style="margin-left: 10px; display: flex; align-items: center;">
+            <el-icon size="18" color="#2f9dff" style="margin-left: 20px; cursor: pointer;" :disabled="item.status === 1" @click="$router.push({path: `/exhibition/edit`, query: {id: item.id}})"><EditPen /></el-icon>
+            <el-icon size="18" color="#2f9dff" style="margin-left: 20px; cursor: pointer;" @click="onDel(item.id)"><Delete /></el-icon>
+            <!-- <el-button color="#409EFF" text :disabled="item.status === 1" @click="$router.push({path: `/exhibition/edit`, query: {id: item.id}})"><el-icon size="18" color="#409EFF"><EditPen /></el-icon></el-button> -->
+            <!-- <el-button color="#409EFF" text  @click="onDel(item.id)"><el-icon size="18" color="#409EFF"><Delete /></el-icon></el-button> -->
+          </div>
         </div>
       </div>
     </el-col>
@@ -153,19 +166,25 @@ const searchData: any = ref([])
         &:first-child{
           margin-right: 10px;
         }
-        &:hover{
+        /* &:hover{
           background-color: #e9eaeb
+        } */
+        img{
+          height: 38px;
         }
         p{
           margin: 0;
           font-size: 14px;
-          color: #333;
+          color: #2f9dff;
           margin-top: 10px;
         }
       }
     }
     .actions{
       margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 </style>

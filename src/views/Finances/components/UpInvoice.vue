@@ -1,13 +1,14 @@
 <template>
   <el-upload
     ref="uploadRef"
-    style="display: inline-flex; margin-right: 5px; position: relative; top: 2px;"
+    style=""
     :show-file-list="false"
     :on-success="(response:any, file:any, fileList:any) => { uploadInvoice(response.url) }"
     :before-upload="beforeUpload"
     :http-request="uploadImg"
   >
-    <el-button link type="primary" :loading="loading" :disabled="props.disabled">上传发票</el-button>
+  上传发票
+    <!-- <el-button link type="primary" :loading="loading" :disabled="props.disabled">上传发票</el-button> -->
   </el-upload>
 </template>
 <script lang="ts" setup>

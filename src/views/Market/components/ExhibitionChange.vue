@@ -5,7 +5,7 @@
 
   const _store = userStore()
   const exhibitionInfo: any = ref(_store.EXHIBITION_INFO)
-  const exhibitionData: any = ref([])
+  const exhibitionData: any = ref([{ exhibitionName: '全部', id: '', status: 1 }])
   watch(() => _store.EXHIBITION_INFO,(val:any, oldVal)=>{
     if(val.id!== oldVal.id){
       exhibitionInfo.value = val

@@ -9,7 +9,7 @@ export const userStore = defineStore('user', {
     USER_INFO: {},
     MENU: [],
     MENU_ACTIVE: '',
-    EXHIBITION_INFO: {},
+    EXHIBITION_INFO: { exhibitionName: '全部', id: '', status: 1 },
   }),
   getters: {
     // double: (state) => state.count * 2,

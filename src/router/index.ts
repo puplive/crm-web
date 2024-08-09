@@ -556,7 +556,7 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   // 页面标题
-  document.title = to.meta.title || '招展管理系统';
+  // document.title = to.meta.title || '汇展CRM管理';
 
   // 登录判断
   const _userStore = userStore()
