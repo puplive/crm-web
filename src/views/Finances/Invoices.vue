@@ -195,9 +195,9 @@
           <template #default="scope">
             <!-- <div style="display: flex; align-items: center;"> -->
             <template v-if="scope.row.orderStatus !== 0">
-            <el-button v-if="scope.row.invoiceStatus === 1" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" :disabled="scope.row.status===0" style="margin-right: 5px;">开票</el-button>
-            <UpInvoice :id="scope.row.id" @callback="getList" :disabled="scope.row.status===0" />
-            <el-button size="default" link type="primary" @click="editInvoiceRef.setEdit(scope.row)" :disabled="scope.row.status===0">编辑</el-button>
+            <el-button :disabled="scope.row.status===0" link type="primary" v-if="scope.row.invoiceStatus === 1" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+            <UpInvoice :disabled="scope.row.status===0" :id="scope.row.id" @callback="getList" />
+            <el-button :disabled="scope.row.status===0" link type="primary" @click="editInvoiceRef.setEdit(scope.row)" >编辑</el-button>
             </template>
             <el-button link type="danger" @click="Del([scope.row.id])">删除</el-button>
           <!-- </div> -->

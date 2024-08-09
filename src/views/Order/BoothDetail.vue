@@ -270,9 +270,9 @@ const revoke = (id: any) => {
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200" v-if="d.orderStatus === 1">
             <template #default="scope">
-              <el-button v-if="scope.row.invoiceStatus === 1" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
-              <UpInvoice :id="scope.row.id" @callback="getBoothDetail"></UpInvoice>
-              <el-button link type="primary" @click="() => { 
+              <el-button :disabled="scope.row.status===0" link type="primary" v-if="scope.row.invoiceStatus === 1" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+              <UpInvoice :disabled="scope.row.status===0" :id="scope.row.id" @callback="getBoothDetail"></UpInvoice>
+              <el-button :disabled="scope.row.status===0" link type="primary" @click="() => { 
                 let d={...scope.row, invoiceTitle: scope.row.title }; 
                 editInvoiceRef.setEdit(d) }">编辑</el-button>
               <el-button link type="danger" @click="delInvoice(scope.row.id)">删除</el-button>
