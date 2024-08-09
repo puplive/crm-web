@@ -1,13 +1,19 @@
 <script lang="ts" setup>
-  import { ref, computed } from 'vue'
-  import { getMenu } from '@/api/user'
+  import { ref, computed, watch } from 'vue'
+  // import { getMenu } from '@/api/user'
   import { userStore } from "@/stores/user";
- 
-  const activeIndex = ref(userStore().MENU_ACTIVE)
-  const menu: any = ref([]);
-  getMenu().then(res => {
-    menu.value = res.data;
-  })
+  
+  const _store = userStore()
+  const activeIndex = ref(_store.MENU_ACTIVE)
+  const menu: any = ref(_store.MENU);
+  // getMenu().then(res => {
+  //   menu.value = res.data;
+  // })
+  watch(() => _store.MENU,(val:any, oldVal)=>{
+    if(val.id!== oldVal.id){
+      menu.value = val
+    }
+  }, {deep: true})
   const handleSelect = (key, keyPath) => {
     // console.log(key, keyPath);
   }

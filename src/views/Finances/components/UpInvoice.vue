@@ -1,13 +1,13 @@
 <template>
   <el-upload
     ref="uploadRef"
-    style="display: inline-block; margin-right: 5px; vertical-align: bottom;"
+    style="display: inline-flex; margin-right: 5px; position: relative; top: 2px;"
     :show-file-list="false"
     :on-success="(response:any, file:any, fileList:any) => { uploadInvoice(response.url) }"
     :before-upload="beforeUpload"
     :http-request="uploadImg"
   >
-    <el-button link type="primary" size="small" :loading="loading">上传发票</el-button>
+    <el-button link type="primary" :loading="loading" :disabled="props.disabled">上传发票</el-button>
   </el-upload>
 </template>
 <script lang="ts" setup>
@@ -15,7 +15,7 @@
   import {invoice} from '@/api/Finances'
   import { uploadFile } from '@/api/common'
 
-  const props = defineProps(['id'])
+  const props = defineProps(['id', 'disabled'])
   const loading = ref(false)
   const uploadRef: any = ref(null)
 

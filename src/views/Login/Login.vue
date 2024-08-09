@@ -32,6 +32,7 @@
   import { reactive } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { userStore } from '@/stores/user'
+  import { getMenu } from '@/api/user'
   const store = userStore()
 
   const router = useRouter()
@@ -46,14 +47,22 @@
       if (res.code === 0) {
         ElMessage.success('登录成功')
         store.SET_TOKEN(res.data.token)
-        // store.SET_MENU()
-        router.push('/')
+        
+        // getMenu().then(res => {
+        //   if (res.code === 0) {
+        //     store.SET_MENU(res.data)
+        //     if(res.data.length > 0){
+        //       router.push(res.data[0].path)
+        //     }
+        //   }
+        // })
+        
       } else {
         ElMessage.error(res.msg)
       }
     })
   }
-
+  
   const book = () => {
     window.open('/handbooks.pdf', '_blank')
   }

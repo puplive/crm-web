@@ -95,9 +95,9 @@
           <el-table-column prop="remark" label="备注"></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
-              <el-button v-if="scope.row.invoiceStatus === 1" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
-              <UpInvoice :id="scope.row.id" @callback="getData" />
-              <el-button link type="primary" @click="editInvoiceRef.setEdit(scope.row)">编辑</el-button>
+              <el-button :disabled="scope.row.status===0" v-if="scope.row.invoiceStatus === 1" link type="primary" @click="()=>invoicingRef.openInvoiceSet(scope.row)" style="margin-right: 5px;">开票</el-button>
+              <UpInvoice :disabled="scope.row.status===0" :id="scope.row.id" @callback="getData" />
+              <el-button :disabled="scope.row.status===0" link type="primary" @click="editInvoiceRef.setEdit(scope.row)">编辑</el-button>
               <el-button link type="danger" @click="del2(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
