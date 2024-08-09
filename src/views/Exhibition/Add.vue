@@ -1,7 +1,7 @@
 <template>
-  <el-form :model="form" label-width="auto" label-position="left">
+  <el-form :model="form" label-width="auto"  style="width: 800px; margin: 0 auto;">
     <el-divider content-position="left"><span class="title">基本信息</span></el-divider>
-    <el-col :md="16" :lg="10" :offset="1">
+    <el-col :span="20" :offset="2">
       <el-form-item label="展会名称">
         <el-input v-model="form.exhibitionName" />
       </el-form-item>
@@ -43,7 +43,7 @@
     </el-col>
     
     <el-divider content-position="left"><span class="title">时间信息</span></el-divider>
-    <el-col :md="16" :lg="10" :offset="1">
+    <el-col :span="20" :offset="2">
       <el-form-item label="布展日期">
         <el-date-picker
           v-model="arrangeTime"
@@ -75,7 +75,7 @@
     </el-col>
     
     <el-divider content-position="left"><span class="title">图片素材</span></el-divider>
-    <el-col :md="16" :lg="10" :offset="1">
+    <el-col :span="20" :offset="2">
       <el-form-item label="招展平面图">
         <el-image :src="hallImg" :preview-src-list="[hallImg]" fit="cover" style="width: 100px; height: 100px" />
         <!-- <el-upload
@@ -122,7 +122,7 @@
     </el-col>
     <template v-if="form.positionImgType == 2">
     <el-divider content-position="left"><span class="title">展区分类</span></el-divider>
-    <el-col :md="16" :lg="10" :offset="1">
+    <el-col :span="20" :offset="2">
       <el-form-item label=" " v-for="(item, index) in form.cate">
         <!-- <div class="booth-list" > -->
           <el-input v-model="item.name" placeholder="请输入展区分类" style="max-width: 220px" >
@@ -138,7 +138,7 @@
     </template>
 
     <el-divider content-position="left"><span class="title">单价设置</span></el-divider>
-    <el-col :md="16" :lg="10" :offset="1">
+    <el-col :span="20" :offset="2">
       <el-form-item label=" ">
         <div class="list" v-for="(item, index) in form.unitPrice">
           <div><label v-if="index === 0" for="">标题</label><el-input v-model="item.text" placeholder="请输入标题"></el-input></div>
@@ -152,51 +152,57 @@
     </el-col>
     
     <el-divider content-position="left"><span class="title">加收设置</span></el-divider>
-    <el-col :md="16" :lg="10" :offset="1">
-      <el-form-item label="加收" v-for="(item, index) in form.attachPrice.filter(item => item.changeType === 1)">
-        <div class="list">
-          <div>
-            <el-input v-model="item.text" placeholder="例如：双开口"></el-input>
+    <el-col :span="20" :offset="2">
+      <template v-for="(item, index) in form.attachPrice" :key="index">
+      <!-- <el-form-item label="加收" v-for="(item, index) in form.attachPrice.filter((item:any) => item.changeType === 1)"> -->
+        <el-form-item label="加收" v-if="item.changeType === 1">
+          <div class="list">
+            <div>
+              <el-input v-model="item.text" placeholder="例如：双开口"></el-input>
+            </div>
+            <div>
+              <el-input type="number" v-model="item.price" :placeholder="item.priceType==1?'设置比例':'设置金额'">
+                <template #append>
+                  <el-select v-model="item.priceType" placeholder="" style="width: 60px;">
+                    <el-option label="%" :value="1" />
+                    <el-option label="￥" :value="2" />
+                  </el-select>
+                </template>
+              </el-input>
+            </div>
+            <el-button type="info" plain v-if="index === form.attachPrice.findIndex((item: any) => item.changeType === 1)" icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:'', priceType:1, changeType:1})}"/>
+            <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
           </div>
-          <div>
-            <el-input type="number" v-model="item.price" placeholder="设置金额">
-              <template #append>
-                <el-select v-model="item.priceType" placeholder="" style="width: 60px;">
-                  <el-option label="%" :value="1" />
-                  <el-option label="￥" :value="2" />
-                </el-select>
-              </template>
-            </el-input>
-          </div>
-          <el-button type="info" plain v-if="index === 0" icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:0, priceType:1, changeType:1})}"/>
-          <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
-        </div>
-      </el-form-item>
+        </el-form-item>
+      </template>
     </el-col>
     <el-divider content-position="left"><span class="title">折扣设置</span></el-divider>
-    <el-col :md="16" :lg="10" :offset="1">
-      <el-form-item label="折扣" v-for="(item, index) in form.attachPrice.filter(item => item.changeType === -1)">
-        <div class="list">
-          <div>
-            <el-input v-model="item.text" placeholder="例如：提前预定"></el-input>
+    <el-col :span="20" :offset="2">
+      <template v-for="(item, index) in form.attachPrice" :key="index">
+        <!-- <el-form-item label="折扣" v-for="(item, index) in form.attachPrice.filter((item: any) => item.changeType === -1)"> -->
+          <el-form-item label="折扣" v-if="item.changeType === -1">
+          <div class="list">
+            <div>
+              <el-input v-model="item.text" placeholder="例如：提前预定"></el-input>
+            </div>
+            <div>
+              <el-input type="number" v-model="item.price" :placeholder="item.priceType==1?'设置比例':'设置金额'">
+                <template #append>
+                  <el-select v-model="item.priceType" placeholder="" style="width: 60px;">
+                    <el-option label="%" :value="1" />
+                    <el-option label="￥" :value="2" />
+                  </el-select>
+                </template>
+              </el-input>
+            </div>
+            <el-button type="info" plain v-if="index === form.attachPrice.findIndex((item: any) => item.changeType === -1)" icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:'', priceType:1, changeType:-1})}"/>
+            <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
           </div>
-          <div>
-            <el-input type="number" v-model="item.price" placeholder="设置金额">
-              <template #append>
-                <el-select v-model="item.priceType" placeholder="" style="width: 60px;">
-                  <el-option label="%" :value="1" />
-                  <el-option label="￥" :value="2" />
-                </el-select>
-              </template>
-            </el-input>
-          </div>
-          <el-button type="info" plain v-if="index === 0" icon="Plus" @click="()=>{form.attachPrice.push({text:'', price:0, priceType:1, changeType:-1})}"/>
-          <el-button type="info" plain v-else icon="Minus" @click.prevent="()=>{form.attachPrice.splice(index, 1)}"/>
-        </div>
-      </el-form-item>
+        </el-form-item>
+      </template>
     </el-col>
     <el-divider content-position="left"><span class="title">付款期限</span></el-divider>
-    <el-col :md="16" :lg="10" :offset="1">
+    <el-col :span="20" :offset="2">
       <el-form-item label="一期款">
         <el-input type="number" v-model="form.payFirst">
           <template #prepend>合同签订后</template>
@@ -252,7 +258,7 @@ const form: any = reactive({
   position: [{code:'', img:''}],  //array[string] 展位图 必需 示例值:["[['code' => '展馆号1', 'img' => '图片地址1'], ['code' => '展馆号2', 'img' => '图片地址2']]"]
   cate: [{name:'', rgb:''}],  //array[string] 展区分类 示例值:["[['name' => '展区分类1', 'rgb' => '#409EFF']]"]
   unitPrice: [{text: '', price: 0, num: 0}],  //array[string] 单价设置
-  attachPrice: [{text: '', price: 0, priceType: 1, changeType: 1}, {text: '', price: '', priceType: 1, changeType: -1}],  //array[string] 主办方 ["[['text' => '名称1', 'price'=> 10, 'priceType' => 1, 'changeType' => 1],['text' => '名称2', 'price'=> 5, 'priceType' => 2, 'changeType' => -1]]"]
+  attachPrice: [{text: '', price: '', priceType: 1, changeType: 1}, {text: '', price: '', priceType: 1, changeType: -1}],  //array[string] 主办方 ["[['text' => '名称1', 'price'=> 10, 'priceType' => 1, 'changeType' => 1],['text' => '名称2', 'price'=> 5, 'priceType' => 2, 'changeType' => -1]]"]
 })
 const hallImg = ref('')  //string 展馆平面图
 const arrangeTime = ref(['', '']) //布展时间
@@ -336,10 +342,10 @@ if(id){
       })
 
       if(changeType_1 === 0){
-        form.attachPrice.push({text: '', price: 0, priceType: 1, changeType: 1})
+        form.attachPrice.push({text: '', price: '', priceType: 1, changeType: 1})
       }
       if(changeType_2 === 0){
-        form.attachPrice.push({text: '', price: 0, priceType: 1, changeType: -1})
+        form.attachPrice.push({text: '', price: '', priceType: 1, changeType: -1})
       }
     }
   })
@@ -513,7 +519,8 @@ const onSubmit = () => {
     margin: 40px 0;
   }
   .title{
-      color: var(--el-color-warning);
+      color: var(--el-color-primary);
+      left: 50px
     }
     .list{
       width: 100%;

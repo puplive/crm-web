@@ -47,13 +47,13 @@
         }else{
           reject(res)
           ElMessage.error(res.msg);
-          uploadRef.value.clearFiles()
+          // uploadRef.value.clearFiles()
         }
         loading.value = false
       }).catch((err: any) => {
         reject(err)
         ElMessage.error('上传失败'); 
-        uploadRef.value.clearFiles()
+        // uploadRef.value.clearFiles()
         loading.value = false
       })
     })
