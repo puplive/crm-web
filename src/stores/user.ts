@@ -29,8 +29,12 @@ export const userStore = defineStore('user', {
         if (res.code === 0) {
           this.MENU = res.data
           if (res.data.length > 0) {
-            location.href = res.data[0].path
             // router.push(data[0].path)
+            if (res.data[0].child && res.data[0].child.length > 0) {
+              location.href = res.data[0].child[0].path
+            } else {
+              location.href = res.data[0].path
+            }
           }
         }
       })
