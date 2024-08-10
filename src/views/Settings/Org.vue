@@ -236,6 +236,30 @@
 
 
   getList()
+
+  const columns_selected: any = ref([])
+  const columns: any = ref([])
+  const getColumns = () => {
+    setTimeout(() => {
+      let _l: string[] = []
+      tableRef.value.columns.forEach((item: any) => {
+        if(item.label){
+          _l.push(item.label)
+        }
+      })
+      columns.value = _l.join(',').split(',')
+      columns_selected.value = _l.join(',').split(',')
+    }, 0)
+  }
+
+  const columns_is_selected = (label: string)=>{
+    if(columns_selected.value.length === 0 && columns.value.length === 0){
+      return true
+    }else{
+      return columns_selected.value.includes(label)
+    }
+  }
+  getColumns()
   
 </script>
 <template>
@@ -268,6 +292,23 @@
           <el-button @click="addAccount.set()">新增员工</el-button>
           <!-- <el-button @click="handleExport">导入</el-button>
           <el-button @click="handleExport">导出</el-button> -->
+          <el-popover
+        placement="bottom-end"
+        trigger="click"
+      >
+        <template #reference>
+          <el-button size="" link>
+            <img style="width: 17px;" src="@/assets/svg/sx.svg" alt="">
+          </el-button>
+        </template>
+        <template #default>
+          <el-checkbox-group v-model="columns_selected">
+              <ul>
+                  <li class="s-checkbox_item" v-for="i in columns" :key="i"><el-checkbox :label="i" :value="i">{{i}}</el-checkbox></li>
+              </ul>
+          </el-checkbox-group>
+        </template>
+      </el-popover>
         </div>
         <div class="s-flex-auto" style="min-height: 0;">
           <el-table 
@@ -277,15 +318,15 @@
             table-layout="fixed" 
             height="100%"
             header-row-class-name="s-table-header">
-            <el-table-column prop="account" label="登录名" />
-            <el-table-column prop="department" label="部门" />
-            <el-table-column prop="role" label="系统角色" min-width="120"/>
-            <el-table-column prop="phone" label="手机" />
-            <el-table-column prop="email" label="邮箱" />
-            <el-table-column prop="password" label="密码" />
-            <el-table-column prop="creatTime" label="添加时间" min-width="120" />
-            <el-table-column prop="loginTime" label="登录时间" min-width="120" />
-            <el-table-column label="操作" fixed="right" width="150">
+            <el-table-column v-if="columns_is_selected('登录名')" prop="account" label="登录名" />
+            <el-table-column v-if="columns_is_selected('部门')" prop="department" label="部门" />
+            <el-table-column v-if="columns_is_selected('系统角色')" prop="role" label="系统角色" min-width="120"/>
+            <el-table-column v-if="columns_is_selected('手机')" prop="phone" label="手机" />
+            <el-table-column v-if="columns_is_selected('邮箱')" prop="email" label="邮箱" />
+            <el-table-column v-if="columns_is_selected('密码')" prop="password" label="密码" />
+            <el-table-column v-if="columns_is_selected('添加时间')" prop="creatTime" label="添加时间" min-width="120" />
+            <el-table-column v-if="columns_is_selected('登录时间')" prop="loginTime" label="登录时间" min-width="120" />
+            <el-table-column v-if="columns_is_selected('操作')" label="操作" fixed="right" width="150">
               <template #default="scope">
                 <el-button link type="primary" @click="addAccount.set(scope.row)">编辑</el-button>
                 <el-button link type="primary" @click="setStatus(scope.row.id, scope.row.status === 1 ? 0 : 1)">{{ scope.row.status === 1 ? '停用' : '启用' }}</el-button>

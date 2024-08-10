@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, toRefs, defineProps, defineExpose, computed, withDefaults } from 'vue'
+import { ref, toRefs, defineProps, defineExpose, computed, watch } from 'vue'
 import { getContractData, create, edit } from '@/api/Contract'
 // import { booth } from '@/api/Order'
 
@@ -106,6 +106,10 @@ const editContract = (templateId: any) => {
 
 const setPrice = () => {
   contract.value.finalPrice = (Number(contract.value.positionUnitPrice) * Number(contract.value.positionArea) * (1 - Number(contract.value.discountRatio) / 100)).toFixed(2)
+  contract.value.payment.forEach((item: any) => {
+    item.price = Number(item.ratio) === 0? contract.value.finalPrice : (Number(contract.value.finalPrice) * Number(item.ratio) / 100).toFixed(2)
+  })
+  // console.log(contract.value.finalPrice)
 }
 
 // defineProps({
@@ -221,7 +225,7 @@ defineExpose({
           </td>
           <td>
             <!-- <template v-if="item.name !== '全款'"> -->
-              <input v-if="isEdit" v-model="item.ratio"/>
+              <input v-if="isEdit" v-model="item.ratio" @input="setPrice"/>
               <template v-else>{{item.ratio}}</template>
             <!-- </template>
             <template v-else>100</template> -->
@@ -236,7 +240,7 @@ defineExpose({
             <template v-else>{{item.price}}</template>
           </td>
           <td>
-            <input v-if="isEdit" v-model="item.time"/>
+            <input v-if="isEdit" v-model="item.time" />
             <template v-else>{{item.time}}</template>
           </td>
         </tr>
@@ -341,10 +345,11 @@ defineExpose({
   padding: 30px;
   width: 760px;
   color: #000000;
-
+  font-family: SimSun, NSimSun, STSong,  FangSong_GB2312, FangSong;
   .title{
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: 30px;
+    font-weight: bold;
   }
   .input{ 
     border: none;

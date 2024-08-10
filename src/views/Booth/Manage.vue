@@ -299,6 +299,30 @@
   if (id) {
     getData()
   }
+
+  const columns_selected: any = ref([])
+  const columns: any = ref([])
+  const getColumns = () => {
+    setTimeout(() => {
+      let _l: string[] = []
+      tableRef.value.columns.forEach((item: any) => {
+        if(item.label){
+          _l.push(item.label)
+        }
+      })
+      columns.value = _l.join(',').split(',')
+      columns_selected.value = _l.join(',').split(',')
+    }, 0)
+  }
+
+  const columns_is_selected = (label: string)=>{
+    if(columns_selected.value.length === 0 && columns.value.length === 0){
+      return true
+    }else{
+      return columns_selected.value.includes(label)
+    }
+  }
+  getColumns()
   
 </script>
 <template>
@@ -310,23 +334,41 @@
       
       <el-button @click="handleExport">导出</el-button>
       <el-button @click="deleteSelected">删除</el-button>
+
+      <el-popover
+        placement="bottom-end"
+        trigger="click"
+      >
+        <template #reference>
+          <el-button size="" link>
+            <img style="width: 17px;" src="@/assets/svg/sx.svg" alt="">
+          </el-button>
+        </template>
+        <template #default>
+          <el-checkbox-group v-model="columns_selected">
+              <ul>
+                  <li class="s-checkbox_item" v-for="i in columns" :key="i"><el-checkbox :label="i" :value="i">{{i}}</el-checkbox></li>
+              </ul>
+          </el-checkbox-group>
+        </template>
+      </el-popover>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
-        <el-table-column prop="id" label="ID" width="50" />
-        <el-table-column prop="hallCode" label="展馆号" />
-        <el-table-column prop="positionCode" label="展位号" />
-        <el-table-column prop="standardPrice" label="标摊/元" min-width="120" />
-        <el-table-column prop="specialPrice" label="特装/元" min-width="120" />
-        <el-table-column prop="specialUnit" label="特装/㎡/个"  min-width="120"/>
-        <el-table-column prop="length" label="长" />
-        <el-table-column prop="width" label="宽" />
-        <el-table-column prop="remark" label="备注" />
-        <el-table-column prop="exhibitor" label="参展商" />
-        <el-table-column prop="time" label="创建时间" min-width="120" />
-        <el-table-column fixed="right" label="操作" width="150">
+        <el-table-column v-if="columns_is_selected('ID')" prop="id" label="ID" width="50" />
+        <el-table-column v-if="columns_is_selected('展馆号')" prop="hallCode" label="展馆号" />
+        <el-table-column v-if="columns_is_selected('展位号')" prop="positionCode" label="展位号" />
+        <el-table-column v-if="columns_is_selected('标摊/元')" prop="standardPrice" label="标摊/元" min-width="120" />
+        <el-table-column v-if="columns_is_selected('特装/元')" prop="specialPrice" label="特装/元" min-width="120" />
+        <el-table-column v-if="columns_is_selected('特装/㎡/个')" prop="specialUnit" label="特装/㎡/个"  min-width="120"/>
+        <el-table-column v-if="columns_is_selected('长')" prop="length" label="长" />
+        <el-table-column v-if="columns_is_selected('宽')" prop="width" label="宽" />
+        <el-table-column v-if="columns_is_selected('备注')" prop="remark" label="备注" />
+        <el-table-column v-if="columns_is_selected('参展商')" prop="exhibitor" label="参展商" />
+        <el-table-column v-if="columns_is_selected('创建时间')" prop="time" label="创建时间" min-width="120" />
+        <el-table-column v-if="columns_is_selected('操作')" fixed="right" label="操作" width="150">
           <template #default="scope">
             <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button link type="danger" @click="handleDelete([scope.row.id])">删除</el-button>

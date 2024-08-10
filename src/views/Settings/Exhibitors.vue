@@ -105,6 +105,30 @@
   })
 
   getList()
+
+  const columns_selected: any = ref([])
+  const columns: any = ref([])
+  const getColumns = () => {
+    setTimeout(() => {
+      let _l: string[] = []
+      tableRef.value.columns.forEach((item: any) => {
+        if(item.label){
+          _l.push(item.label)
+        }
+      })
+      columns.value = _l.join(',').split(',')
+      columns_selected.value = _l.join(',').split(',')
+    }, 0)
+  }
+
+  const columns_is_selected = (label: string)=>{
+    if(columns_selected.value.length === 0 && columns.value.length === 0){
+      return true
+    }else{
+      return columns_selected.value.includes(label)
+    }
+  }
+  getColumns()
   
 </script>
 <template>
@@ -113,6 +137,23 @@
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
       <el-button @click="add.add()">新增账号</el-button>
+      <el-popover
+        placement="bottom-end"
+        trigger="click"
+      >
+        <template #reference>
+          <el-button size="" link>
+            <img style="width: 17px;" src="@/assets/svg/sx.svg" alt="">
+          </el-button>
+        </template>
+        <template #default>
+          <el-checkbox-group v-model="columns_selected">
+              <ul>
+                  <li class="s-checkbox_item" v-for="i in columns" :key="i"><el-checkbox :label="i" :value="i">{{i}}</el-checkbox></li>
+              </ul>
+          </el-checkbox-group>
+        </template>
+      </el-popover>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" 
@@ -122,22 +163,22 @@
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
         <!-- <el-table-column type="selection" width="42" /> -->
-        <el-table-column prop="id" label="ID" min-width="60" />
-        <el-table-column prop="account" label="用户名" min-width="120" />
-        <el-table-column prop="userName" label="注册人" />
-        <el-table-column prop="phone" label="手机" min-width="120" />
-        <el-table-column prop="email" label="邮箱" min-width="120"/>
-        <el-table-column prop="password" label="密码" min-width="120" />
-        <el-table-column prop="creatTime" label="添加时间" min-width="120" />
-        <el-table-column prop="loginTime" label="登录时间" min-width="120" />
-        <el-table-column prop="status" label="状态">
+        <el-table-column v-if="columns_is_selected('ID')" prop="id" label="ID" min-width="60" />
+        <el-table-column v-if="columns_is_selected('用户名')" prop="account" label="用户名" min-width="120" />
+        <el-table-column v-if="columns_is_selected('注册人')" prop="userName" label="注册人" />
+        <el-table-column v-if="columns_is_selected('手机')" prop="phone" label="手机" min-width="120" />
+        <el-table-column v-if="columns_is_selected('邮箱')" prop="email" label="邮箱" min-width="120"/>
+        <el-table-column v-if="columns_is_selected('密码')" prop="password" label="密码" min-width="120" />
+        <el-table-column v-if="columns_is_selected('添加时间')" prop="creatTime" label="添加时间" min-width="120" />
+        <el-table-column v-if="columns_is_selected('登录时间')" prop="loginTime" label="登录时间" min-width="120" />
+        <el-table-column v-if="columns_is_selected('状态')" prop="status" label="状态">
           <template #default="scope">
             <!-- 状态，0待审核，1通过，2拒绝 -->
             {{ {0: '待审核', 1: '通过', 2: '拒绝' }[scope.row.status as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="num" label="参展次数" width="100" />
-        <el-table-column fixed="right" label="操作" width="270">
+        <el-table-column v-if="columns_is_selected('参展次数')" prop="num" label="参展次数" width="100" />
+        <el-table-column v-if="columns_is_selected('操作')" fixed="right" label="操作" width="270">
           <template #default="scope">
             <el-button link type="primary" @click="$router.push({name:'ExhibitorsDetail',query:{id:scope.row.id}})">详情</el-button>
             <el-button link type="primary" @click="add.edit(scope.row)">编辑</el-button>

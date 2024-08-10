@@ -89,6 +89,7 @@
       //     [item.key]: customFieldTypes[item.type].value,
       //   })
       // })
+      getColumns()
     }
   })
 }
@@ -97,6 +98,29 @@ getCustomField()
   
 
   getList()
+
+  const columns_selected: any = ref([])
+  const columns: any = ref([])
+  const getColumns = () => {
+    setTimeout(() => {
+      let _l: string[] = []
+      tableRef.value.columns.forEach((item: any) => {
+        if(item.label){
+          _l.push(item.label)
+        }
+      })
+      columns.value = _l.join(',').split(',')
+      columns_selected.value = _l.join(',').split(',')
+    }, 0)
+  }
+
+  const columns_is_selected = (label: string)=>{
+    if(columns_selected.value.length === 0 && columns.value.length === 0){
+      return true
+    }else{
+      return columns_selected.value.includes(label)
+    }
+  }
   
 </script>
 <template>
@@ -110,35 +134,53 @@ getCustomField()
       <el-button @click="GetClues">领取</el-button>
       <!-- <el-button @click="MoveShare">移至公海</el-button> -->
       <el-button @click="Del">删除</el-button>
+
+      <el-popover
+        placement="bottom-end"
+        trigger="click"
+      >
+        <template #reference>
+          <el-button size="" link>
+            <img style="width: 17px;" src="@/assets/svg/sx.svg" alt="">
+          </el-button>
+        </template>
+        <template #default>
+          <el-checkbox-group v-model="columns_selected">
+              <ul>
+                  <li class="s-checkbox_item" v-for="i in columns" :key="i"><el-checkbox :label="i" :value="i">{{i}}</el-checkbox></li>
+              </ul>
+          </el-checkbox-group>
+        </template>
+      </el-popover>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" 
         height="100%" show-overflow-tooltip
         header-row-class-name="s-table-header">
         <el-table-column type="selection" width="42" />
-        <el-table-column type="index" label="序号" width="60" />
-        <el-table-column prop="companyName" label="企业名称" width="180">
+        <el-table-column v-if="columns_is_selected('序号')" type="index" label="序号" width="60" />
+        <el-table-column v-if="columns_is_selected('企业名称')" prop="companyName" label="企业名称" width="180">
           <template #default="scope"> 
             <el-link :href="'/market/clues/info?type=1&id=' + scope.row.id+'&exhibitionId='+scope.row.exhibitionId+'&authUser='+scope.row.authUser"  type="primary">{{ scope.row.companyName }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="exhibitionName" label="展会名称" width="180" />
-        <el-table-column prop="exhibitionContact" label="展会联系人" min-width="120" />
-        <el-table-column prop="duties" label="职位" />
-        <el-table-column prop="phone" label="手机号" min-width="120" />
-        <el-table-column prop="recordStatus" label="跟进状态" min-width="120">
+        <el-table-column v-if="columns_is_selected('展会名称')" prop="exhibitionName" label="展会名称" width="180" />
+        <el-table-column v-if="columns_is_selected('展会联系人')" prop="exhibitionContact" label="展会联系人" min-width="120" />
+        <el-table-column v-if="columns_is_selected('职位')" prop="duties" label="职位" />
+        <el-table-column v-if="columns_is_selected('手机号')" prop="phone" label="手机号" min-width="120" />
+        <el-table-column v-if="columns_is_selected('跟进状态')" prop="recordStatus" label="跟进状态" min-width="120">
           <!-- 0无1电话邀约2客户拜访3初步方案4停滞 -->
           <template #default="scope">{{ {0: '无', 1: '电话邀约', 2: '客户拜访', 3: '初步方案', 4: '停滞'}[scope.row.recordStatus as number]  }}</template>
         </el-table-column>
-        <el-table-column prop="authUser" label="持有人" />
+        <el-table-column v-if="columns_is_selected('持有人')" prop="authUser" label="持有人" />
         <template v-for="item in customField" :key="item.key">
-          <el-table-column :prop="item.key" :label="item.name" min-width="120">
+          <el-table-column v-if="columns_is_selected(item.name)" :prop="item.key" :label="item.name" min-width="120">
             <!-- <template #default="scope" v-if="item.type === 5 || item.type === 7">
               {{ scope.row[item.key].join('，') }}
             </template> -->
           </el-table-column>
         </template>
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column v-if="columns_is_selected('操作')" fixed="right" label="操作" width="120">
           <template #default="scope">
             <el-button link type="primary" @click="GetClue([scope.row.id])">
               领取
