@@ -67,13 +67,13 @@ const searchData: any = ref([])
   </div>
 
   <el-row :gutter="20">
-    <el-col :sm="12" :md="8" :lg="5" :xl="4" >
+    <el-col :sm="12" :md="8" :lg="5" >
       <RouterLink  class="item add" :to="{path: '/exhibition/add'}">
         <el-icon size="40"><CirclePlus /></el-icon>
         <h3 style="margin-top: 10px;">新建展会</h3>
       </RouterLink >
     </el-col>
-    <el-col :sm="12" :md="8" :lg="5" :xl="4" 
+    <el-col :sm="12" :md="8" :lg="5" 
       v-for="(item, index) in list" :key="index">
       <div class="item" >
         <div class="title">{{item.exhibitionName}}</div>

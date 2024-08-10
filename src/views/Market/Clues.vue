@@ -214,7 +214,7 @@ getCustomField()
       })
       columns.value = _l
       columns_selected.value = _l.join(',').split(',')
-    }, 0)
+    }, 2000)
   }
   // const columns = computed(() => {
   //   if(tableRef.value){
@@ -232,9 +232,12 @@ getCustomField()
   //     return []
   //   }
   // })
-  const columns_is_selected = (label: string)=>{ 
-    return columns_selected.value.includes(label)
-  }
+  const columns_is_selected = computed(() => {
+    return (label: string)=>{ 
+      console.log(label, columns_selected.value.includes(label))
+      return true // columns_selected.value.includes(label)
+    }
+  })
 
   
 
