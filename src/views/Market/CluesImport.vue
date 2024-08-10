@@ -1,14 +1,14 @@
 <script lang="ts" setup>
   import { ref } from 'vue'
   import { clueImport, getImportTemplate } from '@/api/Clues';
-  import { useRouter } from 'vue-router';
+  import { useRouter, useRoute } from 'vue-router';
   import { downloadFile } from '@/utils/fileZip';
   import { genFileId } from 'element-plus'
   import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
  
 
   const router = useRouter()
-
+  const route = useRoute()
 
   const active = ref(0)
   const fileList: any = ref([])
@@ -37,6 +37,7 @@
     let formData = new FormData()
     formData.append('file', fileObj.file)
     formData.append('type', type.value)
+    formData.append('status', route.query.status as string)
     return new Promise((resolve, reject) => {
       clueImport(formData).then((res: any) => {
         if(res.code === 0){

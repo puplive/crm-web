@@ -3,6 +3,7 @@ import { reactive, ref, computed, onMounted, watch } from 'vue'
 import type { FormInstance } from 'element-plus'
 import {types, invoiceTypes, paymentTypes} from '@/api/types'
 import {sponsorAccount} from '@/api/user/index'
+import { ArrowDown } from '@element-plus/icons-vue';
 
 const refForm = ref<FormInstance>()
 interface DataItem {
@@ -99,32 +100,40 @@ onMounted(() => {
 </script>
 <template>
   <div>
-    <el-form ref="refForm"  :inline="true" :model="formData" class="table-search-form" label-width="auto" label-position="left">
+    <el-form ref="refForm"  :inline="true" :model="formData" class="table-search-form" label-width="100px" label-position="left">
 
       <el-form-item v-for="(item, index ) in list" :key="index" :prop="item.field">
         <template #label>
           <el-dropdown  trigger="click">
-            <el-button link style="line-height: 26px;"  >{{ item.text }}</el-button>
+            <el-button plain 
+              style="
+                border-radius: 4px 0 0 4px; 
+                width: 100px; 
+                border-right: none; 
+                justify-content: space-between;
+                padding: 8px"
+                ><span>{{ item.text }}</span> <el-icon><ArrowDown/></el-icon> </el-button>
+                <!-- <el-input : placeholder="请输入" clearable /> -->
             <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item 
-              v-for="(option, i) in data" 
-              :key="i" 
-              @click="()=>{
-                formData[item.field] = '';
-                _search();
-                setList(index, option.field)
-              }"
-              :disabled="hasField(option.field)">
-              {{ option.text }}
-            </el-dropdown-item>
-            
-          </el-dropdown-menu>
-        </template>
+              <el-dropdown-menu>
+                <el-dropdown-item 
+                  v-for="(option, i) in data" 
+                  :key="i" 
+                  @click="()=>{
+                    formData[item.field] = '';
+                    _search();
+                    setList(index, option.field)
+                  }"
+                  :disabled="hasField(option.field)">
+                  {{ option.text }}
+                </el-dropdown-item>
+                
+              </el-dropdown-menu>
+            </template>
           </el-dropdown>
         </template>
         <template v-if="types[item.field]">
-          <el-select v-if="types[item.field].type === 3" v-model="formData[item.field]" placeholder="请选择" clearable>
+          <el-select v-if="types[item.field].type === 3" v-model="formData[item.field]" placeholder="请选择" clearable style="border-radius: 0 4px 4px 0;">
             <!-- <el-option label="全部" value=""></el-option> -->
             <el-option v-for="(option, index) in options(item.field)" :key="index" :label="option.label" :value="option.value"></el-option>
           </el-select>
@@ -164,12 +173,37 @@ onMounted(() => {
     </el-form>
   </div>
 </template>
-<style scoped>
+<style>
 .table-search-form .el-input {
   --el-input-width: 220px;
 }
 
 .table-search-form .el-select {
   --el-select-width: 220px;
+  
+}
+.table-search-form{ 
+  .el-form-item__label{
+    padding-right: 0;
+    .el-button.is-plain{
+      /* width: 100px !important;
+      border-right: none !important;
+      border-radius: 4px 0 0 4px !important; */
+      &:hover{
+        border-color: var(--el-border-color-hover);
+        color: var(--el-text-color-regular);
+      }
+      >span{
+        flex: 1;
+        justify-content: space-between;
+      }
+    }
+  }
+  .el-input__wrapper{
+    --el-input-border-radius: 0 4px 4px 0;
+  }
+  .el-select__wrapper{
+    --el-border-radius-base: 0 4px 4px 0;
+  }
 }
 </style>

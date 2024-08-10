@@ -13,7 +13,7 @@
 
   const page = reactive({
     page: 1,
-    perPage: 10,
+    perPage: 20,
   })
   const total = ref(0)
   const searchForm = ref({})
@@ -195,6 +195,7 @@
       //   })
       // })
       getColumns()
+
     }
   })
 }
@@ -202,6 +203,7 @@
 getCustomField()
 
   getList()
+
   const columns_selected: any = ref([])
   const columns: any = ref([])
   const getColumns = () => {
@@ -212,32 +214,18 @@ getCustomField()
           _l.push(item.label)
         }
       })
-      columns.value = _l
+      columns.value = _l.join(',').split(',')
       columns_selected.value = _l.join(',').split(',')
-    }, 2000)
+    }, 0)
   }
-  // const columns = computed(() => {
-  //   if(tableRef.value){
-  //     let _l: string[] = []
-  //     tableRef.value.columns.forEach((item: any) => {
-  //       if(item.label){
-  //         _l.push(item.label)
-  //       }
-  //     })
-  //     // if(columns.value.length === 0){
-  //       columns_selected.value = _l.join(',').split(',')
-  //     // }
-  //     return _l
-  //   }else{
-  //     return []
-  //   }
-  // })
-  const columns_is_selected = computed(() => {
-    return (label: string)=>{ 
-      console.log(label, columns_selected.value.includes(label))
-      return true // columns_selected.value.includes(label)
+
+  const columns_is_selected = (label: string)=>{
+    if(columns_selected.value.length === 0 && columns.value.length === 0){
+      return true
+    }else{
+      return columns_selected.value.includes(label)
     }
-  })
+  }
 
   
 
@@ -254,7 +242,7 @@ getCustomField()
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
       <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
-      <el-button size="small" @click="$router.push('/market/clues/import')">导入</el-button>
+      <el-button size="small" @click="$router.push({ name: 'CluesImport',  query: { status: 1 } })">导入</el-button>
       <el-button size="small" @click="Export">导出</el-button>
       <el-button size="small" @click="Move">转移给他人</el-button>
       <!-- <el-button size="small" @click="GetClues">领取</el-button> -->
@@ -267,7 +255,7 @@ getCustomField()
       >
         <template #reference>
           <el-button size="" link>
-            <el-icon style=""><Menu /></el-icon>
+            <img style="width: 17px;" src="@/assets/svg/sx.svg" alt="">
           </el-button>
         </template>
         <template #default>

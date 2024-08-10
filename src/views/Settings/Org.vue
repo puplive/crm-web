@@ -6,7 +6,7 @@
 
   const page = reactive({
     page: 1,
-    perPage: 10,
+    perPage: 20,
   })
   const total = ref(0)
   const searchForm = ref({})
@@ -296,7 +296,7 @@
         </div>
         <div class="s-table-pagination">
           <el-pagination layout="total, sizes, prev, pager, next" 
-            :page-sizes="[10, 20, 50]" 
+            :page-sizes="[10, 20, 50, 100]" 
             :total="total"
             v-model:current-page="page.page" 
             v-model:page-size="page.perPage" 

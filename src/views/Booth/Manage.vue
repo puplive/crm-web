@@ -144,7 +144,7 @@
   const deleteSelected = ()=> {
     let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择需要删除的数据')
+      ElMessage.error('请选择需要删除的数据')
       return
     }
     handleDelete(ids)

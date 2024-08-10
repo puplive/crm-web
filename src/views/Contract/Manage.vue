@@ -6,7 +6,7 @@
 
   const page = reactive({
     page: 1,
-    perPage: 10,
+    perPage: 20,
   })
   const total = ref(0)
   const searchForm = ref({})

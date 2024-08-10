@@ -22,7 +22,7 @@ watch(() => _store.EXHIBITION_INFO,(val:any, oldVal)=>{
 
 const page = reactive({
   page: 1,
-  perPage: 10,
+  perPage: 20,
 })
 const total = ref(0)
 const searchForm = ref({})
@@ -205,7 +205,7 @@ getList()
       <el-button size="small" @click="Export">导出</el-button>
       <el-button size="small" @click="Del">删除</el-button>
       <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
-      <el-button size="small" @click="$router.push('/market/clues/import')">导入线索</el-button>
+      <el-button size="small" @click="$router.push({ name: 'CluesImport',  query: { status: 2 } })">导入线索</el-button>
       <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button> -->
       <!-- <el-button size="small" @click="Import">导入线索</el-button> -->
     </div>
@@ -272,7 +272,7 @@ getList()
       </el-table>
     </div>
     <div class="s-table-pagination">
-      <el-pagination layout="total, sizes, prev, pager, next" :page-sizes="[10, 20, 50]" :total="total"
+      <el-pagination layout="total, sizes, prev, pager, next" :page-sizes="[10, 20, 50, 100]" :total="total"
         v-model:current-page="page.page" v-model:page-size="page.perPage" @change="getList" />
     </div>
   </div>
