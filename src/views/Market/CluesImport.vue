@@ -70,7 +70,7 @@
   }
 
   const getTemplate = () => {
-    getImportTemplate().then((res: any) => {
+    getImportTemplate({status: route.query.status as string}).then((res: any) => {
       if(res.code === 0){
         downloadFile(res.data.url, res.data.name)
       }

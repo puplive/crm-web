@@ -152,10 +152,11 @@ export const clueImport = (data: any): Promise<any> => {
   });
 }
 
-export const getImportTemplate = (): Promise<any> => {
+export const getImportTemplate = (params: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/getImportTemplate",
     method: "get",
+    params
   });
 }
 
