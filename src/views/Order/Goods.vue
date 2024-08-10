@@ -78,7 +78,7 @@
   // const deleteSelected = ()=> {
   //   let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
   //   if (ids.length === 0) {
-  //     ElMessage.warning('请选择需要删除的数据')
+  //     ElMessage.error('请选择需要删除的数据')
   //     return
   //   }
   //   handleDelete(ids)
@@ -126,7 +126,7 @@
   const handleDownload = () => {
     let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择需要下载的数据')
+      ElMessage.error('请选择需要下载的数据')
       return
     }
     
@@ -134,7 +134,7 @@
       if(res.code === 0) {
         // ElMessage.success('成功')
         if(res.data.length === 0){
-          ElMessage.warning('无数据')
+          ElMessage.error('无数据')
           return
         }
         zipFiles(res.data)
@@ -203,7 +203,7 @@
   }
   const subContract = () => {
     if (uploadContract.type === 1 && fileList.value.length === 0) {
-      ElMessage.warning('请选择合同文件')
+      ElMessage.error('请选择合同文件')
       return
     }
     Loading.value = true

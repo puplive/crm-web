@@ -203,19 +203,19 @@
 
   <el-dialog :title="add.isEdit ? '编辑' : '新增'" v-model="add.show" width="500px" draggable>
     <el-form :model="add.data" ref="addForm" label-width="auto" label-position="left">
-      <el-form-item label="用户名" prop="account">
+      <el-form-item label="用户名" prop="account" required>
         <el-input v-model="add.data.account" placeholder="请输入用户名"></el-input>
       </el-form-item>
-      <el-form-item label="注册人" prop="userName">
+      <el-form-item label="注册人" prop="userName" required>
         <el-input v-model="add.data.userName" placeholder="请输入注册人"></el-input>
       </el-form-item>
-      <el-form-item label="手机" prop="phone">
+      <el-form-item label="手机" prop="phone" required>
         <el-input v-model="add.data.phone" placeholder="请输入手机"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
+      <el-form-item label="邮箱" prop="email" required>
         <el-input v-model="add.data.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <el-form-item label="密码" prop="password" required>
         <el-input v-model="add.data.password" placeholder="请输入密码"></el-input>
       </el-form-item>
     </el-form>

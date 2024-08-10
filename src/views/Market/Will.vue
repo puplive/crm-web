@@ -56,7 +56,7 @@ const merge: any = reactive({
   set: () => {
     let d = tableRef.value.getSelectionRows()
     if (d.length !== 2) {
-      ElMessage.warning('请选择需要合并的线索，必须选择两个')
+      ElMessage.error('请选择需要合并的线索，必须选择两个')
       return
     }
     merge.show = true
@@ -83,7 +83,7 @@ const merge: any = reactive({
 const Del = () => {
   let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
   if (ids.length === 0) {
-    ElMessage.warning('请选择需要删除的线索')
+    ElMessage.error('请选择需要删除的线索')
     return
   }
   ElMessageBox.confirm('确定删除所选线索？', '提示', {
@@ -108,7 +108,7 @@ const moveRef: any = ref(null)
 const changeUser = () => {
   let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
   if (ids.length === 0) {
-    ElMessage.warning('请选择需要转移的线索')
+    ElMessage.error('请选择需要转移的线索')
     return
   }
   moveRef.value.setMove(ids)
@@ -118,7 +118,7 @@ const changeUser = () => {
 const MoveShare = () => {
   let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
   if (ids.length === 0) {
-    ElMessage.warning('请选择需要移至公海的线索')
+    ElMessage.error('请选择需要移至公海的线索')
     return
   }
   api.changePublic({ id: ids }).then((res) => {

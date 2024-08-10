@@ -67,7 +67,7 @@
   const GetClues = () => {
     let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择需要领取的线索')
+      ElMessage.error('请选择需要领取的线索')
       return
     }
     api.getClues({ id: ids}).then((res: any) => {
@@ -83,7 +83,7 @@
   const Del = () => {
     let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择需要删除的线索')
+      ElMessage.error('请选择需要删除的线索')
       return
     }
     ElMessageBox.confirm('确定删除所选线索？', '提示', {
@@ -111,7 +111,7 @@
   const Move = () => {
     let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择需要转移的线索')
+      ElMessage.error('请选择需要转移的线索')
       return
     }
     moveForm.value.id = ids
@@ -139,7 +139,7 @@
   const MoveShare = () => { 
     let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择需要移至公海的线索')
+      ElMessage.error('请选择需要移至公海的线索')
       return
     }
     api.changePublic({ id: ids}).then((res) => {

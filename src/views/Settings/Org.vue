@@ -347,16 +347,16 @@
     </div>
   </div>
 
-  <el-dialog title="新增员工" v-model="addAccount.show" width="500" draggable>
+  <el-dialog :title="addAccount.data.id? '编辑' : '新增员工'" v-model="addAccount.show" width="500" draggable>
     <el-form :model="addAccount.data" label-width="auto" label-position="left">
-      <el-form-item label="登录名">
+      <el-form-item label="登录名" required>
         <el-input v-model="addAccount.data.account" placeholder="请输入登录名"></el-input>
       </el-form-item>
-      <el-form-item label="密码">
+      <el-form-item label="密码" required>
         <el-input v-model="addAccount.data.password" placeholder="请输入密码"></el-input>
       </el-form-item>
 
-      <el-form-item label="部门">
+      <el-form-item label="部门" required>
         <el-cascader 
           v-model="addAccount.data.departmentId" 
           :options="departmentList" 
@@ -365,15 +365,15 @@
         </el-cascader>
 
       </el-form-item>
-      <el-form-item label="系统角色">
+      <el-form-item label="系统角色" required>
         <el-select v-model="addAccount.data.roleId">
           <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="手机">
+      <el-form-item label="手机" required>
         <el-input v-model="addAccount.data.phone" placeholder="请输入手机"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱">
+      <el-form-item label="邮箱" required>
         <el-input v-model="addAccount.data.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
     </el-form>

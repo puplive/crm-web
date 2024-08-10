@@ -13,7 +13,7 @@
   const setMove = (ids: any) => {
     // let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     // if (ids.length === 0) {
-    //   ElMessage.warning('请选择需要转移的线索')
+    //   ElMessage.error('请选择需要转移的线索')
     //   return
     // }
     moveForm.value.id = ids

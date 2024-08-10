@@ -34,7 +34,7 @@
   const Export = () => {
     let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择需要导出的数据')
+      ElMessage.error('请选择需要导出的数据')
       return
     }
     // api.getClues({ id: ids}).then((res: any) => {
@@ -50,7 +50,7 @@
   const Del = () => {
     let ids = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (ids.length === 0) {
-      ElMessage.warning('请选择需要删除的线索')
+      ElMessage.error('请选择需要删除的线索')
       return
     }
     ElMessageBox.confirm('确定删除所选线索？', '提示', {

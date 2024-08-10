@@ -71,7 +71,7 @@
                 </el-form-item>
               </template>
 
-              <el-form-item label="参展联系人" prop="">
+              <el-form-item label="参展联系人" prop="" style="margin-bottom: 10px;">
                 <el-button @click="lxr.setAdd">添加</el-button>
               </el-form-item>
               <el-table border :data="lxr.list" show-overflow-tooltip header-row-class-name="s-table-header">

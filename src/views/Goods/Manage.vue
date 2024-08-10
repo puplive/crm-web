@@ -227,7 +227,7 @@ const handleDel = (type: number, id: any) => {
   if (type === 2) {
     idArr = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (idArr.length === 0) {
-      ElMessage.warning('请选择要操作的数据');
+      ElMessage.error('请选择要操作的数据');
       return false
     }
   } else {
@@ -249,7 +249,7 @@ const changeEnable = (type: number, status: number, id: any) => {
   if (type === 2) {
     idArr = tableRef.value.getSelectionRows().map((item: any) => item.id)
     if (idArr.length === 0) {
-      ElMessage.warning('请选择要操作的数据');
+      ElMessage.error('请选择要操作的数据');
       return false
     }
   } else {
