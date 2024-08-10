@@ -150,7 +150,7 @@
           :before-upload="beforeUpload"
           :http-request="uploadImg"
         >
-          <el-button link type="primary" size="small">上传附件</el-button>
+          <el-button link type="primary">上传附件</el-button>
         </el-upload>
         
       </el-form-item>

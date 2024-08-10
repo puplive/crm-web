@@ -336,7 +336,7 @@ subGetGoodsListSetting()
     <div class="con">
       <div class="l l1">
         <div class="top-bar">
-          <el-button size="small" type="primary" icon="Plus" @click="setAddGoods(1)">服务项目</el-button>
+          <el-button type="primary" icon="Plus" @click="setAddGoods(1)">服务项目</el-button>
         </div>
         <div class="list-box">
           <ul class="list" id="list1">
@@ -355,7 +355,7 @@ subGetGoodsListSetting()
       </div>
       <div class="l l2">
         <div class="top-bar">
-          <el-button v-if="selectGoods.id" size="small" type="primary" icon="Plus"
+          <el-button v-if="selectGoods.id" type="primary" icon="Plus"
             @click="setAddGoods(2)">位置/版面</el-button>
         </div>
         <div class="list-box">
@@ -375,7 +375,7 @@ subGetGoodsListSetting()
       </div>
       <div class="l l3">
         <div class="top-bar">
-          <el-button v-if="selectGoods2.id" size="small" type="primary" icon="Plus"
+          <el-button v-if="selectGoods2.id" type="primary" icon="Plus"
             @click="setAddGoods(3)">规格/尺寸</el-button>
         </div>
         <div class="list-box" style="padding: 10px;">
@@ -440,9 +440,9 @@ subGetGoodsListSetting()
         </div>
         <div class="list-box" style="padding: 10px;">
           <div style="margin-bottom: 10px;">
-            <el-button size="small" @click="changeEnable(2, 1, 0)">批量启用</el-button>
-            <el-button size="small" @click="changeEnable(2, 0, 0)">批量禁用</el-button>
-            <el-button size="small" @click="handleDel(2, 0)">批量移除</el-button>
+            <el-button @click="changeEnable(2, 1, 0)">批量启用</el-button>
+            <el-button @click="changeEnable(2, 0, 0)">批量禁用</el-button>
+            <el-button @click="handleDel(2, 0)">批量移除</el-button>
           </div>
           <el-table ref="tableRef" :data="goodsListSetting" border>
             <el-table-column type="selection" fixed="left" width="42" />

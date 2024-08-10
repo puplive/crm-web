@@ -16,11 +16,11 @@
       </div>
       <div class="clues-info-header-right">
         <template v-if="type === '2'"> 
-          <el-button type="info" size="small" plain v-if="form.isExit" disabled>已退展</el-button>
-          <el-button type="primary" size="small" v-else @click="exitClues">退展</el-button>
+          <el-button type="info" plain v-if="form.isExit" disabled>已退展</el-button>
+          <el-button type="primary" v-else @click="exitClues">退展</el-button>
         </template>
         
-        <el-button type="primary" size="small" @click="()=>{ moveRef.setMove([id]) }">转他人</el-button>
+        <el-button type="primary" @click="()=>{ moveRef.setMove([id]) }">转他人</el-button>
       </div>
     </div>
     <div class="clues-info-content">
@@ -31,8 +31,8 @@
             <el-form ref="form" label-width="auto" label-position="left">
               <div class="title-bar">
                 <label for="">公司信息</label>
-                <el-button type="default" @click="$router.push({name: 'CluesEdit', query: {id: id}})" size="small">编辑</el-button>
-                <el-button type="default" @click="delClues" size="small">删除</el-button>
+                <el-button type="default" @click="$router.push({name: 'CluesEdit', query: {id: id}})">编辑</el-button>
+                <el-button type="default" @click="delClues">删除</el-button>
               </div>
 
               <el-form-item label="企业名称">
@@ -72,7 +72,7 @@
               </template>
 
               <el-form-item label="参展联系人" prop="">
-                <el-button size="small" @click="lxr.setAdd">添加</el-button>
+                <el-button @click="lxr.setAdd">添加</el-button>
               </el-form-item>
               <el-table border :data="lxr.list" show-overflow-tooltip header-row-class-name="s-table-header">
                 <el-table-column prop="name" label="姓名"/>

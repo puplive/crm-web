@@ -112,7 +112,7 @@
     <div></div>
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
-      <el-button size="small" @click="add.add()">新增账号</el-button>
+      <el-button @click="add.add()">新增账号</el-button>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" 

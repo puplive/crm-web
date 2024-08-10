@@ -167,7 +167,7 @@
                 :http-request="(fileObj:any)=>uploadImg(fileObj, 1)"
                 accept="image/*"
               >
-                <el-button type="primary" size="small" :loading="loading1">上传文件</el-button>
+                <el-button type="primary" :loading="loading1">上传文件</el-button>
               </el-upload>
             </div>
           </el-form-item>
@@ -194,7 +194,7 @@
                 :http-request="(fileObj:any)=>uploadImg(fileObj, 2)"
                 accept="image/*"
               >
-                <el-button type="primary" size="small" :loading="loading2">上传文件</el-button>
+                <el-button type="primary" :loading="loading2">上传文件</el-button>
               </el-upload>
             </div>
           </el-form-item>

@@ -265,9 +265,9 @@
       </div>
       <div class="r">
         <div class="s-table-operations">
-          <el-button size="small" @click="addAccount.set()">新增员工</el-button>
-          <!-- <el-button size="small" @click="handleExport">导入</el-button>
-          <el-button size="small" @click="handleExport">导出</el-button> -->
+          <el-button @click="addAccount.set()">新增员工</el-button>
+          <!-- <el-button @click="handleExport">导入</el-button>
+          <el-button @click="handleExport">导出</el-button> -->
         </div>
         <div class="s-flex-auto" style="min-height: 0;">
           <el-table 

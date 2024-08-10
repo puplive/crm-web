@@ -52,7 +52,7 @@ const getList = async () => {
             <template #default>
               <div class="item">
                 <span>{{ item.name }}</span>
-                <el-button v-show="radio === item.id" type="primary" size="small" @click="$router.push({ name: 'ContractConclude', query: { id: item.id, orderId: route.query.id } })">使用模板</el-button>
+                <el-button v-show="radio === item.id" type="primary" @click="$router.push({ name: 'ContractConclude', query: { id: item.id, orderId: route.query.id } })">使用模板</el-button>
               </div>
             </template>
           </el-radio>

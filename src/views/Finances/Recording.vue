@@ -78,7 +78,7 @@
                         :http-request="uploadImg"
                         accept="image/*"
                       >
-                        <el-button type="primary" size="small">上传文件</el-button>
+                        <el-button type="primary">上传文件</el-button>
                       </el-upload>
                     </div>
                   </el-form-item>
@@ -105,7 +105,7 @@
                         :http-request="uploadImg"
                         accept="image/*"
                       >
-                        <el-button type="primary" size="small">上传文件</el-button>
+                        <el-button type="primary">上传文件</el-button>
                       </el-upload>
                     </div>
                   </el-form-item>
@@ -163,7 +163,7 @@
                     :before-upload="beforeUpload"
                     :http-request="uploadImg"
                   >
-                    <el-button type="primary" size="small">上传文件</el-button>
+                    <el-button type="primary">上传文件</el-button>
                   </el-upload>
                 </div>
               </el-form-item>

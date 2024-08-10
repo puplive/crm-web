@@ -199,15 +199,15 @@ getList()
     </div>
     <TableSearch :data="searchData" @search="search" />
     <div class="s-table-operations">
-      <el-button size="small" @click="changeUser">转移</el-button>
-      <el-button size="small" @click="MoveShare">移至公海</el-button>
-      <el-button size="small" @click="merge.set">合并</el-button>
-      <el-button size="small" @click="Export">导出</el-button>
-      <el-button size="small" @click="Del">删除</el-button>
-      <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
-      <el-button size="small" @click="$router.push({ name: 'CluesImport',  query: { status: 2 } })">导入线索</el-button>
-      <!-- <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button> -->
-      <!-- <el-button size="small" @click="Import">导入线索</el-button> -->
+      <el-button @click="changeUser">转移</el-button>
+      <el-button @click="MoveShare">移至公海</el-button>
+      <el-button @click="merge.set">合并</el-button>
+      <el-button @click="Export">导出</el-button>
+      <el-button @click="Del">删除</el-button>
+      <el-button @click="$router.push({ name: 'CluesAdd',  query: { status: 2 } })">新建线索</el-button>
+      <el-button @click="$router.push({ name: 'CluesImport',  query: { status: 2 } })">导入线索</el-button>
+      <!-- <el-button @click="$router.push('/market/clues/add')">新建线索</el-button> -->
+      <!-- <el-button @click="Import">导入线索</el-button> -->
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%"

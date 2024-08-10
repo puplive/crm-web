@@ -6,7 +6,7 @@
     </div>
 
     <div class="s-table-operations">
-      <el-button size="small" icon="Plus" @click="showAddForm({})">新增</el-button>
+      <el-button icon="Plus" @click="showAddForm({})">新增</el-button>
     </div>
     <el-table 
       :data="tableData" row-key="id" 

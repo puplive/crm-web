@@ -278,8 +278,8 @@
     </div>
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
-      <el-button size="small" @click="handleDownload">批量下载合同</el-button>
-      <el-button size="small" @click="handleExport">导出</el-button>
+      <el-button @click="handleDownload">批量下载合同</el-button>
+      <el-button @click="handleExport">导出</el-button>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border height="100%" show-overflow-tooltip
@@ -315,7 +315,7 @@
             {{ {0:'未申请',1:'待开票',2:'部分开票',3:'已开票'}[scope.row.invoiceStatus as number] }}
           </template>
         </el-table-column>
-        <el-table-column prop="clueUser" label="所属人" />
+        <el-table-column prop="clueUser" label="持有人" />
         <el-table-column prop="authUser" label="下单人" />
         <el-table-column fixed="right" label="操作" width="250">
           <template #default="scope">
@@ -363,7 +363,7 @@
       :on-exceed="handleExceed"
       v-model:file-list="fileList"
       style="margin-top: 10px">
-      <el-button size="small" type="primary">点击上传</el-button>
+      <el-button type="primary">点击上传</el-button>
     </el-upload>
     <template #footer>
       <el-button type="primary" @click="subContract" :loading="Loading">确定</el-button>

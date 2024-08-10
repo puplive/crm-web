@@ -388,7 +388,7 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="展位规格" :prop="`position[${index}].product`" :rules="rules.required">
-                <el-button size="small" @click="addGg(index)" >添加</el-button>
+                <el-button @click="addGg(index)" >添加</el-button>
               </el-form-item>
               <el-form-item label=" " v-if="form.position[index].product">
                 <div>{{form.position[index].product + ' ' + form.position[index].area + '㎡'}}</div>

@@ -6,7 +6,7 @@
           <span style="color: #333;">销售线索</span>
       </template> -->
       <div class="s-table-operations">
-        <el-button size="small" icon="Plus" @click="showAddForm">线索字段</el-button>
+        <el-button icon="Plus" @click="showAddForm">线索字段</el-button>
       </div>
       <el-table :data="tableData" row-key="id" border default-expand-all show-overflow-tooltip
         header-row-class-name="s-table-header">

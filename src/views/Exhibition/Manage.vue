@@ -97,12 +97,12 @@ const searchData: any = ref([])
             @change="onChange(item)"/> -->
           <div style="display: flex; align-items: center;">
             <template v-if="item.status === 1">
-            <el-button size="small" color="#2f9dff" style="margin: 0; border-radius: 2px 0 0 2px;"><span style=" color:#fff">开启</span></el-button>
-            <el-button size="small" color="rgba(249, 250, 251, 1)" style="margin: 0; border-radius: 0 2px 2px 0 ; border-left: 0; " @click="onChange(item, 0)"><span style=" color:rgba(145, 158, 171, 1)">关闭</span></el-button>
+            <el-button color="#2f9dff" style="margin: 0; border-radius: 2px 0 0 2px;"><span style=" color:#fff">开启</span></el-button>
+            <el-button color="rgba(249, 250, 251, 1)" style="margin: 0; border-radius: 0 2px 2px 0 ; border-left: 0; " @click="onChange(item, 0)"><span style=" color:rgba(145, 158, 171, 1)">关闭</span></el-button>
             </template>
             <template v-else>
-            <el-button size="small" color="rgba(249, 250, 251, 1)" style="margin: 0; border-radius: 2px 0 0 2px;" @click="onChange(item, 1)"><span style=" color:rgba(145, 158, 171, 1)">开启</span></el-button>
-            <el-button size="small" color="#2f9dff" style="margin: 0; border-radius: 0 2px 2px 0 ; border-left: 0; "><span style=" color:#fff">关闭</span></el-button>
+            <el-button color="rgba(249, 250, 251, 1)" style="margin: 0; border-radius: 2px 0 0 2px;" @click="onChange(item, 1)"><span style=" color:rgba(145, 158, 171, 1)">开启</span></el-button>
+            <el-button color="#2f9dff" style="margin: 0; border-radius: 0 2px 2px 0 ; border-left: 0; "><span style=" color:#fff">关闭</span></el-button>
             </template>
           </div>
           <div style="margin-left: 10px; display: flex; align-items: center;">

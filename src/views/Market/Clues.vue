@@ -241,13 +241,13 @@ getCustomField()
   <div class="s-flex-col" style="height: 100%;">
     <TableSearch :data="searchData" @search="search"/>
     <div class="s-table-operations">
-      <el-button size="small" @click="$router.push('/market/clues/add')">新建线索</el-button>
-      <el-button size="small" @click="$router.push({ name: 'CluesImport',  query: { status: 1 } })">导入</el-button>
-      <el-button size="small" @click="Export">导出</el-button>
-      <el-button size="small" @click="Move">转移给他人</el-button>
-      <!-- <el-button size="small" @click="GetClues">领取</el-button> -->
-      <el-button size="small" @click="MoveShare">移至公海</el-button>
-      <el-button size="small" @click="Del">删除</el-button>
+      <el-button @click="$router.push('/market/clues/add')">新建线索</el-button>
+      <el-button @click="$router.push({ name: 'CluesImport',  query: { status: 1 } })">导入</el-button>
+      <el-button @click="Export">导出</el-button>
+      <el-button @click="Move">转移给他人</el-button>
+      <!-- <el-button @click="GetClues">领取</el-button> -->
+      <el-button @click="MoveShare">移至公海</el-button>
+      <el-button @click="Del">删除</el-button>
 
       <el-popover
         placement="bottom-end"

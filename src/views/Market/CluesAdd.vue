@@ -2,8 +2,13 @@
   <div class="" style="margin-bottom: 20px;">
     <span>{{route.name === 'CluesEdit'? '编辑' : '新建'}}销售线索</span>
   </div>
-  <div style="width: 500px;">
+  <div style="width: 550px; margin: 0 auto;">
     <el-form ref="formRef" :model="form" label-width="auto" label-position="left">
+      <el-form-item label="展会" prop="exhibitionId" :rules="rules.select" v-if="status == '2'">
+        <el-select v-model="form.exhibitionId">
+          <el-option v-for="item in exhibitionData" :key="item.id" :label="item.exhibitionName" :value="item.id"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="企业名称" prop="companyName" :rules="rules.required">
         <el-input v-model="form.companyName"></el-input>
       </el-form-item>
@@ -79,9 +84,9 @@
         </el-form-item>
       </template>
 
-      <div style="margin-top: 20px; text-align: right;">
-        <el-button type="primary" @click="save" size="small">保存</el-button>
-        <el-button type="default" @click="$router.go(-1)" size="small">取消</el-button>
+      <div style="margin-top: 20px; text-align: center;">
+        <el-button type="primary" @click="save">保存</el-button>
+        <el-button type="default" @click="$router.go(-1)">取消</el-button>
       </div>
     </el-form>
   </div>
@@ -93,14 +98,30 @@ import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/Clues'
 import { customFieldTypes } from "@/api/Custom";
 import rules from "@/utils/rules";
+import { exhibitionList } from '@/api/Exhibition'
+import { userStore } from "@/stores/user";
 const router = useRouter()
 const route = useRoute()
+const status: any = ref(route.query.status || '')
 
-// console.log(route)
+const _store = userStore()
+const exhibitionInfo: any = ref(_store.EXHIBITION_INFO)
+const exhibitionData: any = ref([])
+exhibitionList().then((res) => {
+  if (res.code === 0) {
+    exhibitionData.value = res.data
+  }
+})
+
+
+
+// console.log(status)
 
 // const activeName = ref('first')
 const formRef: any = ref(null)
 const form: any = ref({
+  exhibitionId: exhibitionInfo.value.id,
+  exhibitionName: exhibitionInfo.value.exhibitionName, // 展会名称
   companyName: '', // 公司名称
   contactName: '', // 联系人
   contactTel: '', // 联系方式
@@ -111,6 +132,7 @@ const form: any = ref({
   companyBrand: [''], // 品牌2
   customField: [] // 自定义字段数据
 })
+
 const country: any = ref([])
 const province: any = ref([])
 const city: any = ref([])
@@ -134,7 +156,14 @@ const save = () => {
         }
       })
     }else{
-      api.add(form.value).then(res => {
+      let _d = {}
+      if(status.value === '2'){
+        _d = {...form.value}
+      }else{
+        let {exhibitionId, exhibitionName, ...d} = {...form.value}
+        _d = d
+      }
+      api.add(_d).then(res => {
         if (res.code === 0) {
           ElMessage.success('保存成功')
           router.go(-1)
@@ -263,6 +292,10 @@ const setEditData = () => {
   }
 }
 
+watch(() => form.value.exhibitionId, (newVal) => {
+  let d = exhibitionData.value.find((i: any) => { return i.id == newVal })
+  form.value.exhibitionName = d ? d.exhibitionName || '' : ''
+})
 
 </script>
 <style scoped>

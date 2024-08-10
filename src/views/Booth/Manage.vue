@@ -305,11 +305,11 @@
   <div class="s-flex-col" style="height: 100%">
     <!-- <TableSearch :data="searchData" @search="search"/> -->
     <div class="s-table-operations">
-      <el-button size="small" @click="handleAdd">新增</el-button>
-      <el-button size="small" @click="_import.set()">导入</el-button>
+      <el-button @click="handleAdd">新增</el-button>
+      <el-button @click="_import.set()">导入</el-button>
       
-      <el-button size="small" @click="handleExport">导出</el-button>
-      <el-button size="small" @click="deleteSelected">删除</el-button>
+      <el-button @click="handleExport">导出</el-button>
+      <el-button @click="deleteSelected">删除</el-button>
     </div>
     <div class="s-flex-auto" style="min-height: 0;">
       <el-table ref="tableRef" :data="tableData" border table-layout="fixed" height="100%" show-overflow-tooltip
