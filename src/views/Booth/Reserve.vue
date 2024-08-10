@@ -98,7 +98,7 @@
   }
   const gg_price_label = computed(() => {
     if(gg.form.unitPrice){
-      return gg.form.unitPrice + '元/' + (gg.form.num===1?'':gg.form.num) + '㎡'
+      return (Number(gg.form.unitPrice)/Number(gg.form.num==0?1:gg.form.num)).toFixed(2) + '元'
     }else{
       return ''
     }
@@ -204,7 +204,7 @@
           _discountPrice = discountPrice(_costPrice)
 
       form.position[gg.index].product = gg.form.product
-      form.position[gg.index].unitPrice = gg.form.unitPrice
+      form.position[gg.index].unitPrice = (Number(gg.form.unitPrice)/Number(gg.form.num==0?1:gg.form.num)).toFixed(2)
       form.position[gg.index].length = gg.form.length
       form.position[gg.index].width = gg.form.width
       form.position[gg.index].area = _area

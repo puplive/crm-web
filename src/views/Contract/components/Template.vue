@@ -106,6 +106,14 @@ const editContract = (templateId: any) => {
 
 const setPrice = () => {
   contract.value.finalPrice = (Number(contract.value.positionUnitPrice) * Number(contract.value.positionArea) * (1 - Number(contract.value.discountRatio) / 100)).toFixed(2)
+  // contract.value.payment.forEach((item: any) => {
+  //   item.price = Number(item.ratio) === 0? contract.value.finalPrice : (Number(contract.value.finalPrice) * Number(item.ratio) / 100).toFixed(2)
+  // })
+  // console.log(contract.value.finalPrice)
+}
+
+const setPrice2 = () => {
+  // contract.value.finalPrice = (Number(contract.value.positionUnitPrice) * Number(contract.value.positionArea) * (1 - Number(contract.value.discountRatio) / 100)).toFixed(2)
   contract.value.payment.forEach((item: any) => {
     item.price = Number(item.ratio) === 0? contract.value.finalPrice : (Number(contract.value.finalPrice) * Number(item.ratio) / 100).toFixed(2)
   })
@@ -225,7 +233,7 @@ defineExpose({
           </td>
           <td>
             <!-- <template v-if="item.name !== '全款'"> -->
-              <input v-if="isEdit" v-model="item.ratio" @input="setPrice"/>
+              <input v-if="isEdit" v-model="item.ratio" @input="setPrice2"/>
               <template v-else>{{item.ratio}}</template>
             <!-- </template>
             <template v-else>100</template> -->
