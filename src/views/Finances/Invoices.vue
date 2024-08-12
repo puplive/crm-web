@@ -245,7 +245,7 @@
             </el-button>
             <el-button :disabled="scope.row.status===0" link :type="scope.row.status===0?'':'primary'" @click="editInvoiceRef.setEdit(scope.row)">编辑</el-button>
             </template>
-            <el-button link type="danger" @click="Del([scope.row.id])">删除</el-button>
+            <el-button link type="danger" @click="Del(scope.row.id)">删除</el-button>
           <!-- </div> -->
           </template>
         </el-table-column>
