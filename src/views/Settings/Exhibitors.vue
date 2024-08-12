@@ -3,6 +3,7 @@
   import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
   import api from '@/api/Exhibitor'
+import _rules from '@/utils/rules';
 
   const page = reactive({
     page: 1,
@@ -29,6 +30,7 @@
     })
   }
 
+  const addForm: any = ref(null)
   const add:any = reactive({
     show: false,
     isEdit: false,
@@ -44,26 +46,36 @@
       add.data = row
     },
     addSub: () => {
-      api.add(add.data).then((res: any) => {
-        if(res.code === 0) {
-          ElMessage.success('新增成功')
-          getList()
-          add.show = false
-        }else {
-          ElMessage.error(res.msg)
+      addForm.value.validate().then((valid: any) => {
+        if(!valid) {
+          return
         }
+        api.add(add.data).then((res: any) => {
+          if(res.code === 0) {
+            ElMessage.success('新增成功')
+            getList()
+            add.show = false
+          }else {
+            ElMessage.error(res.msg)
+          }
+        })
       })
+      
     },
     editSub: () => {
-      
-      api.edit(add.data).then((res: any) => {
-        if(res.code === 0) {
-          ElMessage.success('编辑成功')
-          getList()
-          add.show = false
-        }else {
-          ElMessage.error(res.msg)
+      addForm.value.validate().then((valid: any) => {
+        if(!valid) {
+          return
         }
+        api.edit(add.data).then((res: any) => {
+          if(res.code === 0) {
+            ElMessage.success('编辑成功')
+            getList()
+            add.show = false
+          }else {
+            ElMessage.error(res.msg)
+          }
+        })
       })
     }
   })
@@ -203,19 +215,19 @@
 
   <el-dialog :title="add.isEdit ? '编辑' : '新增'" v-model="add.show" width="500px" draggable>
     <el-form :model="add.data" ref="addForm" label-width="auto" label-position="left">
-      <el-form-item label="用户名" prop="account" required>
+      <el-form-item label="用户名" prop="account" :rules=_rules.required>
         <el-input v-model="add.data.account" placeholder="请输入用户名"></el-input>
       </el-form-item>
-      <el-form-item label="注册人" prop="userName" required>
+      <el-form-item label="注册人" prop="userName" :rules=_rules.required>
         <el-input v-model="add.data.userName" placeholder="请输入注册人"></el-input>
       </el-form-item>
-      <el-form-item label="手机" prop="phone" required>
+      <el-form-item label="手机" prop="phone" :rules=_rules.phone>
         <el-input v-model="add.data.phone" placeholder="请输入手机"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email" required>
+      <el-form-item label="邮箱" prop="email" :rules=_rules.email>
         <el-input v-model="add.data.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password" required>
+      <el-form-item label="密码" prop="password" :rules=_rules.required>
         <el-input v-model="add.data.password" placeholder="请输入密码"></el-input>
       </el-form-item>
     </el-form>
