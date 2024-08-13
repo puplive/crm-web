@@ -294,16 +294,18 @@ const columns_selected: any = ref([])
         <el-table-column v-if="columns_is_selected('操作')" fixed="right" label="操作" width="220">
           <template #default="scope">
             <!-- <el-button link type="primary" @click="$router.push({name: 'BoothReserve', query: {clueId: scope.row.id, exhibitionId: scope.row.exhibitionId, exhibitorId: scope.row.exhibitorId, hallCode: scope.row.hallCode}})"> -->
+            
             <el-button 
-              link type="primary" 
+              :disabled="scope.row.isExit===1" link :type="scope.row.isExit===1?'':'primary'"
               @click="setBooth(scope.row)">
               {{scope.row.orderPositionStatus?'新增':''}}展位预定
             </el-button>
             <el-button
-              link type="primary" 
+              :disabled="scope.row.isExit===1" link :type="scope.row.isExit===1?'':'primary'"
               @click="setGoods(scope.row)">
               {{scope.row.orderMaterialStatus?'新增':''}}物料预定
             </el-button>
+            
             <!-- <el-button link type="primary" @click="willSet(scope.row)">
               移除意向
             </el-button> -->
