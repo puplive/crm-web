@@ -192,7 +192,7 @@
         <el-table-column v-if="columns_is_selected('定金')" prop="deposit" label="定金" />
         <el-table-column v-if="columns_is_selected('已收')" prop="receivedPrice" label="已收" />
         <el-table-column v-if="columns_is_selected('未收款')" prop="unknownPrice" label="未收款" />
-        <el-table-column v-if="columns_is_selected('付款状态')" prop="payStatus" label="付款状态">
+        <el-table-column v-if="columns_is_selected('付款状态')" prop="payStatus" label="付款状态" min-width="120">
           <template #default="scope">
             <!-- 0未付款，1部分付款，2已付款 -->
             {{ ['未付款','部分付款','已付款'][scope.row.payStatus] }}
