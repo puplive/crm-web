@@ -40,3 +40,19 @@ export const delNullProperty = (obj: any) => {
     }
   }
 }
+
+// export function debounce(fn, delay) {
+//   let timer
+//   // 返回一个debounce后的函数
+//   return function () {
+//     // 保存函数调用时的上下文和参数
+//     const context = this
+//     const args = arguments
+//     // 每当函数再次被调用，清除之前的定时器
+//     clearTimeout(timer)
+//     // 需要一个定时器来记录延迟执行的函数
+//     timer = setTimeout(() => {
+//       fn.apply(context, args)
+//     }, delay)
+//   }
+// }

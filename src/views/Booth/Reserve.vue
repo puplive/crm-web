@@ -4,6 +4,7 @@
   import { getPosition, positionIsLock } from '@/api/Booth/index'
   import { useRouter, useRoute } from 'vue-router';
   import rules from "@/utils/rules";
+  // import {debounce} from "@/utils/tool";
 
   const router = useRouter();
   const route = useRoute();
@@ -147,22 +148,28 @@
   }
   set_booth_list(hallCode.value, 0)
 
+  let timer:any = null
   const checkBooth = (rule: any, value: any, callback: any, hallCode: any) => {
     if (!value) {
       return callback(new Error('必填项'))
     }
-    positionIsLock({
-      exhibitionId,
-      exhibitorId,
-      hallCode: hallCode,
-      positionCode: value,
-    }).then(res => {
-      if (res.code === 0 && res.data.status) {
-        callback()
-      } else {
-        callback(new Error('该展位已锁定'))
-      }
-    })
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      positionIsLock({
+        exhibitionId,
+        exhibitorId,
+        hallCode: hallCode,
+        positionCode: value,
+      }).then(res => {
+        if (res.code === 0 && res.data.status) {
+          callback()
+        } else {
+          callback(new Error('该展位已锁定'))
+        }
+      })
+    }, 500)
   }
 
 
@@ -350,7 +357,11 @@
                   <el-option v-for="(item,i) in hall_list" :key="i" :label="item.code" :value="item.code" />
                 </el-select>
               </el-form-item>
-              <el-form-item label="展位号" :prop="`position[${index}].positionCode`" :rules="[...rules.required,{ validator: (rule:any, value:any, callback:any)=> checkBooth(rule, value, callback, form.position[index].hallCode), trigger: 'change' }]">
+              <el-form-item label="展位号" :prop="`position[${index}].positionCode`" 
+                :rules="[...rules.required,{ 
+                  validator: (rule:any, value:any, callback:any)=> checkBooth(rule, value, callback, form.position[index].hallCode), 
+                  trigger: 'change' }]"
+              >
                 <el-dropdown trigger="click" style="width: 100%;" 
                   max-height="300px"
                   @command="(command: any)=>{
