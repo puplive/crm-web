@@ -201,8 +201,9 @@
           </template>
         </el-table-column>
         <el-table-column v-if="columns_is_selected('付款凭证')" prop="payImg" label="付款凭证" min-width="120">
-          <template #default="scope">
+          <template #default="scope" >
             <el-image 
+              v-if="scope.row.payImg"
               style="width: 30px; height: 30px; margin-right: 5px;"
               :src="scope.row.payImg" 
               fit="contain" 
@@ -214,6 +215,7 @@
         <el-table-column v-if="columns_is_selected('到款凭证')" prop="receiveImg" label="到款凭证" min-width="120">
           <template #default="scope">
             <el-image 
+              v-if="scope.row.receiveImg"
               style="width: 30px; height: 30px; margin-right: 5px;"
               :src="scope.row.receiveImg" 
               fit="contain" 
