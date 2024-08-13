@@ -212,6 +212,8 @@ const orderId: any = ref(Number(route.query.id))
     receiveImg: '',
     invoice: {
       img: '',
+      type: 1,
+      status: 1,
     }
   }])
 
@@ -223,6 +225,8 @@ const orderId: any = ref(Number(route.query.id))
       receiveImg: '',
       invoice: {
         img: '',
+        type: 1,
+        status: 1,
       }
     })
   }

@@ -3,7 +3,7 @@
   import { ref, reactive, watch } from 'vue'
   import TableSearch from '@/components/TableSearch/index.vue'
   import api from '@/api/Exhibitor'
-import _rules from '@/utils/rules';
+  import _rules from '@/utils/rules';
 
   const page = reactive({
     page: 1,

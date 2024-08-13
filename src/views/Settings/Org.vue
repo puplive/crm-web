@@ -3,6 +3,7 @@
   import { ref, reactive, watch } from 'vue'
   import { org, sponsorAccount, role } from '@/api/user'
   // import TableSearch from '@/components/TableSearch/index.vue'
+  import _rules from '@/utils/rules';
 
   const page = reactive({
     page: 1,
@@ -147,6 +148,7 @@
     })
   }
 
+  const formRef: any = ref(null)
   const addAccount: any = reactive({
     show: false,
     isEdit: false,
@@ -183,21 +185,28 @@
           phone: '',
           email: ''
         }
+        setTimeout(() => {
+          formRef.value.resetFields()
+        }, 100)
       }
-      
     },
     sub: () => {
-      let _api = addAccount.isEdit? sponsorAccount.edit : sponsorAccount.add
-      let _data = {...addAccount.data }
-      _data.departmentId = _data.departmentId[_data.departmentId.length - 1]
-      _api(_data).then((res: any) => {
-        if(res.code === 0) {
-          ElMessage.success(addAccount.isEdit?'修改成功':'新增成功')
-          addAccount.show = false
-          getData()
-        }else {
-          ElMessage.error(res.msg)
+      formRef.value.validate((valid: any) => {
+        if (!valid) {
+          return false
         }
+        let _api = addAccount.isEdit? sponsorAccount.edit : sponsorAccount.add
+        let _data = {...addAccount.data }
+        _data.departmentId = _data.departmentId[_data.departmentId.length - 1]
+        _api(_data).then((res: any) => {
+          if(res.code === 0) {
+            ElMessage.success(addAccount.isEdit?'修改成功':'新增成功')
+            addAccount.show = false
+            getData()
+          }else {
+            ElMessage.error(res.msg)
+          }
+        })
       })
     }
   })
@@ -347,16 +356,16 @@
     </div>
   </div>
 
-  <el-dialog :title="addAccount.data.id? '编辑' : '新增员工'" v-model="addAccount.show" width="500" draggable>
-    <el-form :model="addAccount.data" label-width="auto" label-position="left">
-      <el-form-item label="登录名" required>
+  <el-dialog :title="addAccount.data.id? '编辑' : '新增员工'" v-model="addAccount.show" width="500" draggable  @close="()=>{formRef.resetFields()}">
+    <el-form ref="formRef" :model="addAccount.data" label-width="auto" label-position="left" >
+      <el-form-item label="登录名" prop="account" :rules="[{ required: true, message: '请输入登录名', trigger: 'blur' }]">
         <el-input v-model="addAccount.data.account" placeholder="请输入登录名"></el-input>
       </el-form-item>
-      <el-form-item label="密码" required>
+      <el-form-item label="密码" prop="password" :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
         <el-input v-model="addAccount.data.password" placeholder="请输入密码"></el-input>
       </el-form-item>
 
-      <el-form-item label="部门" required>
+      <el-form-item label="部门" prop="departmentId" :rules="[{ required: true, message: '请选择部门', trigger: 'change' }]">
         <el-cascader 
           v-model="addAccount.data.departmentId" 
           :options="departmentList" 
@@ -365,15 +374,15 @@
         </el-cascader>
 
       </el-form-item>
-      <el-form-item label="系统角色" required>
+      <el-form-item label="系统角色" prop="roleId" :rules="[{ required: true, message: '请选择系统角色', trigger: 'change' }]">
         <el-select v-model="addAccount.data.roleId">
           <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="手机" required>
+      <el-form-item label="手机" prop="phone" :rules=_rules.phone>
         <el-input v-model="addAccount.data.phone" placeholder="请输入手机"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" required>
+      <el-form-item label="邮箱" prop="email" :rules=_rules.email>
         <el-input v-model="addAccount.data.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
     </el-form>

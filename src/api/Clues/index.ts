@@ -1,5 +1,6 @@
 import request from "@/utils/request";
 // import type { UserType } from './types'
+// import qs from "qs";
 
 const prefix = "/web/v1";
 
@@ -140,6 +141,7 @@ export const clueExport = (data: any): Promise<any> => {
   return request({
     url: prefix + "/sales/clue/export",
     method: "post",
+    // responseType: "blob",
     data
   });
 }

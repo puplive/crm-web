@@ -1,11 +1,18 @@
 
-export const downloadFile = (url: string, fileName?: string) => {
+export const downloadUrl = (url: string, fileName?: string) => {
   let link: any = document.createElement('a');
   link.href = url;
   link.download = fileName || 'download';
   document.body.appendChild(link);
   link.click();
-  link.parentNode.removeChild(link);
+  // link.parentNode.removeChild(link);
+}
+export const downloadBlob = (data: any, fileName?: string) => {
+  const blob = new Blob([data], { type: 'application/octet-stream' });
+  const link: any = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = fileName;
+  link.click();
 }
 
 //遍历删除对象中的空值属性
