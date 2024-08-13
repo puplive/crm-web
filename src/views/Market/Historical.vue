@@ -277,7 +277,8 @@ getCustomField()
         <el-table-column v-if="columns_is_selected('电话')" prop="phone" label="电话" />
         <el-table-column v-if="columns_is_selected('记录时间')" prop="recordTime" label="记录时间" width="180" />
         <el-table-column v-if="columns_is_selected('记录内容')" prop="recordText" label="记录内容" min-width="120" />
-        <el-table-column v-if="columns_is_selected('授权人')" prop="authUser" label="授权人" />
+        <el-table-column v-if="columns_is_selected('持有人')" prop="authUser" label="持有人" min-width="120" />
+        <el-table-column v-if="columns_is_selected('参展次数')" prop="orderNum" label="参展次数" min-width="120" />
         <template v-for="item in customField" :key="item.key">
           <el-table-column v-if="columns_is_selected(item.name)" :prop="item.key" :label="item.name" min-width="120">
             <!-- <template #default="scope" v-if="item.type === 5 || item.type === 7">

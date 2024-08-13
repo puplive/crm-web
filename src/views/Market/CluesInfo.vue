@@ -111,6 +111,7 @@
             <el-table :data="form.orderPosition" border show-overflow-tooltip>
               <el-table-column prop="orderCode" label="订单编号" min-width="120"/>
               <el-table-column prop="brand" label="品牌"/>
+              <el-table-column prop="exhibitionName" label="展会名称" min-width="120"/>
               <el-table-column prop="positionCode" label="展位号" />
               <el-table-column prop="price" label="订单金额"  min-width="120"/>
               <el-table-column label="操作" width="150" fixed="right">
