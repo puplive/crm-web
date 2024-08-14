@@ -153,11 +153,11 @@
                 :preview-src-list="[edit.form.payImg]" 
                 fit="contain" 
                 style="width: 100px; height: 100px;">
-                <!-- <template #error>
-                  <div class="image-slot">
-                    <el-icon><Picture /></el-icon>
+                <template #error >
+                  <div class="el-image__error">
+                    {{edit.form.payImg == '' ? '请上传图片' : '加载失败'}}
                   </div>
-                </template> -->
+                </template>
               </el-image>
               <el-upload
                 ref="uploadRef1"
@@ -180,11 +180,11 @@
                 :preview-src-list="[edit.form.receiveImg]" 
                 fit="contain" 
                 style="width: 100px; height: 100px;">
-                <!-- <template #error>
-                  <div class="image-slot">
-                    <el-icon><Picture /></el-icon>
+                <template #error >
+                  <div class="el-image__error">
+                    {{edit.form.receiveImg == '' ? '请上传图片' : '加载失败'}}
                   </div>
-                </template> -->
+                </template>
               </el-image>
               <el-upload
                 ref="uploadRef2"
